@@ -77,7 +77,7 @@
   .section-title { font-size: 1.5rem; margin-bottom: 6px; }
   .section-sub { color: #6B7871; font-size: 0.9rem; margin-bottom: 28px; }
   .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .cat-card { background: var(--white); border-radius: 4px; overflow: hidden; border: 1px solid var(--sand-dark); }
+  .cat-card { background: var(--white); border-radius: 4px; overflow: hidden; border: 1px solid var(--sand-dark); display: block; }
   .cat-img { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
   .cat-1 .cat-img { background: #E8DFC8; }
   .cat-2 .cat-img { background: #CBD9CF; }
@@ -86,7 +86,7 @@
   .cat-label { padding: 14px 12px; font-size: 0.95rem; font-weight: 500; }
   .cat-count { font-size: 0.78rem; color: #8A9189; font-weight: 400; }
   .prod-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; margin: 0 -24px; padding-left: 24px; padding-right: 24px; }
-  .prod-card { min-width: 150px; background: var(--white); border-radius: 4px; border: 1px solid var(--sand-dark); flex-shrink: 0; }
+  .prod-card { min-width: 150px; background: var(--white); border-radius: 4px; border: 1px solid var(--sand-dark); flex-shrink: 0; display: block; }
   .prod-img { height: 130px; background: var(--sand-dark); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; }
   .prod-info { padding: 12px; }
   .prod-name { font-size: 0.85rem; margin-bottom: 4px; }
@@ -112,26 +112,26 @@
     <div class="hero-eyebrow">Nouvelle boutique</div>
     <h1>L'essentiel du quotidien musulman, choisi avec soin</h1>
     <p>Prêt-à-porter, prière, bien-être et décoration — une sélection pensée pour durer.</p>
-    <a href="/produit.html" class="btn-primary">Découvrir la boutique</a>
+    <a href="/produit.html?id=huile-nigelle" class="btn-primary">Découvrir la boutique</a>
   </section>
   <section class="section">
     <h2 class="section-title">Nos univers</h2>
     <p class="section-sub">Quatre catégories, pensées pour votre quotidien</p>
     <div class="cat-grid">
-      <div class="cat-card cat-1"><div class="cat-img">👕</div><div class="cat-label">Prêt-à-porter<br><span class="cat-count">Qamis, jilbab</span></div></div>
-      <div class="cat-card cat-2"><div class="cat-img">🕌</div><div class="cat-label">Prière<br><span class="cat-count">Tapis, chapelet</span></div></div>
-      <div class="cat-card cat-3"><div class="cat-img">🌿</div><div class="cat-label">Bien-être<br><span class="cat-count">Huile de nigelle</span></div></div>
-      <div class="cat-card cat-4"><div class="cat-img">🖼️</div><div class="cat-label">Décoration<br><span class="cat-count">Calligraphie</span></div></div>
+      <a href="/categorie.html?cat=pret-a-porter" class="cat-card cat-1"><div class="cat-img">👕</div><div class="cat-label">Prêt-à-porter<br><span class="cat-count">Qamis, jilbab</span></div></a>
+      <a href="/categorie.html?cat=priere" class="cat-card cat-2"><div class="cat-img">🕌</div><div class="cat-label">Prière<br><span class="cat-count">Tapis, chapelet</span></div></a>
+      <a href="/categorie.html?cat=bien-etre" class="cat-card cat-3"><div class="cat-img">🌿</div><div class="cat-label">Bien-être<br><span class="cat-count">Huile de nigelle</span></div></a>
+      <a href="/categorie.html?cat=decoration" class="cat-card cat-4"><div class="cat-img">🖼️</div><div class="cat-label">Décoration<br><span class="cat-count">Calligraphie</span></div></a>
     </div>
   </section>
   <section class="section" style="padding-top: 0;">
     <h2 class="section-title">Sélection du moment</h2>
     <p class="section-sub">Nos produits les plus appréciés</p>
     <div class="prod-scroll">
-      <div class="prod-card"><div class="prod-img">🌿</div><div class="prod-info"><div class="prod-name">Huile de nigelle 60ml</div><div class="prod-price">7,50 €</div></div></div>
-      <div class="prod-card"><div class="prod-img">🕌</div><div class="prod-info"><div class="prod-name">Tapis de prière uni</div><div class="prod-price">15,00 €</div></div></div>
-      <div class="prod-card"><div class="prod-img">📿</div><div class="prod-info"><div class="prod-name">Chapelet artisanal</div><div class="prod-price">9,90 €</div></div></div>
-      <div class="prod-card"><div class="prod-img">🌿</div><div class="prod-info"><div class="prod-name">Huile de nigelle 1L</div><div class="prod-price">32,00 €</div></div></div>
+      <a href="/produit.html?id=huile-nigelle" class="prod-card"><div class="prod-img">🌿</div><div class="prod-info"><div class="prod-name">Huile de nigelle 60ml</div><div class="prod-price">7,50 €</div></div></a>
+      <a href="/produit.html?id=tapis-priere" class="prod-card"><div class="prod-img">🕌</div><div class="prod-info"><div class="prod-name">Tapis de prière uni</div><div class="prod-price">15,00 €</div></div></a>
+      <a href="/produit.html?id=chapelet" class="prod-card"><div class="prod-img">📿</div><div class="prod-info"><div class="prod-name">Chapelet artisanal</div><div class="prod-price">9,90 €</div></div></a>
+      <a href="/produit.html?id=qamis-homme" class="prod-card"><div class="prod-img">👕</div><div class="prod-info"><div class="prod-name">Qamis homme</div><div class="prod-price">29,90 €</div></div></a>
     </div>
   </section>
   <section class="story">
