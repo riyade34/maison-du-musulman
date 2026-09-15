@@ -8,12 +8,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Rakkas&family=Caveat:wght@500&display=swap" rel="stylesheet">
 <style>
-  :root { --ink:#1C2B24; --sand:#F7F3EC; --copper:#8B6F4E; --sage:#3E5C4E; --white:#FFFFFF; --sand-dark:#EDE6D8; }
+  :root { --ink:#1C2B24; --sand:#F7F3EC; --copper:#8B6F4E; --sage:#3E5C4E; --white:#FFFFFF; --sand-dark:#EDE6D8; --gold:#B8873B; --terracotta:#B0562E; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--sand); color: var(--ink); font-family: 'Inter', sans-serif; line-height: 1.6; }
   h1, h2, h3, .serif { font-family: 'Fraunces', serif; font-weight: 500; letter-spacing: -0.01em; }
   a { text-decoration: none; color: inherit; }
   svg { display: block; }
+
+  .pattern-strip {
+    height: 10px;
+    background-image: repeating-linear-gradient(135deg, var(--gold) 0 3px, transparent 3px 12px),
+                       repeating-linear-gradient(45deg, var(--terracotta) 0 3px, transparent 3px 12px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 0;
+    opacity: 0.85;
+  }
+  .pattern-bg {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23B8873B' stroke-width='1' opacity='0.4'%3E%3Cpath d='M30 2 L45 15 L45 45 L30 58 L15 45 L15 15 Z'/%3E%3Cpath d='M30 2 L37.5 15 L30 28 L22.5 15 Z'/%3E%3Cpath d='M30 58 L37.5 45 L30 32 L22.5 45 Z'/%3E%3Ccircle cx='30' cy='30' r='6'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
 
   header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; background: var(--sand); z-index: 20; gap: 10px; }
   .logo { display: flex; align-items: center; gap: 8px; font-family: 'Rakkas', serif; font-size: 1.2rem; font-weight: 400; white-space: nowrap; }
@@ -27,28 +40,31 @@
   .subnav a { padding-bottom: 8px; white-space: nowrap; }
 
   .intro { position: relative; padding: 46px 24px 36px; text-align: center; overflow: hidden; background: linear-gradient(160deg, var(--sand-dark) 0%, var(--sand) 65%); }
-  .intro-corner { position: absolute; width: 140px; height: 140px; opacity: 0.3; color: var(--sage); }
+  .intro-corner { position: absolute; width: 140px; height: 140px; opacity: 0.3; color: var(--gold); }
   .intro-corner.tl { top: -14px; left: -22px; }
   .intro-corner.br { bottom: -22px; right: -22px; transform: rotate(180deg); }
-  .intro-moon { width: 30px; height: 30px; margin: 0 auto 10px; color: var(--copper); position: relative; }
-  .intro-eyebrow { font-size: 0.72rem; letter-spacing: 0.12em; color: var(--sage); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; position: relative; }
+  .intro-moon { width: 30px; height: 30px; margin: 0 auto 10px; color: var(--terracotta); position: relative; }
+  .intro-eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; color: var(--gold); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; position: relative; }
   .intro h1 { font-size: 1.8rem; line-height: 1.25; max-width: 320px; margin: 0 auto; position: relative; }
+  .intro::before { content: ''; position: absolute; inset: 0; opacity: 0.5; }
 
-  .story-block { padding: 38px 24px; max-width: 560px; margin: 0 auto; }
-  .story-signature { font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--copper); text-align: right; margin-top: 22px; }
+  .story-block { padding: 38px 24px; max-width: 560px; margin: 0 auto; position: relative; }
+  .story-divider { width: 60px; height: 24px; margin: 0 auto 30px; color: var(--gold); opacity: 0.8; }
+  .story-signature { font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--terracotta); text-align: right; margin-top: 22px; }
   .story-block p { margin-bottom: 16px; color: #33453B; font-size: 0.96rem; }
-  .story-block p:first-of-type::first-letter { font-family: 'Fraunces', serif; font-size: 2.6rem; float: left; line-height: 0.8; margin: 6px 8px 0 0; color: var(--sage); }
+  .story-block p:first-of-type::first-letter { font-family: 'Fraunces', serif; font-size: 2.6rem; float: left; line-height: 0.8; margin: 6px 8px 0 0; color: var(--terracotta); }
 
   .values { display: grid; grid-template-columns: 1fr; gap: 14px; padding: 10px 20px 46px; max-width: 560px; margin: 0 auto; }
-  .value-card { background: var(--white); border: 1px solid var(--sand-dark); border-radius: 8px; padding: 18px; display: flex; gap: 14px; align-items: flex-start; }
-  .value-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--sand-dark); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .value-icon svg { width: 17px; height: 17px; color: var(--sage); }
+  .value-card { background: var(--white); border: 1px solid var(--sand-dark); border-top: 3px solid var(--gold); border-radius: 8px; padding: 18px; display: flex; gap: 14px; align-items: flex-start; }
+  .value-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(160deg, var(--sand-dark), #E4D6BC); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .value-icon svg { width: 17px; height: 17px; color: var(--terracotta); }
   .value-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; }
   .value-desc { font-size: 0.82rem; color: #6B7871; }
 
-  .story { background: var(--ink); color: var(--sand); padding: 44px 22px; text-align: center; }
-  .story h2 { font-size: 1.3rem; max-width: 320px; margin: 0 auto 14px; color: var(--white); }
-  .story p { color: #C8CFC9; font-size: 0.88rem; max-width: 320px; margin: 0 auto; }
+  .story { position: relative; background: var(--ink); color: var(--sand); padding: 44px 22px; text-align: center; overflow: hidden; }
+  .story h2 { font-size: 1.3rem; max-width: 320px; margin: 0 auto 14px; color: var(--white); position: relative; }
+  .story p { color: #C8CFC9; font-size: 0.88rem; max-width: 320px; margin: 0 auto; position: relative; }
+  .story-pattern { position: absolute; inset: 0; opacity: 0.18; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23B8873B' stroke-width='1'%3E%3Cpath d='M30 2 L45 15 L45 45 L30 58 L15 45 L15 15 Z'/%3E%3Cpath d='M30 2 L37.5 15 L30 28 L22.5 15 Z'/%3E%3Cpath d='M30 58 L37.5 45 L30 32 L22.5 45 Z'/%3E%3Ccircle cx='30' cy='30' r='6'/%3E%3C/g%3E%3C/svg%3E"); background-size: 60px 60px; }
 
   footer { padding: 36px 22px 28px; text-align: center; }
   .footer-links { display: flex; justify-content: center; gap: 18px; margin: 16px 0; font-size: 0.83rem; color: var(--sage); }
@@ -82,6 +98,7 @@
     <a href="/contact.html">Contact</a>
   </div>
 
+  <div class="pattern-strip"></div>
   <section class="intro">
     <svg class="intro-corner tl" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8"><path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/></svg>
     <svg class="intro-corner br" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8"><path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/></svg>
@@ -89,8 +106,13 @@
     <div class="intro-eyebrow">Notre histoire</div>
     <h1>Une maison née d'un besoin tout simple</h1>
   </section>
+  <div class="pattern-strip"></div>
 
   <section class="story-block">
+    <svg class="story-divider" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1.2">
+      <path d="M2 12h18"/><path d="M40 12h18"/>
+      <path d="M30 2l6 10-6 10-6-10z"/>
+    </svg>
     <p>Tout a commencé par une frustration que beaucoup d'entre nous connaissent : chercher un tapis de prière qui ne se déforme pas au bout de trois mois, une huile de nigelle vraiment pure, un qamis bien coupé — et tomber, boutique après boutique, sur des produits bâclés ou des sites peu sérieux.</p>
     <p>Je me suis dit qu'il devait exister une meilleure façon de faire : une boutique pensée avec la même exigence que celle qu'on aurait pour sa propre maison. Pas un catalogue sans fin, mais une sélection resserrée — des objets qu'on choisit vraiment, parce qu'ils ont une utilité réelle dans le quotidien d'un musulman.</p>
     <p>La Maison du Musulman est née de cette idée : rassembler dans un seul endroit ce qui accompagne la prière, le vêtement, le bien-être et la maison — avec soin, sans surenchère, et avec l'envie sincère que chaque commande vous soit utile pendant longtemps.</p>
@@ -129,6 +151,7 @@
   </section>
 
   <section class="story">
+    <div class="story-pattern"></div>
     <h2>Merci de faire partie de cette histoire</h2>
     <p>Chaque commande nous aide à faire grandir cette maison — avec la même exigence qu'au premier jour.</p>
   </section>
