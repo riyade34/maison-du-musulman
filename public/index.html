@@ -66,23 +66,17 @@
   .subnav a.active { color: var(--sage); border-bottom: 2px solid var(--sage); padding-bottom: 8px; }
   .subnav a { padding-bottom: 8px; white-space: nowrap; }
 
-  .hero {
-    position: relative;
-    padding: 40px 22px 36px;
-    text-align: center;
-    overflow: hidden;
-    background-image: linear-gradient(180deg, rgba(247,243,236,0.88), rgba(230,220,200,0.9)), url('https://images.pexels.com/photos/827519/pexels-photo-827519.jpeg?auto=compress&cs=tinysrgb&w=1920&q=90');
-    background-size: cover;
-    background-position: center;
-  }
-  .hero-corner {
-    position: absolute; width: 130px; height: 130px; opacity: 0.35; color: var(--sage);
-  }
+  /* HERO — deux bandeaux photo nets (pas de flou) + texte entre les deux */
+  .hero { position: relative; }
+  .hero-photo { width: 100%; height: 190px; overflow: hidden; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-content { position: relative; padding: 30px 24px 34px; text-align: center; background: var(--sand); overflow: hidden; }
+  .hero-corner { position: absolute; width: 130px; height: 130px; opacity: 0.3; color: var(--sage); }
   .hero-corner.tl { top: -10px; left: -20px; }
   .hero-corner.br { bottom: -20px; right: -20px; transform: rotate(180deg); }
-  .hero-moon { width: 34px; height: 34px; margin: 0 auto 10px; color: var(--copper); }
+  .hero-moon { width: 32px; height: 32px; margin: 0 auto 10px; color: var(--copper); position: relative; }
   .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.12em; color: var(--sage); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; position: relative; }
-  .hero h1 { font-size: 1.85rem; line-height: 1.22; max-width: 320px; margin: 0 auto 14px; position: relative; }
+  .hero h1 { font-size: 1.8rem; line-height: 1.22; max-width: 320px; margin: 0 auto 14px; position: relative; }
   .hero p { color: #4A5750; max-width: 300px; margin: 0 auto 24px; font-size: 0.92rem; position: relative; }
   .btn-primary {
     display: inline-flex; align-items: center; gap: 8px;
@@ -104,15 +98,18 @@
   .section-head-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px; }
   .section-head-row .section-sub { margin-bottom: 0; }
 
+  /* CATÉGORIES — vraies balises <img>, cadrage plus haut pour éviter les crops moches */
   .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .cat-card { border-radius: 6px; overflow: hidden; border: 1px solid var(--sand-dark); display: block; background: var(--white); }
-  .cat-illus { height: 118px; display: flex; align-items: flex-start; justify-content: flex-start; padding: 8px; position: relative; overflow: hidden; background-size: cover; background-position: center; }
-  .cat-illus svg { width: 20px; height: 20px; color: var(--ink); background: rgba(255,255,255,0.9); border-radius: 50%; padding: 7px; box-sizing: content-box; position: relative; z-index: 2; }
-  .cat-illus::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.18), transparent 55%); }
-  .cat-1 .cat-illus { background-image: url('https://images.pexels.com/photos/1937336/pexels-photo-1937336.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90'); }
-  .cat-2 .cat-illus { background-image: url('https://images.pexels.com/photos/11514335/pexels-photo-11514335.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90'); }
-  .cat-3 .cat-illus { background-image: url('https://images.pexels.com/photos/18680598/pexels-photo-18680598.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90'); }
-  .cat-4 .cat-illus { background-image: url('https://images.pexels.com/photos/31854095/pexels-photo-31854095.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90'); }
+  .cat-illus { height: 160px; position: relative; overflow: hidden; }
+  .cat-illus img { width: 100%; height: 100%; object-fit: cover; }
+  .cat-1 .cat-illus img { object-position: center 20%; }
+  .cat-2 .cat-illus img { object-position: center 15%; }
+  .cat-3 .cat-illus img { object-position: center; }
+  .cat-4 .cat-illus img { object-position: center 35%; }
+  .cat-illus::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.15), transparent 45%); pointer-events: none; }
+  .cat-badge { position: absolute; top: 10px; left: 10px; z-index: 2; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; }
+  .cat-badge svg { width: 16px; height: 16px; color: var(--ink); }
   .cat-label { padding: 12px 12px 14px; }
   .cat-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
   .cat-desc { font-size: 0.76rem; color: #8A9189; }
@@ -138,6 +135,13 @@
   footer { padding: 36px 22px 28px; text-align: center; }
   .footer-links { display: flex; justify-content: center; gap: 18px; margin: 16px 0; font-size: 0.83rem; color: var(--sage); }
   .footer-note { font-size: 0.76rem; color: #9AA39C; }
+
+  @media (min-width: 700px) {
+    .hero { display: flex; align-items: stretch; }
+    .hero-photo { width: 32%; height: auto; }
+    .hero-content { width: 36%; padding: 40px 20px; }
+    .cat-grid { grid-template-columns: repeat(4, 1fr); }
+  }
 </style>
 </head>
 <body>
@@ -167,24 +171,31 @@
   </div>
 
   <section class="hero">
-    <svg class="hero-corner tl" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8">
-      <path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/>
-    </svg>
-    <svg class="hero-corner br" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8">
-      <path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/>
-    </svg>
-
-    <svg class="hero-moon" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M14 3a9 9 0 108.5 12.2A7.2 7.2 0 0114 3z"/>
-    </svg>
-    <div class="hero-eyebrow">Nouvelle boutique</div>
-    <h1>L'essentiel du quotidien musulman, choisi avec soin</h1>
-    <p>Prêt-à-porter, prière, bien-être et décoration — une sélection pensée pour durer.</p>
-    <a href="/produit.html?id=huile-nigelle" class="btn-primary">
-      Découvrir la boutique
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-    </a>
-    <div class="hero-signature">Plus qu'une boutique, une source d'inspiration au quotidien.</div>
+    <div class="hero-photo">
+      <img src="https://images.pexels.com/photos/31854095/pexels-photo-31854095.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Lanterne marocaine">
+    </div>
+    <div class="hero-content">
+      <svg class="hero-corner tl" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8">
+        <path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/>
+      </svg>
+      <svg class="hero-corner br" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8">
+        <path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/>
+      </svg>
+      <svg class="hero-moon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M14 3a9 9 0 108.5 12.2A7.2 7.2 0 0114 3z"/>
+      </svg>
+      <div class="hero-eyebrow">Nouvelle boutique</div>
+      <h1>L'essentiel du quotidien musulman, choisi avec soin</h1>
+      <p>Prêt-à-porter, prière, bien-être et décoration — une sélection pensée pour durer.</p>
+      <a href="/produit.html?id=huile-nigelle" class="btn-primary">
+        Découvrir la boutique
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <div class="hero-signature">Plus qu'une boutique, une source d'inspiration au quotidien.</div>
+    </div>
+    <div class="hero-photo">
+      <img src="https://images.pexels.com/photos/11514335/pexels-photo-11514335.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Coran sur présentoir avec tapis de prière">
+    </div>
   </section>
 
   <section class="section">
@@ -195,7 +206,10 @@
     <p class="section-sub">Des essentiels choisis pour accompagner votre quotidien.</p>
     <div class="cat-grid">
       <a href="/categorie.html?cat=pret-a-porter" class="cat-card cat-1">
-        <div class="cat-illus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4l-3 2-3-1-3 3 2 2v10h14V10l2-2-3-3-3 1z"/></svg></div>
+        <div class="cat-illus">
+          <img src="https://images.pexels.com/photos/28576622/pexels-photo-28576622.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Chemise sur cintre">
+          <div class="cat-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4l-3 2-3-1-3 3 2 2v10h14V10l2-2-3-3-3 1z"/></svg></div>
+        </div>
         <div class="cat-label">
           <div class="cat-name">Prêt-à-porter</div>
           <div class="cat-desc">Des pièces élégantes pour tous les jours.</div>
@@ -203,7 +217,10 @@
         </div>
       </a>
       <a href="/categorie.html?cat=priere" class="cat-card cat-2">
-        <div class="cat-illus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v6M8 6l4-3 4 3M4 21c0-5 4-8 8-8s8 3 8 8"/></svg></div>
+        <div class="cat-illus">
+          <img src="https://images.pexels.com/photos/11514335/pexels-photo-11514335.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Coran et tapis de prière">
+          <div class="cat-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v6M8 6l4-3 4 3M4 21c0-5 4-8 8-8s8 3 8 8"/></svg></div>
+        </div>
         <div class="cat-label">
           <div class="cat-name">Prière</div>
           <div class="cat-desc">Tout pour accompagner vos moments de spiritualité.</div>
@@ -211,7 +228,10 @@
         </div>
       </a>
       <a href="/categorie.html?cat=bien-etre" class="cat-card cat-3">
-        <div class="cat-illus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2c-3 3-5 6-5 10a5 5 0 0010 0c0-4-2-7-5-10z"/></svg></div>
+        <div class="cat-illus">
+          <img src="https://images.pexels.com/photos/18680598/pexels-photo-18680598.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Flacon d'huile de nigelle">
+          <div class="cat-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2c-3 3-5 6-5 10a5 5 0 0010 0c0-4-2-7-5-10z"/></svg></div>
+        </div>
         <div class="cat-label">
           <div class="cat-name">Bien-être</div>
           <div class="cat-desc">Des essentiels pour prendre soin de soi.</div>
@@ -219,7 +239,10 @@
         </div>
       </a>
       <a href="/categorie.html?cat=decoration" class="cat-card cat-4">
-        <div class="cat-illus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg></div>
+        <div class="cat-illus">
+          <img src="https://images.pexels.com/photos/31854095/pexels-photo-31854095.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Lanterne marocaine décorative">
+          <div class="cat-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg></div>
+        </div>
         <div class="cat-label">
           <div class="cat-name">Décoration</div>
           <div class="cat-desc">Une touche chaleureuse pour votre intérieur.</div>
@@ -287,4 +310,3 @@
   </script>
 </body>
 </html>
-
