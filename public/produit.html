@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Huile de nigelle — La Maison du Musulman</title>
+<title>Produit — La Maison du Musulman</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -42,94 +42,117 @@
   .info-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 0.85rem; border-bottom: 1px solid var(--sand-dark); }
   .info-row span:first-child { color: #6B7871; }
   .trust-strip { display: flex; gap: 16px; padding: 20px 24px; background: var(--white); border-top: 1px solid var(--sand-dark); font-size: 0.78rem; color: var(--sage); justify-content: space-around; text-align: center; }
+  .not-found { padding: 60px 24px; text-align: center; }
 </style>
 </head>
 <body>
   <header>
     <a href="/" class="back-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 18l-6-6 6-6"/></svg></a>
-    <div class="breadcrumb">Bien-être / <span>Huile de nigelle</span></div>
+    <div class="breadcrumb" id="breadcrumb">Chargement…</div>
   </header>
-  <div class="prod-hero-img">🌿<div class="badge">Pression à froid</div></div>
-  <div class="prod-body">
-    <h1 class="prod-title">Huile de nigelle pure</h1>
-    <p class="prod-sub">100% naturelle, sans additif — Éthiopie (Habachia)</p>
-    <div class="prod-price-row">
-      <span class="price" id="displayPrice">7,50 €</span>
-      <span class="price-unit" id="displayUnit">flacon 60ml</span>
-    </div>
-    <div class="variant-group">
-      <div class="group-label">Contenance</div>
-      <div class="variant-options" id="variantOptions">
-        <button class="variant-pill" data-price="1.05" data-label="flacon 30ml" data-variant="30ml">30ml</button>
-        <button class="variant-pill active" data-price="7.50" data-label="flacon 60ml" data-variant="60ml">60ml</button>
-        <button class="variant-pill" data-price="14.50" data-label="flacon 500ml" data-variant="500ml">500ml</button>
-        <button class="variant-pill" data-price="25.90" data-label="bouteille 1L" data-variant="1L">1L</button>
-      </div>
-    </div>
-    <div class="qty-row">
-      <span class="group-label" style="margin-bottom:0;">Quantité</span>
-      <div class="qty-selector">
-        <button class="qty-btn" id="qtyMinus">−</button>
-        <span class="qty-val" id="qtyVal">1</span>
-        <button class="qty-btn" id="qtyPlus">+</button>
-      </div>
-    </div>
-    <button class="btn-add" id="addBtn">Ajouter au panier — 7,50 €</button>
-    <div class="desc-block">
-      <h3 class="desc-title">Description</h3>
-      <p class="desc-text">Extraite des graines de Nigella Sativa d'Éthiopie et pressée à froid pour préserver ses bienfaits. Un incontournable du quotidien, en usage cosmétique comme culinaire.</p>
-    </div>
-    <div class="info-list">
-      <div class="info-row"><span>Origine</span><span>Éthiopie (Habachia)</span></div>
-      <div class="info-row"><span>Usage</span><span>Cosmétique</span></div>
-      <div class="info-row"><span>Livraison</span><span>2-4 jours ouvrés</span></div>
-    </div>
-  </div>
-  <div class="trust-strip">
-    <div>🚚<br>Livraison rapide</div>
-    <div>🔒<br>Paiement sécurisé</div>
-    <div>↩️<br>Retours 14 jours</div>
-  </div>
-<script>
-  const STORAGE_KEY = 'maison_du_musulman_cart';
-  let qty = 1;
-  let selected = { price: 7.50, label: 'flacon 60ml', variant: '60ml' };
 
-  function updateDisplay() {
-    document.getElementById('displayPrice').textContent = selected.price.toFixed(2).replace('.', ',') + ' €';
-    document.getElementById('displayUnit').textContent = selected.label;
-    document.getElementById('qtyVal').textContent = qty;
-    document.getElementById('addBtn').textContent = 'Ajouter au panier — ' + (selected.price * qty).toFixed(2).replace('.', ',') + ' €';
-  }
+  <div id="productRoot"></div>
 
-  document.querySelectorAll('.variant-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.variant-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      selected = { price: parseFloat(btn.dataset.price), label: btn.dataset.label, variant: btn.dataset.variant };
-      updateDisplay();
-    });
-  });
+  <script src="/catalog.js"></script>
+  <script>
+    const STORAGE_KEY = 'maison_du_musulman_cart';
 
-  document.getElementById('qtyPlus').addEventListener('click', () => { qty++; updateDisplay(); });
-  document.getElementById('qtyMinus').addEventListener('click', () => { if (qty > 1) qty--; updateDisplay(); });
+    const params = new URLSearchParams(window.location.search);
+    const requestedId = params.get('id');
+    const product = window.PRODUCTS.find(p => p.id === requestedId) || window.PRODUCTS[0];
 
-  document.getElementById('addBtn').addEventListener('click', () => {
-    let cart = [];
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) { try { cart = JSON.parse(raw); } catch(e) {} }
+    let qty = 1;
+    let selected = product.variants.find(v => v.variant === product.defaultVariant) || product.variants[0];
 
-    const existing = cart.find(item => item.name === 'Huile de nigelle' && item.variant === selected.label);
-    if (existing) {
-      existing.qty += qty;
-    } else {
-      cart.push({ name: 'Huile de nigelle', variant: selected.label, price: selected.price, qty: qty, icon: '🌿' });
+    document.title = product.name + ' — La Maison du Musulman';
+    document.getElementById('breadcrumb').innerHTML = product.categoryLabel + ' / <span>' + product.name + '</span>';
+
+    function renderVariantPills() {
+      if (!product.variantLabel || product.variants.length <= 1) return '';
+      const pills = product.variants.map(v =>
+        `<button class="variant-pill${v.variant === selected.variant ? ' active' : ''}" data-variant="${v.variant}">${v.label.replace(/^flacon |^bouteille /,'')}</button>`
+      ).join('');
+      return `<div class="variant-group">
+        <div class="group-label">${product.variantLabel}</div>
+        <div class="variant-options" id="variantOptions">${pills}</div>
+      </div>`;
     }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    window.location.href = '/panier.html';
-  });
 
-  updateDisplay();
-</script>
+    function renderInfoRows() {
+      return Object.entries(product.info).map(([k, v]) =>
+        `<div class="info-row"><span>${k}</span><span>${v}</span></div>`
+      ).join('');
+    }
+
+    document.getElementById('productRoot').innerHTML = `
+      <div class="prod-hero-img">${product.icon}<div class="badge">${product.badge}</div></div>
+      <div class="prod-body">
+        <h1 class="prod-title">${product.name}</h1>
+        <p class="prod-sub">${product.tagline}</p>
+        <div class="prod-price-row">
+          <span class="price" id="displayPrice"></span>
+          <span class="price-unit" id="displayUnit"></span>
+        </div>
+        ${renderVariantPills()}
+        <div class="qty-row">
+          <span class="group-label" style="margin-bottom:0;">Quantité</span>
+          <div class="qty-selector">
+            <button class="qty-btn" id="qtyMinus">−</button>
+            <span class="qty-val" id="qtyVal">1</span>
+            <button class="qty-btn" id="qtyPlus">+</button>
+          </div>
+        </div>
+        <button class="btn-add" id="addBtn"></button>
+        <div class="desc-block">
+          <h3 class="desc-title">Description</h3>
+          <p class="desc-text">${product.description}</p>
+        </div>
+        <div class="info-list">${renderInfoRows()}</div>
+      </div>
+      <div class="trust-strip">
+        <div>🚚<br>Livraison rapide</div>
+        <div>🔒<br>Paiement sécurisé</div>
+        <div>↩️<br>Retours 14 jours</div>
+      </div>
+    `;
+
+    function fmt(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
+
+    function updateDisplay() {
+      document.getElementById('displayPrice').textContent = fmt(selected.price);
+      document.getElementById('displayUnit').textContent = selected.label;
+      document.getElementById('qtyVal').textContent = qty;
+      document.getElementById('addBtn').textContent = 'Ajouter au panier — ' + fmt(selected.price * qty);
+    }
+
+    document.querySelectorAll('.variant-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.variant-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selected = product.variants.find(v => v.variant === btn.dataset.variant);
+        updateDisplay();
+      });
+    });
+
+    document.getElementById('qtyPlus').addEventListener('click', () => { qty++; updateDisplay(); });
+    document.getElementById('qtyMinus').addEventListener('click', () => { if (qty > 1) qty--; updateDisplay(); });
+
+    document.getElementById('addBtn').addEventListener('click', () => {
+      let cart = [];
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) { try { cart = JSON.parse(raw); } catch(e) {} }
+
+      const existing = cart.find(item => item.id === product.id && item.variant === selected.label);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ id: product.id, name: product.name, variant: selected.label, price: selected.price, qty: qty, icon: product.icon });
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+      window.location.href = '/panier.html';
+    });
+
+    updateDisplay();
+  </script>
 </body>
 </html>
