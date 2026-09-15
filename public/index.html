@@ -67,12 +67,10 @@
 
   .hero {
     position: relative;
-    padding: 40px 22px 36px;
+    padding: 44px 22px 40px;
     text-align: center;
     overflow: hidden;
-    background-image: linear-gradient(180deg, rgba(247,243,236,0.87), rgba(230,220,200,0.9)), url('https://images.pexels.com/photos/1207513/pexels-photo-1207513.jpeg?auto=compress&cs=tinysrgb&w=1200');
-    background-size: cover;
-    background-position: center;
+    background: linear-gradient(160deg, var(--sand-dark) 0%, var(--sand) 60%);
   }
   .hero-corner {
     position: absolute; width: 130px; height: 130px; opacity: 0.35; color: var(--sage);
@@ -105,13 +103,12 @@
 
   .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .cat-card { border-radius: 6px; overflow: hidden; border: 1px solid var(--sand-dark); display: block; background: var(--white); }
-  .cat-illus { height: 108px; display: flex; align-items: flex-start; justify-content: flex-start; padding: 8px; position: relative; overflow: hidden; background-size: cover; background-position: center; }
-  .cat-illus svg { width: 22px; height: 22px; color: var(--ink); background: rgba(255,255,255,0.85); border-radius: 50%; padding: 6px; box-sizing: content-box; position: relative; z-index: 2; }
-  .cat-illus::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.15), transparent 55%); }
-  .cat-1 .cat-illus { background-image: url('https://images.pexels.com/photos/28576622/pexels-photo-28576622.jpeg?auto=compress&cs=tinysrgb&w=600'); }
-  .cat-2 .cat-illus { background-image: url('https://images.pexels.com/photos/5580148/pexels-photo-5580148.jpeg?auto=compress&cs=tinysrgb&w=600'); }
-  .cat-3 .cat-illus { background-image: url('https://images.pexels.com/photos/6724384/pexels-photo-6724384.jpeg?auto=compress&cs=tinysrgb&w=600'); }
-  .cat-4 .cat-illus { background-image: url('https://images.pexels.com/photos/30525651/pexels-photo-30525651.jpeg?auto=compress&cs=tinysrgb&w=600'); }
+  .cat-illus { height: 108px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .cat-illus svg { width: 32px; height: 32px; color: var(--sage); }
+  .cat-1 .cat-illus { background: #EFE7D9; }
+  .cat-2 .cat-illus { background: #E4EAE3; }
+  .cat-3 .cat-illus { background: #F1E9DC; }
+  .cat-4 .cat-illus { background: #E9E2D6; }
   .cat-label { padding: 12px 12px 14px; }
   .cat-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
   .cat-desc { font-size: 0.76rem; color: #8A9189; }
