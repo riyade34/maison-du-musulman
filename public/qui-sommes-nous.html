@@ -27,6 +27,10 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23B8873B' stroke-width='1' opacity='0.4'%3E%3Cpath d='M30 2 L45 15 L45 45 L30 58 L15 45 L15 15 Z'/%3E%3Cpath d='M30 2 L37.5 15 L30 28 L22.5 15 Z'/%3E%3Cpath d='M30 58 L37.5 45 L30 32 L22.5 45 Z'/%3E%3Ccircle cx='30' cy='30' r='6'/%3E%3C/g%3E%3C/svg%3E");
     background-size: 60px 60px;
   }
+  .moon-bg {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cpath d='M55 18a20 20 0 108.5 33.4A16 16 0 0155 18z' fill='%23B0562E' opacity='0.22'/%3E%3Cpath d='M20 55a12 12 0 105.2 20A10 10 0 0120 55z' fill='%23B8873B' opacity='0.2'/%3E%3C/svg%3E");
+    background-size: 90px 90px;
+  }
 
   header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; background: var(--sand); z-index: 20; gap: 10px; }
   .logo { display: flex; align-items: center; gap: 8px; font-family: 'Rakkas', serif; font-size: 1.2rem; font-weight: 400; white-space: nowrap; }
@@ -108,7 +112,7 @@
   </section>
   <div class="pattern-strip"></div>
 
-  <section class="story-block">
+  <section class="story-block moon-bg">
     <svg class="story-divider" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1.2">
       <path d="M2 12h18"/><path d="M40 12h18"/>
       <path d="M30 2l6 10-6 10-6-10z"/>
@@ -119,7 +123,7 @@
     <div class="story-signature">Riyade, fondateur</div>
   </section>
 
-  <section class="values">
+  <section class="values moon-bg">
     <div class="value-card">
       <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.5 6L20 9.5 13.5 12 12 18l-1.5-6L4 9.5 10.5 8z"/></svg></div>
       <div>
