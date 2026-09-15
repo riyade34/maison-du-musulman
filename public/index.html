@@ -30,6 +30,7 @@
   }
   a { text-decoration: none; color: inherit; }
   svg { display: block; }
+  img { max-width: 100%; display: block; }
 
   header {
     display: flex;
@@ -67,10 +68,12 @@
 
   .hero {
     position: relative;
-    padding: 44px 22px 40px;
+    padding: 40px 22px 36px;
     text-align: center;
     overflow: hidden;
-    background: linear-gradient(160deg, var(--sand-dark) 0%, var(--sand) 60%);
+    background-image: linear-gradient(180deg, rgba(247,243,236,0.88), rgba(230,220,200,0.9)), url('https://images.pexels.com/photos/827519/pexels-photo-827519.jpeg?auto=compress&cs=tinysrgb&w=1920&q=90');
+    background-size: cover;
+    background-position: center;
   }
   .hero-corner {
     position: absolute; width: 130px; height: 130px; opacity: 0.35; color: var(--sage);
@@ -103,12 +106,13 @@
 
   .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .cat-card { border-radius: 6px; overflow: hidden; border: 1px solid var(--sand-dark); display: block; background: var(--white); }
-  .cat-illus { height: 108px; display: flex; align-items: center; justify-content: center; position: relative; }
-  .cat-illus svg { width: 32px; height: 32px; color: var(--sage); }
-  .cat-1 .cat-illus { background: #EFE7D9; }
-  .cat-2 .cat-illus { background: #E4EAE3; }
-  .cat-3 .cat-illus { background: #F1E9DC; }
-  .cat-4 .cat-illus { background: #E9E2D6; }
+  .cat-illus { height: 118px; display: flex; align-items: flex-start; justify-content: flex-start; padding: 8px; position: relative; overflow: hidden; background-size: cover; background-position: center; }
+  .cat-illus svg { width: 20px; height: 20px; color: var(--ink); background: rgba(255,255,255,0.9); border-radius: 50%; padding: 7px; box-sizing: content-box; position: relative; z-index: 2; }
+  .cat-illus::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.18), transparent 55%); }
+  .cat-1 .cat-illus { background-image: url('https://images.pexels.com/photos/1937336/pexels-photo-1937336.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90'); }
+  .cat-2 .cat-illus { background-image: url('https://images.pexels.com/photos/11514335/pexels-photo-11514335.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90'); }
+  .cat-3 .cat-illus { background-image: url('https://images.pexels.com/photos/18680598/pexels-photo-18680598.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90'); }
+  .cat-4 .cat-illus { background-image: url('https://images.pexels.com/photos/31854095/pexels-photo-31854095.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90'); }
   .cat-label { padding: 12px 12px 14px; }
   .cat-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
   .cat-desc { font-size: 0.76rem; color: #8A9189; }
@@ -283,3 +287,4 @@
   </script>
 </body>
 </html>
+
