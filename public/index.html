@@ -76,14 +76,15 @@
   .subnav a.active { color: var(--sage); border-bottom: 2px solid var(--sage); padding-bottom: 8px; }
   .subnav a { padding-bottom: 8px; white-space: nowrap; }
 
-  /* HERO — deux bandeaux photo nets (pas de flou) + texte entre les deux */
-  .hero { position: relative; }
-  .hero-photo { width: 100%; height: 190px; overflow: hidden; }
-  .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
-  .hero-content { position: relative; padding: 30px 24px 34px; text-align: center; background: var(--sand); overflow: hidden; }
-  .hero-corner { position: absolute; width: 130px; height: 130px; opacity: 0.35; color: var(--gold); }
-  .hero-corner.tl { top: -10px; left: -20px; }
-  .hero-corner.br { bottom: -20px; right: -20px; transform: rotate(180deg); }
+  /* HERO — une seule photo pleine largeur, texte posé dessus avec dégradé de lisibilité */
+  .hero { position: relative; min-height: 300px; display: flex; align-items: center; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--sand) 0%, rgba(247,243,236,0.94) 30%, rgba(247,243,236,0.55) 55%, rgba(247,243,236,0.15) 75%); }
+  .hero-content { position: relative; padding: 40px 24px; text-align: center; width: 100%; }
+  .hero-motif { position: absolute; width: 220px; height: 220px; z-index: 1; opacity: 0.5; }
+  .hero-motif.tl { top: -30px; left: -30px; }
+  .hero-motif.br { bottom: -30px; right: -30px; }
   .hero-moon { width: 32px; height: 32px; margin: 0 auto 10px; color: var(--copper); position: relative; }
   .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; color: var(--gold); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; position: relative; }
   .hero h1 { font-size: 1.8rem; line-height: 1.22; max-width: 320px; margin: 0 auto 14px; position: relative; }
@@ -147,9 +148,10 @@
   .footer-note { font-size: 0.76rem; color: #9AA39C; }
 
   @media (min-width: 700px) {
-    .hero { display: flex; align-items: stretch; }
-    .hero-photo { width: 32%; height: auto; }
-    .hero-content { width: 36%; padding: 40px 20px; }
+    .hero { min-height: 420px; }
+    .hero-content { max-width: 640px; margin-left: 6%; text-align: left; }
+    .hero-eyebrow, .hero h1, .hero p, .hero-signature { margin-left: 0; margin-right: 0; }
+    .hero-moon { margin-left: 0; }
     .cat-grid { grid-template-columns: repeat(4, 1fr); }
   }
 </style>
@@ -179,16 +181,26 @@
 
   <div class="pattern-strip"></div>
   <section class="hero">
-    <div class="hero-photo">
-      <img src="https://images.pexels.com/photos/31854095/pexels-photo-31854095.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Lanterne marocaine">
+    <div class="hero-bg">
+      <img src="https://images.pexels.com/photos/31854095/pexels-photo-31854095.jpeg?auto=compress&cs=tinysrgb&w=1600&q=90" alt="Lanterne marocaine, ambiance chaleureuse">
     </div>
+    <svg class="hero-motif tl" viewBox="0 0 100 100" fill="none" stroke="var(--gold)" stroke-width="0.6">
+      <defs>
+        <pattern id="grid1" width="14" height="14" patternUnits="userSpaceOnUse">
+          <path d="M7 0 L14 7 L7 14 L0 7 Z"/>
+        </pattern>
+      </defs>
+      <rect width="100" height="100" fill="url(#grid1)"/>
+    </svg>
+    <svg class="hero-motif br" viewBox="0 0 100 100" fill="none" stroke="var(--gold)" stroke-width="0.6">
+      <defs>
+        <pattern id="grid2" width="14" height="14" patternUnits="userSpaceOnUse">
+          <path d="M7 0 L14 7 L7 14 L0 7 Z"/>
+        </pattern>
+      </defs>
+      <rect width="100" height="100" fill="url(#grid2)"/>
+    </svg>
     <div class="hero-content">
-      <svg class="hero-corner tl" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8">
-        <path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/>
-      </svg>
-      <svg class="hero-corner br" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8">
-        <path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/>
-      </svg>
       <svg class="hero-moon" viewBox="0 0 24 24" fill="currentColor">
         <path d="M14 3a9 9 0 108.5 12.2A7.2 7.2 0 0114 3z"/>
       </svg>
@@ -200,9 +212,6 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <div class="hero-signature">Plus qu'une boutique, une source d'inspiration au quotidien.</div>
-    </div>
-    <div class="hero-photo">
-      <img src="https://images.pexels.com/photos/11514335/pexels-photo-11514335.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Coran sur présentoir avec tapis de prière">
     </div>
   </section>
   <div class="pattern-strip"></div>
