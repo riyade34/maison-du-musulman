@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui sommes-nous — Maison du Musulman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Rakkas&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1C2B24; --sand:#F7F3EC; --copper:#8B6F4E; --sage:#3E5C4E; --white:#FFFFFF; --sand-dark:#EDE6D8; --gold:#B8873B; --terracotta:#B0562E; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--sand); color: var(--ink); font-family: 'Inter', sans-serif; line-height: 1.6; }
+  h1, h2, h3, .serif { font-family: 'Fraunces', serif; font-weight: 500; letter-spacing: -0.01em; }
+  a { text-decoration: none; color: inherit; }
+  svg { display: block; }
+
+  .pattern-strip {
+    height: 10px;
+    background-image: repeating-linear-gradient(135deg, var(--gold) 0 3px, transparent 3px 12px),
+                       repeating-linear-gradient(45deg, var(--terracotta) 0 3px, transparent 3px 12px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 0;
+    opacity: 0.85;
+  }
+  .pattern-bg {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23B8873B' stroke-width='1' opacity='0.4'%3E%3Cpath d='M30 2 L45 15 L45 45 L30 58 L15 45 L15 15 Z'/%3E%3Cpath d='M30 2 L37.5 15 L30 28 L22.5 15 Z'/%3E%3Cpath d='M30 58 L37.5 45 L30 32 L22.5 45 Z'/%3E%3Ccircle cx='30' cy='30' r='6'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+  .moon-bg {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cpath d='M55 18a20 20 0 108.5 33.4A16 16 0 0155 18z' fill='%23B0562E' opacity='0.04'/%3E%3Cpath d='M20 55a12 12 0 105.2 20A10 10 0 0120 55z' fill='%23B8873B' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 90px 90px;
+  }
+
+  header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; background: var(--sand); z-index: 20; gap: 10px; }
+  .logo { display: flex; align-items: center; gap: 8px; font-family: 'Rakkas', serif; font-size: 1.2rem; font-weight: 400; white-space: nowrap; }
+  .logo-mark { width: 26px; height: 26px; flex-shrink: 0; color: var(--sage); }
+  .header-icons { display: flex; gap: 14px; align-items: center; margin-left: auto; }
+  .icon-btn { width: 20px; height: 20px; color: var(--ink); position: relative; }
+  .cart-badge { position: absolute; top: -7px; right: -8px; background: var(--sage); color: var(--white); font-size: 0.62rem; font-weight: 600; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+  .subnav { display: flex; gap: 18px; overflow-x: auto; padding: 10px 20px; background: var(--white); border-bottom: 1px solid var(--sand-dark); font-size: 0.82rem; font-weight: 500; color: #5C6960; position: sticky; top: 58px; z-index: 19; }
+  .subnav a.active { color: var(--sage); border-bottom: 2px solid var(--sage); padding-bottom: 8px; }
+  .subnav a { padding-bottom: 8px; white-space: nowrap; }
+
+  .intro { position: relative; padding: 46px 24px 36px; text-align: center; overflow: hidden; background: linear-gradient(160deg, var(--sand-dark) 0%, var(--sand) 65%); }
+  .intro-corner { position: absolute; width: 140px; height: 140px; opacity: 0.3; color: var(--gold); }
+  .intro-corner.tl { top: -14px; left: -22px; }
+  .intro-corner.br { bottom: -22px; right: -22px; transform: rotate(180deg); }
+  .intro-moon { width: 30px; height: 30px; margin: 0 auto 10px; color: var(--terracotta); position: relative; }
+  .intro-eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; color: var(--gold); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; position: relative; }
+  .intro h1 { font-size: 1.8rem; line-height: 1.25; max-width: 320px; margin: 0 auto; position: relative; }
+  .intro::before { content: ''; position: absolute; inset: 0; opacity: 0.5; }
+
+  .story-block { padding: 38px 24px; max-width: 560px; margin: 0 auto; position: relative; }
+  .story-divider { width: 60px; height: 24px; margin: 0 auto 30px; color: var(--gold); opacity: 0.8; }
+  .story-signature { font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--terracotta); text-align: right; margin-top: 22px; }
+  .story-block p { margin-bottom: 16px; color: #33453B; font-size: 0.96rem; }
+  .story-block p:first-of-type::first-letter { font-family: 'Fraunces', serif; font-size: 2.6rem; float: left; line-height: 0.8; margin: 6px 8px 0 0; color: var(--terracotta); }
+
+  .values { display: grid; grid-template-columns: 1fr; gap: 14px; padding: 10px 20px 46px; max-width: 560px; margin: 0 auto; }
+  .value-card { background: var(--white); border: 1px solid var(--sand-dark); border-top: 3px solid var(--gold); border-radius: 8px; padding: 18px; display: flex; gap: 14px; align-items: flex-start; }
+  .value-icon { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(160deg, var(--sand-dark), #E4D6BC); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .value-icon svg { width: 17px; height: 17px; color: var(--terracotta); }
+  .value-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; }
+  .value-desc { font-size: 0.82rem; color: #6B7871; }
+
+  .story { position: relative; background: var(--ink); color: var(--sand); padding: 44px 22px; text-align: center; overflow: hidden; }
+  .story h2 { font-size: 1.3rem; max-width: 320px; margin: 0 auto 14px; color: var(--white); position: relative; }
+  .story p { color: #C8CFC9; font-size: 0.88rem; max-width: 320px; margin: 0 auto; position: relative; }
+  .story-pattern { position: absolute; inset: 0; opacity: 0.18; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23B8873B' stroke-width='1'%3E%3Cpath d='M30 2 L45 15 L45 45 L30 58 L15 45 L15 15 Z'/%3E%3Cpath d='M30 2 L37.5 15 L30 28 L22.5 15 Z'/%3E%3Cpath d='M30 58 L37.5 45 L30 32 L22.5 45 Z'/%3E%3Ccircle cx='30' cy='30' r='6'/%3E%3C/g%3E%3C/svg%3E"); background-size: 60px 60px; }
+
+  footer { padding: 36px 22px 28px; text-align: center; }
+  .footer-links { display: flex; justify-content: center; gap: 18px; margin: 16px 0; font-size: 0.83rem; color: var(--sage); }
+  .footer-note { font-size: 0.76rem; color: #9AA39C; }
+
+  @media (min-width: 700px) {
+    .values { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+<link rel="stylesheet" href="/premium.css">
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">
+      <svg class="logo-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2c-3 3-5 6-5 10a5 5 0 0010 0c0-4-2-7-5-10z"/><path d="M8 21h8"/><path d="M10 21v-4h4v4"/></svg>
+      Maison du Musulman
+    </a>
+    <div class="header-icons">
+      <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></span>
+      <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg></span>
+      <a href="/panier.html" class="icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="subnav">
+    <a href="/">Accueil</a>
+    <a href="/boutique.html">La boutique</a>
+    <a href="/qui-sommes-nous.html" class="active">Qui sommes-nous</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+
+  <div class="pattern-strip"></div>
+  <section class="intro">
+    <svg class="intro-corner tl" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8"><path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/></svg>
+    <svg class="intro-corner br" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8"><path d="M0 40 Q40 40 40 0" /><path d="M0 25 Q25 25 25 0" /><circle cx="40" cy="40" r="3"/></svg>
+    <svg class="intro-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3a9 9 0 108.5 12.2A7.2 7.2 0 0114 3z"/></svg>
+    <div class="intro-eyebrow">Notre histoire</div>
+    <h1>Une maison née d'un besoin tout simple</h1>
+  </section>
+  <div class="pattern-strip"></div>
+
+  <section class="story-block moon-bg">
+    <svg class="story-divider" viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1.2">
+      <path d="M2 12h18"/><path d="M40 12h18"/>
+      <path d="M30 2l6 10-6 10-6-10z"/>
+    </svg>
+    <p>Tout a commencé par une frustration que beaucoup d'entre nous connaissent : chercher un tapis de prière qui ne se déforme pas au bout de trois mois, une huile de nigelle vraiment pure, un qamis bien coupé — et tomber, boutique après boutique, sur des produits bâclés ou des sites peu sérieux.</p>
+    <p>Je me suis dit qu'il devait exister une meilleure façon de faire : une boutique pensée avec la même exigence que celle qu'on aurait pour sa propre maison. Pas un catalogue sans fin, mais une sélection resserrée — des objets qu'on choisit vraiment, parce qu'ils ont une utilité réelle dans le quotidien d'un musulman.</p>
+    <p>La Maison du Musulman est née de cette idée : rassembler dans un seul endroit ce qui accompagne la prière, le vêtement, le bien-être et la maison — avec soin, sans surenchère, et avec l'envie sincère que chaque commande vous soit utile pendant longtemps.</p>
+    <div class="story-signature">Riyade, fondateur</div>
+  </section>
+
+  <section class="values moon-bg">
+    <div class="value-card">
+      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.5 6L20 9.5 13.5 12 12 18l-1.5-6L4 9.5 10.5 8z"/></svg></div>
+      <div>
+        <div class="value-title">Une sélection choisie</div>
+        <div class="value-desc">Chaque produit est retenu pour sa qualité réelle, pas pour remplir un catalogue.</div>
+      </div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2c-3 3-5 6-5 10a5 5 0 0010 0c0-4-2-7-5-10z"/></svg></div>
+      <div>
+        <div class="value-title">Pensé pour durer</div>
+        <div class="value-desc">Des essentiels du quotidien conçus pour être utilisés longtemps, pas jetés au bout d'un mois.</div>
+      </div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v6M8 6l4-3 4 3M4 21c0-5 4-8 8-8s8 3 8 8"/></svg></div>
+      <div>
+        <div class="value-title">Fait avec sincérité</div>
+        <div class="value-desc">Une petite structure, gérée avec attention — pas un entrepôt anonyme.</div>
+      </div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg></div>
+      <div>
+        <div class="value-title">Votre quotidien d'abord</div>
+        <div class="value-desc">L'objectif n'est pas de vendre plus, mais que ce que vous achetez vous serve vraiment.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="story">
+    <div class="story-pattern"></div>
+    <h2>Merci de faire partie de cette histoire</h2>
+    <p>Chaque commande nous aide à faire grandir cette maison — avec la même exigence qu'au premier jour.</p>
+  </section>
+
+  <footer>
+    <div class="serif" style="font-family:'Rakkas',serif; font-size: 1.1rem;">Maison du Musulman</div>
+    <div class="footer-links">
+      <a href="/livraison.html">Livraison</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/qui-sommes-nous.html">À propos</a>
+    </div>
+    <div class="footer-note">© 2026 — Tous droits réservés</div>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'maison_du_musulman_cart';
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const cart = raw ? JSON.parse(raw) : [];
+      const count = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
+      document.getElementById('cartBadge').textContent = count;
+    } catch(e) {}
+  </script>
+</body>
+</html>

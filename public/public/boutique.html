@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Boutique — Maison du Musulman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Rakkas&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1C2B24;
+    --sand: #F7F3EC;
+    --copper: #8B6F4E;
+    --sage: #3E5C4E;
+    --white: #FFFFFF;
+    --sand-dark: #EDE6D8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--sand); color: var(--ink); font-family: 'Inter', sans-serif; line-height: 1.5; }
+  h1, h2, h3, .serif { font-family: 'Fraunces', serif; font-weight: 500; letter-spacing: -0.01em; }
+  a { text-decoration: none; color: inherit; }
+  svg { display: block; }
+  img { max-width: 100%; display: block; }
+
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-bottom: 1px solid var(--sand-dark);
+    position: sticky; top: 0; background: var(--sand); z-index: 20; gap: 10px;
+  }
+  .logo { display: flex; align-items: center; gap: 8px; font-family: 'Rakkas', serif; font-size: 1.2rem; font-weight: 400; white-space: nowrap; }
+  .logo-mark { width: 26px; height: 26px; flex-shrink: 0; color: var(--sage); }
+  .header-icons { display: flex; gap: 14px; align-items: center; margin-left: auto; }
+  .icon-btn { width: 20px; height: 20px; color: var(--ink); position: relative; }
+  .cart-badge {
+    position: absolute; top: -7px; right: -8px; background: var(--sage); color: var(--white);
+    font-size: 0.62rem; font-weight: 600; width: 16px; height: 16px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .subnav {
+    display: flex; gap: 18px; overflow-x: auto; padding: 10px 20px; background: var(--white);
+    border-bottom: 1px solid var(--sand-dark); font-size: 0.82rem; font-weight: 500; color: #5C6960;
+    position: sticky; top: 58px; z-index: 19;
+  }
+  .subnav a.active { color: var(--sage); border-bottom: 2px solid var(--sage); padding-bottom: 8px; }
+  .subnav a { padding-bottom: 8px; white-space: nowrap; }
+
+  /* INTRO — bandeau chaleureux avec motifs, pas de photo */
+  .intro { position: relative; padding: 48px 24px 38px; text-align: center; overflow: hidden; background: linear-gradient(160deg, var(--sand-dark) 0%, var(--sand) 65%); }
+  .intro-corner { position: absolute; width: 140px; height: 140px; opacity: 0.3; color: var(--sage); }
+  .intro-corner.tl { top: -14px; left: -22px; }
+  .intro-corner.br { bottom: -22px; right: -22px; transform: rotate(180deg); }
+  .intro-moon { width: 32px; height: 32px; margin: 0 auto 10px; color: var(--copper); position: relative; }
+  .intro-eyebrow { font-size: 0.72rem; letter-spacing: 0.12em; color: var(--sage); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; position: relative; }
+  .intro h1 { font-size: 1.9rem; line-height: 1.22; max-width: 320px; margin: 0 auto 14px; position: relative; }
+  .intro p { color: #4A5750; max-width: 300px; margin: 0 auto; font-size: 0.92rem; position: relative; }
+
+  /* UNIVERS — grandes cartes, une par ligne */
+  .univers-list { padding: 34px 20px 46px; display: flex; flex-direction: column; gap: 18px; }
+  .univers-card {
+    display: block; border-radius: 10px; overflow: hidden; border: 1px solid var(--sand-dark);
+    background: var(--white); position: relative;
+  }
+  .univers-photo { height: 240px; position: relative; overflow: hidden; }
+  .univers-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .univers-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.35), transparent 55%); }
+  .univers-badge {
+    position: absolute; top: 14px; left: 14px; z-index: 2; width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.95); display: flex; align-items: center; justify-content: center;
+  }
+  .univers-badge svg { width: 20px; height: 20px; color: var(--sage); }
+  .univers-count {
+    position: absolute; bottom: 14px; left: 14px; z-index: 2; color: var(--white);
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .univers-body { padding: 16px 18px 18px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .univers-name { font-size: 1.2rem; margin-bottom: 4px; }
+  .univers-desc { font-size: 0.84rem; color: #6B7871; }
+  .univers-go {
+    width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--sand-dark);
+    display: flex; align-items: center; justify-content: center; color: var(--sage); flex-shrink: 0;
+  }
+  .univers-go svg { width: 14px; height: 14px; }
+
+  .story { background: var(--ink); color: var(--sand); padding: 44px 22px; text-align: center; }
+  .story h2 { font-size: 1.3rem; max-width: 300px; margin: 0 auto 14px; color: var(--white); }
+  .story p { color: #C8CFC9; font-size: 0.88rem; max-width: 300px; margin: 0 auto; }
+
+  footer { padding: 36px 22px 28px; text-align: center; }
+  .footer-links { display: flex; justify-content: center; gap: 18px; margin: 16px 0; font-size: 0.83rem; color: var(--sage); }
+  .footer-note { font-size: 0.76rem; color: #9AA39C; }
+
+  @media (min-width: 700px) {
+    .univers-list { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .univers-photo { height: 300px; }
+  }
+</style>
+<link rel="stylesheet" href="/premium.css">
+<style>
+.lux-intro{height:295px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 35%,#fffaf2 0,#f5e5d1 58%,#e7cba8 100%);color:#21170f;border-bottom:1px solid #d8b98e}.lux-center{text-align:center;padding-top:20px;position:relative;z-index:2}.lux-moon{font-size:40px;color:#9b6b2d;line-height:1}.lux-kicker{font-size:12px;letter-spacing:5px;margin:6px 0 12px}.lux-center h1{font-size:43px;line-height:1.02;font-family:'Fraunces',serif;font-weight:500}.lux-center p{font-size:16px;line-height:1.55}.lux-divider{display:flex;justify-content:center;align-items:center;gap:12px;color:#a77a3d;margin:12px 0}.lux-divider span{display:block;width:44px;height:1px;background:#b68a50}.lux-script{position:absolute;right:20%;top:48px;font-family:'Caveat',cursive;font-size:27px;line-height:1.05;color:#9a6d2f;transform:rotate(-5deg);z-index:2}.lux-script small{font-size:21px}.lux-skyline{position:absolute;right:4%;bottom:-24px;font-size:112px;color:#b99265;opacity:.22;letter-spacing:-24px}.lux-arch{position:absolute;left:-35px;top:-45px;width:210px;height:340px;border:24px double rgba(132,91,43,.18);border-radius:110px 110px 0 0}.lux-lantern{position:absolute;top:58px;color:#8f642f;font-size:44px;border:3px solid #8f642f;padding:12px 9px;border-radius:45% 45% 20% 20%;filter:drop-shadow(0 8px 8px rgba(88,52,16,.2))}.lux-lantern:before{content:'';position:absolute;width:1px;height:70px;background:#8f642f;left:50%;bottom:100%}.lux-lantern.l1{left:13%}.lux-lantern.l2{left:18%;top:95px;transform:scale(.78)}.lux-motif{position:absolute;font-size:120px;color:#81613f;opacity:.14}.lm-left{left:-25px;bottom:-30px}.lm-right{right:-20px;top:-25px}.lux-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px 30px 20px;background:#f8efe2}.lux-card{height:245px;border-radius:13px;overflow:hidden;position:relative;background-image:var(--pic);background-size:cover;background-position:center;box-shadow:0 2px 9px rgba(68,40,18,.08)}.lux-overlay{position:absolute;inset:0;padding:22px 30px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;color:#fff;background:linear-gradient(90deg,rgba(19,15,11,.93) 0%,rgba(19,15,11,.72) 30%,rgba(19,15,11,.08) 67%,transparent 100%)}.lux-icon{width:47px;height:47px;border-radius:50%;background:#f5e7d3;color:#251b13;display:grid;place-items:center;font-size:21px;margin-bottom:16px}.lux-card h2{font-family:'Inter',sans-serif;font-size:16px;letter-spacing:4px;font-weight:500;margin-bottom:6px}.lux-card p{font-size:15px;line-height:1.45;color:#eadfce}.lux-btn{display:inline-block;border:1px solid #d5b98f;border-radius:25px;padding:9px 19px;margin-top:16px;font-size:14px}.lux-card:hover{transform:translateY(-2px);transition:.2s}.lux-tagline{text-align:center;padding:10px 0 24px;background:#f8efe2;color:#a3763b}.lux-tagline span{display:inline-block;width:180px;height:1px;background:#c9a779;vertical-align:middle;margin:0 12px}.lux-tagline p{letter-spacing:5px;font-size:12px;margin-top:8px}@media(max-width:899px){.lux-intro{height:330px}.lux-center h1{font-size:34px}.lux-script,.lux-lantern,.lux-arch{display:none}.lux-grid{grid-template-columns:1fr;padding:14px}.lux-card{height:250px}.lux-tagline span{width:60px}}
+</style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">
+      <svg class="logo-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2c-3 3-5 6-5 10a5 5 0 0010 0c0-4-2-7-5-10z"/><path d="M8 21h8"/><path d="M10 21v-4h4v4"/></svg>
+      Maison du Musulman
+    </a>
+    <div class="header-icons">
+      <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></span>
+      <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg></span>
+      <a href="/panier.html" class="icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="subnav">
+    <a href="/">Accueil</a>
+    <a href="/boutique.html" class="active">La boutique</a>
+    <a href="/qui-sommes-nous.html">Qui sommes-nous</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+
+  <section class="lux-intro">
+  <div class="lux-arch"></div><div class="lux-lantern l1">✦</div><div class="lux-lantern l2">✦</div>
+  <div class="lux-motif lm-left">✧</div><div class="lux-motif lm-right">✧</div>
+  <div class="lux-center">
+    <div class="lux-moon">☾</div><div class="lux-kicker">LA BOUTIQUE</div>
+    <h1>Quatre univers, un<br>seul quotidien</h1>
+    <div class="lux-divider"><span></span>✥<span></span></div>
+    <p>Choisissez votre univers pour découvrir<br>une sélection pensée avec soin.</p>
+  </div>
+  <div class="lux-script">Foi<br>Élégance<br>Bien-être<br><small>au quotidien</small></div>
+  <div class="lux-skyline">♜　♜　♜　♜　♜</div>
+</section>
+<section class="lux-grid">
+  <a href="/categorie.html?cat=pret-a-porter" class="lux-card" style="--pic:url('https://images.pexels.com/photos/28576622/pexels-photo-28576622.jpeg?auto=compress&cs=tinysrgb&w=1600&q=90')"><div class="lux-overlay"><b class="lux-icon">♙</b><h2>PRÊT-À-PORTER</h2><p>Des pièces élégantes<br>pour tous les jours.</p><span class="lux-btn">Découvrir　→</span></div></a>
+  <a href="/categorie.html?cat=priere" class="lux-card" style="--pic:url('https://images.pexels.com/photos/11514335/pexels-photo-11514335.jpeg?auto=compress&cs=tinysrgb&w=1600&q=90')"><div class="lux-overlay"><b class="lux-icon">⌂</b><h2>PRIÈRE</h2><p>Tout pour accompagner<br>vos moments de spiritualité.</p><span class="lux-btn">Découvrir　→</span></div></a>
+  <a href="/categorie.html?cat=bien-etre" class="lux-card" style="--pic:url('https://images.pexels.com/photos/18680598/pexels-photo-18680598.jpeg?auto=compress&cs=tinysrgb&w=1600&q=90')"><div class="lux-overlay"><b class="lux-icon">❀</b><h2>BIEN-ÊTRE</h2><p>Des produits naturels<br>pour prendre soin de vous.</p><span class="lux-btn">Découvrir　→</span></div></a>
+  <a href="/categorie.html?cat=decoration" class="lux-card" style="--pic:url('https://images.pexels.com/photos/31854095/pexels-photo-31854095.jpeg?auto=compress&cs=tinysrgb&w=1600&q=90')"><div class="lux-overlay"><b class="lux-icon">⌂</b><h2>DÉCORATION</h2><p>Un intérieur qui inspire<br>et apaise.</p><span class="lux-btn">Découvrir　→</span></div></a>
+</section>
+<div class="lux-tagline"><span></span>✥<span></span><p>Plus qu’une boutique, un art de vivre</p></div>
+<section class="story" style="display:none">
+    <h2>Une maison, pas un magasin</h2>
+    <p>Nous choisissons chaque produit pour sa qualité et son utilité réelle, sans surenchère.</p>
+  </section>
+
+  <footer>
+    <div class="serif" style="font-family:'Rakkas',serif; font-size: 1.1rem;">Maison du Musulman</div>
+    <div class="footer-links">
+      <a href="/livraison.html">Livraison</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/qui-sommes-nous.html">À propos</a>
+    </div>
+    <div class="footer-note">© 2026 — Tous droits réservés</div>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'maison_du_musulman_cart';
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const cart = raw ? JSON.parse(raw) : [];
+      const count = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
+      document.getElementById('cartBadge').textContent = count;
+    } catch(e) {}
+  </script>
+</body>
+</html>

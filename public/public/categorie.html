@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catégorie — La Maison du Musulman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #1C2B24; --sand: #F7F3EC; --copper: #8B6F4E; --sage: #3E5C4E; --white: #FFFFFF; --sand-dark: #EDE6D8; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--sand); color: var(--ink); font-family: 'Inter', sans-serif; line-height: 1.5; }
+  h1, h2, .serif { font-family: 'Fraunces', serif; font-weight: 500; letter-spacing: -0.01em; }
+  a { text-decoration: none; color: inherit; }
+  header { display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid var(--sand-dark); position: sticky; top: 0; background: var(--sand); z-index: 10; }
+  .back-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+  .header-title { font-size: 1rem; font-weight: 500; }
+  .section { padding: 28px 24px 48px; }
+  .section-sub { color: #6B7871; font-size: 0.88rem; margin-bottom: 24px; }
+  .prod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .prod-card { background: var(--white); border-radius: 4px; border: 1px solid var(--sand-dark); display: block; }
+  .prod-img { height: 130px; background: var(--sand-dark); display: flex; align-items: center; justify-content: center; font-size: 1.9rem; }
+  .prod-info { padding: 12px; }
+  .prod-name { font-size: 0.85rem; margin-bottom: 4px; }
+  .prod-price { color: var(--copper); font-weight: 600; font-size: 0.9rem; }
+  .sub-card { background: var(--white); border-radius: 4px; border: 1px solid var(--sand-dark); display: block; overflow: hidden; }
+  .sub-img { height: 140px; background: var(--sand-dark); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; }
+  .sub-label { padding: 14px 12px; font-size: 0.95rem; font-weight: 500; }
+  .sub-count { font-size: 0.78rem; color: #8A9189; font-weight: 400; }
+  .empty { padding: 40px 0; text-align: center; color: #6B7871; font-size: 0.9rem; }
+</style>
+<link rel="stylesheet" href="/premium.css">
+</head>
+<body>
+  <header>
+    <a href="#" id="backLink" class="back-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 18l-6-6 6-6"/></svg></a>
+    <div class="header-title" id="pageTitle">Catégorie</div>
+  </header>
+  <section class="section">
+    <p class="section-sub" id="pageSub"></p>
+    <div class="prod-grid" id="prodGrid"></div>
+  </section>
+
+  <script src="/catalog.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('cat');
+    const sub = params.get('sub');
+    const catItems = window.PRODUCTS.filter(p => p.category === cat);
+
+    const grid = document.getElementById('prodGrid');
+    const backLink = document.getElementById('backLink');
+
+    function fmtPrice(p) {
+      const v = p.variants.find(x => x.variant === p.defaultVariant) || p.variants[0];
+      return v.price.toFixed(2).replace('.', ',') + ' €';
+    }
+
+    function renderProductGrid(items) {
+      if (items.length === 0) {
+        grid.innerHTML = '';
+        grid.outerHTML = '<div class="empty">Aucun produit ici pour le moment.</div>';
+        return;
+      }
+      grid.innerHTML = items.map(p => `
+        <a href="/produit.html?id=${p.id}" class="prod-card">
+          <div class="prod-img">${p.icon}</div>
+          <div class="prod-info">
+            <div class="prod-name">${p.name}</div>
+            <div class="prod-price">${fmtPrice(p)}</div>
+          </div>
+        </a>`).join('');
+    }
+
+    function renderSubTiles(subGroups) {
+      grid.innerHTML = subGroups.map(g => `
+        <a href="/categorie.html?cat=${cat}&sub=${g.key}" class="sub-card">
+          <div class="sub-img">${g.icon}</div>
+          <div class="sub-label">${g.label}<br><span class="sub-count">${g.count} produit${g.count > 1 ? 's' : ''}</span></div>
+        </a>`).join('');
+    }
+
+    if (sub) {
+      const items = catItems.filter(p => p.subCategory === sub);
+      const label = items.length ? items[0].subCategoryLabel : 'Produits';
+      document.title = label + ' — La Maison du Musulman';
+      document.getElementById('pageTitle').textContent = label;
+      document.getElementById('pageSub').textContent = items.length + (items.length > 1 ? ' produits' : ' produit');
+      backLink.href = '/categorie.html?cat=' + cat;
+      renderProductGrid(items);
+    } else {
+      const hasSub = catItems.some(p => p.subCategory);
+      const label = catItems.length ? catItems[0].categoryLabel : 'Catégorie';
+      document.title = label + ' — La Maison du Musulman';
+      document.getElementById('pageTitle').textContent = label;
+      backLink.href = '/';
+
+      if (hasSub) {
+        const groups = {};
+        catItems.forEach(p => {
+          if (!p.subCategory) return;
+          if (!groups[p.subCategory]) {
+            groups[p.subCategory] = { key: p.subCategory, label: p.subCategoryLabel, icon: p.icon, count: 0 };
+          }
+          groups[p.subCategory].count++;
+        });
+        const subGroups = Object.values(groups);
+        document.getElementById('pageSub').textContent = subGroups.length + ' sous-catégories';
+        renderSubTiles(subGroups);
+      } else {
+        document.getElementById('pageSub').textContent = catItems.length + (catItems.length > 1 ? ' produits' : ' produit');
+        renderProductGrid(catItems);
+      }
+    }
+  </script>
+</body>
+</html>
