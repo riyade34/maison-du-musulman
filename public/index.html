@@ -15,6 +15,8 @@
     --sage: #3E5C4E;
     --white: #FFFFFF;
     --sand-dark: #EDE6D8;
+    --gold: #B8873B;
+    --terracotta: #B0562E;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -27,6 +29,14 @@
     font-family: 'Fraunces', serif;
     font-weight: 500;
     letter-spacing: -0.01em;
+  }
+  .pattern-strip {
+    height: 10px;
+    background-image: repeating-linear-gradient(135deg, var(--gold) 0 3px, transparent 3px 12px),
+                       repeating-linear-gradient(45deg, var(--terracotta) 0 3px, transparent 3px 12px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 0;
+    opacity: 0.85;
   }
   a { text-decoration: none; color: inherit; }
   svg { display: block; }
@@ -71,11 +81,11 @@
   .hero-photo { width: 100%; height: 190px; overflow: hidden; }
   .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
   .hero-content { position: relative; padding: 30px 24px 34px; text-align: center; background: var(--sand); overflow: hidden; }
-  .hero-corner { position: absolute; width: 130px; height: 130px; opacity: 0.3; color: var(--sage); }
+  .hero-corner { position: absolute; width: 130px; height: 130px; opacity: 0.35; color: var(--gold); }
   .hero-corner.tl { top: -10px; left: -20px; }
   .hero-corner.br { bottom: -20px; right: -20px; transform: rotate(180deg); }
   .hero-moon { width: 32px; height: 32px; margin: 0 auto 10px; color: var(--copper); position: relative; }
-  .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.12em; color: var(--sage); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; position: relative; }
+  .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; color: var(--gold); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; position: relative; }
   .hero h1 { font-size: 1.8rem; line-height: 1.22; max-width: 320px; margin: 0 auto 14px; position: relative; }
   .hero p { color: #4A5750; max-width: 300px; margin: 0 auto 24px; font-size: 0.92rem; position: relative; }
   .btn-primary {
@@ -85,22 +95,22 @@
     position: relative;
   }
   .hero-signature {
-    font-family: 'Caveat', cursive; font-size: 1.05rem; color: var(--copper);
+    font-family: 'Caveat', cursive; font-size: 1.05rem; color: var(--terracotta);
     margin-top: 22px; position: relative; opacity: 0.9;
   }
 
   .section { padding: 40px 20px; position: relative; }
-  .section-eyebrow { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--sage); font-weight: 500; margin-bottom: 4px; }
+  .section-eyebrow { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--gold); font-weight: 500; margin-bottom: 4px; }
   .section-eyebrow svg { width: 15px; height: 15px; }
   .section-title { font-size: 1.4rem; margin-bottom: 10px; }
-  .section-sub { color: #6B7871; font-size: 0.88rem; margin-bottom: 22px; padding-left: 18px; border-left: 2px solid var(--copper); }
+  .section-sub { color: #6B7871; font-size: 0.88rem; margin-bottom: 22px; padding-left: 18px; border-left: 2px solid var(--terracotta); }
   .section-link { font-size: 0.8rem; color: var(--copper); font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
   .section-head-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px; }
   .section-head-row .section-sub { margin-bottom: 0; }
 
   /* CATÉGORIES — vraies balises <img>, cadrage plus haut pour éviter les crops moches */
   .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .cat-card { border-radius: 6px; overflow: hidden; border: 1px solid var(--sand-dark); display: block; background: var(--white); }
+  .cat-card { border-radius: 6px; overflow: hidden; border: 1px solid var(--sand-dark); border-top: 3px solid var(--gold); display: block; background: var(--white); }
   .cat-illus { height: 160px; position: relative; overflow: hidden; }
   .cat-illus img { width: 100%; height: 100%; object-fit: cover; }
   .cat-1 .cat-illus img { object-position: center 20%; }
@@ -167,6 +177,7 @@
     <a href="/contact.html">Contact</a>
   </div>
 
+  <div class="pattern-strip"></div>
   <section class="hero">
     <div class="hero-photo">
       <img src="https://images.pexels.com/photos/31854095/pexels-photo-31854095.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Lanterne marocaine">
@@ -194,6 +205,7 @@
       <img src="https://images.pexels.com/photos/11514335/pexels-photo-11514335.jpeg?auto=compress&cs=tinysrgb&w=1200&q=90" alt="Coran sur présentoir avec tapis de prière">
     </div>
   </section>
+  <div class="pattern-strip"></div>
 
   <section class="section">
     <div class="section-eyebrow">
