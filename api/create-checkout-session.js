@@ -5,6 +5,22 @@ const { normalizeCart } = require('./_cart');
 const FREE_SHIPPING_THRESHOLD_CENTS = 4000;
 const SHIPPING_FLAT_CENTS = 490;
 
+// Liste blanche des origines autorisées à recevoir la redirection Stripe.
+// Sans ça, un appel forgé avec un en-tête Origin arbitraire pourrait faire
+// rediriger le client (après un vrai paiement) vers un site tiers une fois
+// le paiement terminé (open redirect / hameçonnage post-paiement).
+const ALLOWED_ORIGINS = [
+  'https://maison-du-musulman.vercel.app',
+  ...(process.env.SITE_URL ? [process.env.SITE_URL] : []),
+  ...(process.env.VERCEL_ENV !== 'production' ? ['http://localhost:3000'] : []),
+];
+
+function resolveOrigin(req) {
+  const requested = req.headers.origin;
+  if (requested && ALLOWED_ORIGINS.includes(requested)) return requested;
+  return ALLOWED_ORIGINS[0];
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Méthode non autorisée' });
@@ -44,7 +60,7 @@ module.exports = async (req, res) => {
       });
     }
 
-    const origin = req.headers.origin || 'https://maison-du-musulman.vercel.app';
+    const origin = resolveOrigin(req);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
