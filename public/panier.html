@@ -41,6 +41,10 @@
   .checkout-message { display:none; margin:16px 24px 0; padding:12px 14px; border-radius:8px; background:#fff3df; color:#7a5227; font-size:.84rem; }
   .checkout-message.show { display:block; }
   .checkout-message.error { background:#f9e2df; color:#8f3028; }
+  .precontract { margin: 14px 24px 10px; padding: 15px; border: 1px solid var(--sand-dark); border-radius: 8px; background: #fffaf3; color: #4A5750; font-size: .82rem; }
+  .precontract p { margin: 0 0 8px; }
+  .precontract p:last-child { margin-bottom: 0; }
+  .precontract a { color: var(--copper); }
 </style>
 <link rel="stylesheet" href="/premium.css">
 </head>
@@ -61,8 +65,13 @@
     <div class="summary-row"><span>Livraison</span><span id="shipping">4,90 €</span></div>
     <div class="summary-row total"><span>Total</span><span id="total">0,00 €</span></div>
   </div>
+  <div id="precontractSection" class="precontract" style="display:none;">
+    <p><strong>Livraison :</strong> expédition annoncée sous 24 à 48 h ouvrées, puis livraison estimée sous 2 à 4 jours selon la zone.</p>
+    <p><strong>Rétractation :</strong> vous disposez en principe de 14 jours après réception. Consultez les <a href="/retours-remboursements.html">conditions de retour</a> et les <a href="/cgv.html">CGV</a>.</p>
+    <p>En poursuivant, vous accédez à Stripe pour confirmer une commande avec obligation de paiement.</p>
+  </div>
   <div id="checkoutBar" class="checkout-bar" style="display:none;">
-    <button class="btn-checkout" id="checkoutBtn">Passer au paiement</button>
+    <button class="btn-checkout" id="checkoutBtn">Commander et payer</button>
   </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -99,13 +108,14 @@
     const empty = document.getElementById('emptyState');
     const summary = document.getElementById('summarySection');
     const checkoutBar = document.getElementById('checkoutBar');
+    const precontract = document.getElementById('precontractSection');
     if (cart.length === 0) {
       list.innerHTML = ''; empty.classList.add('show');
-      summary.style.display = 'none'; checkoutBar.style.display = 'none';
+      summary.style.display = 'none'; checkoutBar.style.display = 'none'; precontract.style.display = 'none';
       return;
     }
     empty.classList.remove('show');
-    summary.style.display = 'block'; checkoutBar.style.display = 'block';
+    summary.style.display = 'block'; checkoutBar.style.display = 'block'; precontract.style.display = 'block';
     list.innerHTML = cart.map((item, i) => `
       <div class="cart-item">
         <div class="item-img">${item.icon}</div>
@@ -164,7 +174,7 @@
       throw new Error(data.error || 'Erreur inconnue');
     } catch (err) {
       showCheckoutMessage(err.message || "Le paiement n'a pas pu démarrer. Réessayez dans un instant.", true);
-      btn.disabled = false; btn.textContent = 'Passer au paiement';
+      btn.disabled = false; btn.textContent = 'Commander et payer';
     }
   });
   if (new URLSearchParams(location.search).get('paiement') === 'annule') {

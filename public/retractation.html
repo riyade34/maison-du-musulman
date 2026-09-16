@@ -1,0 +1,40 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Renoncer au contrat — Maison du Musulman</title><meta name="robots" content="noindex,follow"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet"><link rel="stylesheet" href="/legal.css"></head>
+<body class="legal-page"><header class="legal-header"><a class="legal-brand" href="/">Maison du Musulman</a><nav class="legal-nav" aria-label="Navigation"><a href="/boutique.html">Boutique</a><a href="/livraison.html">Livraison</a><a href="/contact.html">Contact</a><a href="/retours-remboursements.html">Retours</a></nav></header><section class="legal-hero"><h1>Renoncer au contrat ici</h1><p>Notifiez gratuitement votre décision de vous rétracter en trois étapes.</p></section>
+<main class="legal-main"><section class="legal-content"><div class="legal-info">Cette démarche enregistre votre demande. Vous devez ensuite retourner le produit selon les modalités indiquées dans la <a href="/retours-remboursements.html">politique de retours</a>. Le motif est facultatif.</div><div class="withdraw-progress" aria-label="Progression"><span class="is-active"></span><span></span><span></span></div>
+<form id="withdrawForm" class="withdraw-form" novalidate>
+<div class="withdraw-step is-active" data-step="1"><h2>1. Identifier la commande</h2><div class="field"><label for="fullName">Nom et prénom</label><input id="fullName" name="fullName" required maxlength="160" autocomplete="name"></div><div class="field"><label for="orderReference">Référence de commande</label><input id="orderReference" name="orderReference" required maxlength="80" autocomplete="off" placeholder="Référence affichée dans votre compte"></div><div class="field"><label for="email">E-mail utilisé pour la commande</label><input id="email" name="email" type="email" required maxlength="254" autocomplete="email"></div><div class="field"><label for="scope">Votre demande concerne</label><select id="scope" name="scope"><option value="full">Toute la commande</option><option value="partial">Une partie de la commande</option></select></div><div class="field"><label for="items">Produits concernés <span aria-hidden="true">(facultatif si toute la commande)</span></label><textarea id="items" name="items" maxlength="1000" placeholder="Nom, variante et quantité"></textarea></div><div class="field"><label for="reason">Motif facultatif</label><textarea id="reason" name="reason" maxlength="1000" placeholder="Vous n’avez pas à justifier votre décision"></textarea></div><div class="withdraw-actions"><button class="btn-primary" type="button" id="reviewButton">Vérifier ma demande</button></div></div>
+<div class="withdraw-step" data-step="2"><h2>2. Confirmer la demande</h2><dl class="withdraw-summary"><dt>Nom</dt><dd id="summaryName"></dd><dt>Commande</dt><dd id="summaryOrder"></dd><dt>E-mail</dt><dd id="summaryEmail"></dd><dt>Portée</dt><dd id="summaryScope"></dd><dt>Produits</dt><dd id="summaryItems"></dd></dl><p>En confirmant, vous déclarez sans ambiguïté vouloir exercer votre droit de rétractation pour la commande indiquée.</p><div class="withdraw-message" id="withdrawMessage" role="alert"></div><div class="withdraw-actions"><button class="btn-secondary" type="button" id="backButton">Modifier</button><button class="btn-primary" type="submit" id="submitButton">Confirmer ma rétractation</button></div></div>
+<div class="withdraw-step" data-step="3"><div class="withdraw-success"><div class="icon">✓</div><h2>Demande enregistrée</h2><p id="successText">Votre demande de rétractation a été enregistrée.</p><p>Référence : <strong id="requestReference"></strong></p><p><a href="/retours-remboursements.html">Consulter les modalités de retour</a></p></div></div></form>
+<noscript><div class="legal-noscript">JavaScript est nécessaire pour utiliser cette fonctionnalité. Vous pouvez aussi envoyer une déclaration dénuée d’ambiguïté via la page Contact.</div></noscript></section></main><footer class="legal-footer"><strong>Maison du Musulman</strong><nav><a href="/mentions-legales.html">Mentions légales</a><a href="/cgv.html">CGV</a><a href="/confidentialite.html">Confidentialité</a><a href="/retours-remboursements.html">Retours</a><a href="/retractation.html">Renoncer au contrat ici</a></nav><small>© 2026 — Tous droits réservés</small></footer>
+<script>
+(() => {
+  const form = document.getElementById('withdrawForm');
+  const steps = [...document.querySelectorAll('.withdraw-step')];
+  const dots = [...document.querySelectorAll('.withdraw-progress span')];
+  const message = document.getElementById('withdrawMessage');
+  const showStep = (number) => { steps.forEach((el, i) => el.classList.toggle('is-active', i === number - 1)); dots.forEach((el, i) => el.classList.toggle('is-active', i <= number - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const params = new URLSearchParams(location.search);
+  if (params.get('commande')) document.getElementById('orderReference').value = params.get('commande').slice(0, 80);
+  document.getElementById('reviewButton').addEventListener('click', () => {
+    const order = form.orderReference.value.trim(); const email = form.email.value.trim(); const fullName = form.fullName.value.trim();
+    if (!fullName || !order || !form.email.validity.valid) { form.reportValidity(); return; }
+    document.getElementById('summaryName').textContent = fullName;
+    document.getElementById('summaryOrder').textContent = order;
+    document.getElementById('summaryEmail').textContent = email;
+    document.getElementById('summaryScope').textContent = form.scope.value === 'full' ? 'Toute la commande' : 'Une partie de la commande';
+    document.getElementById('summaryItems').textContent = form.items.value.trim() || 'Tous les produits';
+    message.className = 'withdraw-message'; showStep(2);
+  });
+  document.getElementById('backButton').addEventListener('click', () => showStep(1));
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault(); const button = document.getElementById('submitButton'); button.disabled = true; button.textContent = 'Enregistrement…'; message.className = 'withdraw-message';
+    try {
+      const response = await fetch('/api/withdrawal-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullName: form.fullName.value.trim(), orderReference: form.orderReference.value.trim(), email: form.email.value.trim(), scope: form.scope.value, items: form.items.value.trim(), reason: form.reason.value.trim() }) });
+      const result = await response.json(); if (!response.ok) throw new Error(result.error || 'La demande n’a pas pu être enregistrée.');
+      document.getElementById('requestReference').textContent = result.reference;
+      document.getElementById('successText').textContent = result.emailSent ? 'Votre demande a été enregistrée et un accusé de réception vous a été envoyé par e-mail.' : 'Votre demande a été enregistrée. L’accusé de réception électronique n’a pas pu être envoyé automatiquement : conservez cette référence et contactez le vendeur.';
+      showStep(3);
+    } catch (error) { message.textContent = error.message; message.className = 'withdraw-message show'; button.disabled = false; button.textContent = 'Confirmer ma rétractation'; }
+  });
+})();
+</script></body></html>

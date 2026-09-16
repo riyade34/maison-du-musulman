@@ -32,7 +32,7 @@
       return;
     }
     loading.hidden = true;
-    list.innerHTML = data.map((order) => `<article class="order-card"><div class="order-card-head"><strong>Commande du ${new Date(order.created_at).toLocaleDateString('fr-FR')}</strong><span>${money(order.total_cents, order.currency)}</span></div><div class="order-status">Payée</div><ul>${(order.items || []).map((item) => `<li>${escapeHtml(item.name)} × ${Number(item.quantity) || 1}</li>`).join('')}</ul><small>Référence ${escapeHtml(order.stripe_session_id).slice(-12)}</small></article>`).join('');
+    list.innerHTML = data.map((order) => `<article class="order-card"><div class="order-card-head"><strong>Commande du ${new Date(order.created_at).toLocaleDateString('fr-FR')}</strong><span>${money(order.total_cents, order.currency)}</span></div><div class="order-status">Payée</div><ul>${(order.items || []).map((item) => `<li>${escapeHtml(item.name)} × ${Number(item.quantity) || 1}</li>`).join('')}</ul><small>Référence ${escapeHtml(order.id).slice(0, 8).toUpperCase()}</small><p><a href="/retractation.html?commande=${encodeURIComponent(order.id)}">Renoncer au contrat pour cette commande</a></p></article>`).join('');
   };
   const loginForm = document.getElementById('loginForm');
   const signupForm = document.getElementById('signupForm');

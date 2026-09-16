@@ -28,3 +28,32 @@
 .withdraw-actions .btn-secondary{background:#f1e2ce;color:#5e4d40}
 .withdraw-success{text-align:center;padding:30px 10px}
 .withdraw-success .icon{width:64px;height:64px;border-radius:50%;background:#e4eae3;color:#3E5C4E;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:1.8rem}
+.legal-page{margin:0;background:#f8f1e7;color:#281d15;font-family:'DM Sans',sans-serif}
+.legal-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:24px;min-height:72px;padding:0 clamp(18px,4vw,56px);border-bottom:1px solid #e5d0b4;background:rgba(255,253,249,.97)}
+.legal-brand{font:500 1.25rem 'Fraunces',serif;color:#281d15;text-decoration:none;white-space:nowrap}
+.legal-nav{display:flex;align-items:center;gap:20px;margin-left:auto;overflow:auto}
+.legal-nav a{color:#655344;text-decoration:none;font-size:.86rem;white-space:nowrap}
+.legal-nav a:hover{color:#8e6232}
+.legal-hero{padding:58px 20px 36px;text-align:center;background:#fffaf3;border-bottom:1px solid #ead9c2}
+.legal-hero h1{max-width:850px;margin:0 auto 12px;font:500 clamp(2rem,5vw,3.6rem)/1.08 'Fraunces',serif}
+.legal-hero p{max-width:680px;margin:0 auto;color:#776657}
+.legal-main{padding:48px 20px 70px}
+.legal-footer{padding:34px 20px;background:#2c2017;color:#f7eddf;text-align:center}
+.legal-footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;margin:14px auto;max-width:920px}
+.legal-footer a{color:#f7eddf;text-decoration:none;font-size:.83rem}
+.legal-footer a:hover{text-decoration:underline}
+.legal-footer small{color:#ccb99e}
+.legal-warning{margin:18px 0;padding:15px 17px;border-left:4px solid #d48227;border-radius:8px;background:#fff2df;color:#6f451a;font-size:.9rem}
+.legal-info{margin:18px 0;padding:15px 17px;border-left:4px solid #527662;border-radius:8px;background:#edf4ef;color:#304b3d;font-size:.9rem}
+.legal-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.9rem}
+.legal-table th,.legal-table td{padding:11px;border:1px solid #e5d0b4;text-align:left;vertical-align:top}
+.legal-table th{background:#fff3e4}
+.withdraw-step{display:none}
+.withdraw-step.is-active{display:block}
+.withdraw-progress{display:flex;justify-content:center;gap:10px;margin:0 0 28px}
+.withdraw-progress span{width:10px;height:10px;border-radius:50%;background:#d9c8b2}
+.withdraw-progress span.is-active{background:#8e6232}
+.withdraw-message{display:none;padding:13px 15px;border-radius:8px;background:#f9e2df;color:#8f3028;font-size:.88rem}
+.withdraw-message.show{display:block}
+.legal-noscript{max-width:760px;margin:20px auto;padding:14px;background:#fff2df;color:#6f451a}
+@media(max-width:720px){.legal-header{align-items:flex-start;flex-direction:column;gap:10px;padding-top:14px;padding-bottom:14px}.legal-nav{width:100%;margin-left:0}.legal-hero{padding-top:42px}.withdraw-actions{flex-direction:column-reverse}.legal-table{font-size:.8rem}}
