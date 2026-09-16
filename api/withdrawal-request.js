@@ -4,8 +4,41 @@ const { supabaseAdminRequest } = require('./_supabase');
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const REFERENCE_PATTERN = /^[A-Za-z0-9_-]{8,80}$/;
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 8;
+const rateBuckets = new Map();
+
+const ALLOWED_ORIGINS = new Set([
+  'https://maison-du-musulman.vercel.app',
+  ...(process.env.SITE_URL ? [process.env.SITE_URL] : []),
+  ...(process.env.VERCEL_ENV !== 'production' ? ['http://localhost:3000'] : []),
+]);
 
 function clean(value, max) { return String(value || '').trim().slice(0, max); }
+
+function requestIsSameSite(req) {
+  const origin = req.headers.origin;
+  const fetchSite = req.headers['sec-fetch-site'];
+  if (origin && !ALLOWED_ORIGINS.has(origin)) return false;
+  return !fetchSite || fetchSite === 'same-origin' || fetchSite === 'none';
+}
+
+function requestIsRateLimited(req) {
+  const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  const key = forwarded || req.socket?.remoteAddress || 'unknown';
+  const now = Date.now();
+  const recent = (rateBuckets.get(key) || []).filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS);
+  recent.push(now);
+  rateBuckets.set(key, recent);
+
+  // Évite qu'une instance chaude conserve indéfiniment d'anciennes adresses.
+  if (rateBuckets.size > 500) {
+    for (const [address, timestamps] of rateBuckets) {
+      if (!timestamps.some((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS)) rateBuckets.delete(address);
+    }
+  }
+  return recent.length > RATE_LIMIT_MAX_REQUESTS;
+}
 
 async function sendEmail({ to, subject, text }) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -22,6 +55,14 @@ async function sendEmail({ to, subject, text }) {
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') { res.status(405).json({ error: 'Méthode non autorisée' }); return; }
+  if (!requestIsSameSite(req)) { res.status(403).json({ error: 'Origine non autorisée.' }); return; }
+  if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) {
+    res.status(415).json({ error: 'Le contenu doit être envoyé au format JSON.' }); return;
+  }
+  if (requestIsRateLimited(req)) {
+    res.setHeader('Retry-After', '900');
+    res.status(429).json({ error: 'Trop de tentatives. Réessayez dans quelques minutes.' }); return;
+  }
   try {
     const orderReference = clean(req.body?.orderReference, 80);
     const fullName = clean(req.body?.fullName, 160);
