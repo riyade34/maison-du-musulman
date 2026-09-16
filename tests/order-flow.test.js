@@ -57,3 +57,34 @@ test('les pages essentielles et leurs liens existent', () => {
   const account = fs.readFileSync(path.join(publicDir, 'compte.html'), 'utf8');
   assert.match(account, /id="ordersList"/);
 });
+
+test('les pages légales, la rétractation en ligne et les liens de footer sont présents', () => {
+  const publicDir = path.join(__dirname, '../public');
+  const legalPages = ['mentions-legales.html', 'cgv.html', 'confidentialite.html', 'retours-remboursements.html', 'retractation.html'];
+  legalPages.forEach((file) => assert.ok(fs.existsSync(path.join(publicDir, file)), file));
+  const withdrawal = fs.readFileSync(path.join(publicDir, 'retractation.html'), 'utf8');
+  assert.match(withdrawal, /Renoncer au contrat ici/);
+  assert.match(withdrawal, /\/api\/withdrawal-request/);
+  for (const file of ['index.html', 'boutique.html', 'contact.html', 'livraison.html', 'qui-sommes-nous.html']) {
+    const source = fs.readFileSync(path.join(publicDir, file), 'utf8');
+    assert.match(source, /\/mentions-legales\.html/, `${file} doit lier les mentions légales`);
+    assert.match(source, /\/retractation\.html/, `${file} doit lier la fonctionnalité de rétractation`);
+  }
+});
+
+test('le panier affiche les informations précontractuelles et une obligation de paiement explicite', () => {
+  const cart = fs.readFileSync(path.join(__dirname, '../public/panier.html'), 'utf8');
+  assert.match(cart, /Commander et payer/);
+  assert.match(cart, /Livraison[^<]*:/);
+  assert.match(cart, /Rétractation[^<]*:/);
+  assert.match(cart, /\/cgv\.html/);
+});
+
+test('l’API de rétractation contrôle la commande, l’e-mail, les doublons et l’accusé Resend', () => {
+  const source = fs.readFileSync(path.join(__dirname, '../api/withdrawal-request.js'), 'utf8');
+  assert.match(source, /customer_email/);
+  assert.match(source, /withdrawal_requests\?stripe_session_id=eq/);
+  assert.match(source, /RESEND_API_KEY/);
+  assert.match(source, /RESEND_FROM_EMAIL/);
+  assert.match(source, /status: 'acknowledged'/);
+});
