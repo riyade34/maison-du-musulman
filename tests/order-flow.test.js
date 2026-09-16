@@ -87,4 +87,34 @@ test('l’API de rétractation contrôle la commande, l’e-mail, les doublons e
   assert.match(source, /RESEND_API_KEY/);
   assert.match(source, /RESEND_FROM_EMAIL/);
   assert.match(source, /status: 'acknowledged'/);
+  assert.match(source, /requestIsSameSite/);
+  assert.match(source, /RATE_LIMIT_MAX_REQUESTS/);
+  assert.match(source, /status\(429\)/);
+});
+
+test('l’API de rétractation rejette une origine tierce', async () => {
+  const handler = require('../api/withdrawal-request');
+  const response = {
+    statusCode: 200,
+    status(code) { this.statusCode = code; return this; },
+    json(payload) { this.payload = payload; return this; },
+  };
+  await handler({
+    method: 'POST',
+    headers: { origin: 'https://site-malveillant.example', 'content-type': 'application/json' },
+    body: {},
+  }, response);
+  assert.equal(response.statusCode, 403);
+  assert.match(response.payload.error, /Origine non autorisée/);
+});
+
+test('l’API de rétractation exige du JSON', async () => {
+  const handler = require('../api/withdrawal-request');
+  const response = {
+    statusCode: 200,
+    status(code) { this.statusCode = code; return this; },
+    json(payload) { this.payload = payload; return this; },
+  };
+  await handler({ method: 'POST', headers: {}, body: {} }, response);
+  assert.equal(response.statusCode, 415);
 });
