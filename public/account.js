@@ -14,6 +14,26 @@
     button.disabled = busy;
     button.textContent = busy ? 'Un instant…' : button.dataset.label;
   };
+  const money = (cents, currency = 'eur') => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: currency.toUpperCase() }).format((cents || 0) / 100);
+  const escapeHtml = (value) => String(value || '').replace(/[&<>"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[character]));
+  const loadOrders = async () => {
+    const loading = document.getElementById('ordersLoading');
+    const list = document.getElementById('ordersList');
+    loading.hidden = false;
+    loading.textContent = 'Chargement des commandes…';
+    list.innerHTML = '';
+    const { data, error } = await client.from('orders').select('*').order('created_at', { ascending: false });
+    if (error) {
+      loading.textContent = 'Historique momentanément indisponible.';
+      return;
+    }
+    if (!data.length) {
+      loading.textContent = 'Aucune commande pour le moment.';
+      return;
+    }
+    loading.hidden = true;
+    list.innerHTML = data.map((order) => `<article class="order-card"><div class="order-card-head"><strong>Commande du ${new Date(order.created_at).toLocaleDateString('fr-FR')}</strong><span>${money(order.total_cents, order.currency)}</span></div><div class="order-status">Payée</div><ul>${(order.items || []).map((item) => `<li>${escapeHtml(item.name)} × ${Number(item.quantity) || 1}</li>`).join('')}</ul><small>Référence ${escapeHtml(order.stripe_session_id).slice(-12)}</small></article>`).join('');
+  };
   const showAccount = (user) => {
     const name = user.user_metadata?.full_name || 'Mon compte';
     authForms.hidden = true;
@@ -21,6 +41,7 @@
     document.getElementById('accountName').textContent = name;
     document.getElementById('accountEmail').textContent = user.email || '';
     document.getElementById('accountAvatar').textContent = name.charAt(0).toUpperCase();
+    loadOrders();
   };
   const showForms = () => { authForms.hidden = false; accountPanel.hidden = true; };
 
@@ -44,6 +65,7 @@
     client = window.supabase.createClient(config.url, config.anonKey);
     const { data } = await client.auth.getSession();
     if (data.session?.user) showAccount(data.session.user);
+    if (new URLSearchParams(location.search).get('commande') === 'connexion') showMessage('Connectez-vous pour poursuivre votre commande.');
     client.auth.onAuthStateChange((_event, session) => session?.user ? showAccount(session.user) : showForms());
   } catch (error) {
     authForms.hidden = true;
@@ -70,7 +92,11 @@
     const data = new FormData(form);
     const { error } = await client.auth.signInWithPassword({ email: data.get('email'), password: data.get('password') });
     setBusy(form, false);
-    if (error) showMessage('E-mail ou mot de passe incorrect.', true);
+    if (error) { showMessage('E-mail ou mot de passe incorrect.', true); return; }
+    if (sessionStorage.getItem('mdm_checkout_return')) {
+      sessionStorage.removeItem('mdm_checkout_return');
+      window.location.href = '/panier.html';
+    }
   });
 
   document.getElementById('logoutButton').addEventListener('click', async () => { await client.auth.signOut(); showForms(); });

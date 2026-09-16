@@ -38,6 +38,9 @@
   .checkout-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); padding: 16px 24px; border-top: 1px solid var(--sand-dark); }
   .btn-checkout { width: 100%; background: var(--sage); color: var(--white); border: none; padding: 16px; border-radius: 4px; font-size: 0.95rem; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; }
   .btn-checkout:disabled { background: #C4CCC6; }
+  .checkout-message { display:none; margin:16px 24px 0; padding:12px 14px; border-radius:8px; background:#fff3df; color:#7a5227; font-size:.84rem; }
+  .checkout-message.show { display:block; }
+  .checkout-message.error { background:#f9e2df; color:#8f3028; }
 </style>
 <link rel="stylesheet" href="/premium.css">
 </head>
@@ -52,6 +55,7 @@
     <a href="/produit.html" class="btn-shop">Continuer mes achats</a>
   </div>
   <div id="cartList" class="cart-list"></div>
+  <div id="checkoutMessage" class="checkout-message" role="status"></div>
   <div id="summarySection" class="summary" style="display:none;">
     <div class="summary-row"><span>Sous-total</span><span id="subtotal">0,00 €</span></div>
     <div class="summary-row"><span>Livraison</span><span id="shipping">4,90 €</span></div>
@@ -60,6 +64,7 @@
   <div id="checkoutBar" class="checkout-bar" style="display:none;">
     <button class="btn-checkout" id="checkoutBtn">Passer au paiement</button>
   </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const STORAGE_KEY = 'maison_du_musulman_cart';
   const SHIPPING_FLAT = 4.90;
@@ -72,6 +77,22 @@
   }
   function saveCart(cart) { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
   let cart = loadCart();
+  let supabaseClient;
+
+  function showCheckoutMessage(text, isError = false) {
+    const element = document.getElementById('checkoutMessage');
+    element.textContent = text;
+    element.className = `checkout-message show${isError ? ' error' : ''}`;
+  }
+
+  async function getSupabaseClient() {
+    if (supabaseClient) return supabaseClient;
+    const response = await fetch('/api/auth-config', { cache: 'no-store' });
+    const config = await response.json();
+    if (!response.ok || !config.configured || !window.supabase) throw new Error('Configuration du compte indisponible');
+    supabaseClient = window.supabase.createClient(config.url, config.anonKey);
+    return supabaseClient;
+  }
 
   function render() {
     const list = document.getElementById('cartList');
@@ -121,19 +142,34 @@
     const btn = document.getElementById('checkoutBtn');
     btn.disabled = true; btn.textContent = 'Redirection...';
     try {
+      const client = await getSupabaseClient();
+      const sessionResult = await client.auth.getSession();
+      const session = sessionResult.data.session;
+      if (!session) {
+        sessionStorage.setItem('mdm_checkout_return', '/panier.html');
+        window.location.href = '/compte.html?commande=connexion';
+        return;
+      }
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ cart }),
       });
       const data = await response.json();
-      if (data.url) { window.location.href = data.url; }
-      else { throw new Error(data.error || 'Erreur inconnue'); }
+      if (data.url) { window.location.href = data.url; return; }
+      if (response.status === 401) {
+        window.location.href = '/compte.html?commande=connexion';
+        return;
+      }
+      throw new Error(data.error || 'Erreur inconnue');
     } catch (err) {
-      alert("Le paiement n'a pas pu démarrer. Réessayez dans un instant.");
+      showCheckoutMessage(err.message || "Le paiement n'a pas pu démarrer. Réessayez dans un instant.", true);
       btn.disabled = false; btn.textContent = 'Passer au paiement';
     }
   });
+  if (new URLSearchParams(location.search).get('paiement') === 'annule') {
+    showCheckoutMessage('Paiement annulé : votre panier a été conservé. Vous pouvez réessayer quand vous le souhaitez.');
+  }
   render();
 </script>
 </body>

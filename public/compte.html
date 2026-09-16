@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Rakkas&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/premium.css"><link rel="stylesheet" href="/mdm-overrides.css"><link rel="stylesheet" href="/commerce.css">
+  <link rel="stylesheet" href="/premium.css"><link rel="stylesheet" href="/mdm-overrides.css"><link rel="stylesheet" href="/commerce.css"><link rel="stylesheet" href="/orders.css">
 </head>
 <body class="mdm-home mdm-tool-page">
   <header class="mdm-header">
@@ -26,7 +26,7 @@
         <form class="account-form" id="signupForm" hidden><div class="field"><label for="signupName">Prénom et nom</label><input id="signupName" name="name" type="text" autocomplete="name" required></div><div class="field"><label for="signupEmail">Adresse e-mail</label><input id="signupEmail" name="email" type="email" autocomplete="email" required></div><div class="field"><label for="signupPassword">Créer un mot de passe</label><input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="8" required><span class="password-hint">8 caractères minimum.</span></div><button class="account-submit" type="submit">Créer mon compte</button></form>
         <p class="account-note">Vos informations de connexion sont protégées par le service d’authentification.</p>
       </div>
-      <div class="account-panel" id="accountPanel" hidden><div class="account-avatar" id="accountAvatar">M</div><h2 id="accountName">Mon compte</h2><p id="accountEmail"></p><button class="account-logout" id="logoutButton" type="button">Se déconnecter</button></div>
+      <div class="account-panel" id="accountPanel" hidden><div class="account-avatar" id="accountAvatar">M</div><h2 id="accountName">Mon compte</h2><p id="accountEmail"></p><div class="order-history"><h3>Mes commandes</h3><div id="ordersLoading" class="orders-empty">Chargement des commandes…</div><div id="ordersList"></div></div><button class="account-logout" id="logoutButton" type="button">Se déconnecter</button></div>
       <div class="auth-setup" id="authSetup" hidden><strong>L’espace client est presque prêt.</strong>Le propriétaire de la boutique doit terminer la connexion sécurisée à Supabase.</div>
     </section>
   </div></main>

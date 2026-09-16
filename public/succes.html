@@ -8,31 +8,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root { --ink: #1C2B24; --sand: #F7F3EC; --sage: #3E5C4E; --white: #FFFFFF; --sand-dark: #EDE6D8; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--sand); color: var(--ink); font-family: 'Inter', sans-serif;
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    padding: 24px; text-align: center;
-  }
-  .icon {
-    width: 64px; height: 64px; border-radius: 50%; background: var(--sage);
-    display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
-  }
-  h1 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.6rem; margin-bottom: 12px; }
-  p { color: #4A5750; font-size: 0.92rem; max-width: 300px; margin: 0 auto 28px; }
-  .btn { display: inline-block; background: var(--sage); color: var(--white); padding: 13px 28px; border-radius: 4px; text-decoration: none; font-size: 0.9rem; }
+  :root{--ink:#1C2B24;--sand:#F7F3EC;--sage:#3E5C4E;--white:#FFF}*{box-sizing:border-box;margin:0;padding:0}body{background:var(--sand);color:var(--ink);font-family:'Inter',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}.card{max-width:520px;padding:38px 28px;border:1px solid #e5d0b4;border-radius:18px;background:#fffaf3;box-shadow:0 18px 50px rgba(67,39,14,.1)}.icon{width:64px;height:64px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;margin:0 auto 24px}h1{font-family:'Fraunces',serif;font-weight:500;font-size:1.8rem;margin-bottom:12px}p{color:#4A5750;font-size:.92rem;max-width:390px;margin:0 auto 22px}.status{margin-bottom:24px;color:#806b58;font-size:.82rem}.status.error{color:#8f3028}.btn{display:inline-block;background:var(--sage);color:var(--white);padding:13px 28px;border-radius:4px;text-decoration:none;font-size:.9rem}.btn.secondary{margin-left:8px;background:#7d674f}@media(max-width:480px){.btn{display:block;margin:8px 0!important}}
 </style>
-<link rel="stylesheet" href="/premium.css">
 </head>
 <body>
-  <div>
-    <div class="icon">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-    </div>
-    <h1>Commande confirmée</h1>
-    <p>Merci pour votre commande ! Un email de confirmation vous a été envoyé. Vous serez notifié dès l'expédition.</p>
-    <a href="/" class="btn">Retour à la boutique</a>
+  <div class="card">
+    <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <h1 id="successTitle">Finalisation de votre commande…</h1>
+    <p id="successText">Votre paiement a été reçu. Nous enregistrons la commande dans votre espace personnel.</p>
+    <div class="status" id="successStatus">Un instant…</div>
+    <a href="/" class="btn">Retour à la boutique</a><a href="/compte.html" class="btn secondary">Mon compte</a>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    (async()=>{const title=document.getElementById('successTitle');const text=document.getElementById('successText');const status=document.getElementById('successStatus');const sessionId=new URLSearchParams(location.search).get('session_id');try{if(!sessionId)throw new Error('Référence de paiement absente.');const configResponse=await fetch('/api/auth-config',{cache:'no-store'});const config=await configResponse.json();if(!configResponse.ok||!config.configured||!window.supabase)throw new Error('Service client indisponible.');const client=window.supabase.createClient(config.url,config.anonKey);const{data}=await client.auth.getSession();if(!data.session)throw new Error('Reconnectez-vous pour rattacher cette commande à votre compte.');const response=await fetch('/api/finalize-order',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${data.session.access_token}`},body:JSON.stringify({sessionId})});const result=await response.json();if(!response.ok)throw new Error(result.error||'Enregistrement impossible.');localStorage.removeItem('maison_du_musulman_cart');title.textContent='Commande confirmée';text.textContent='Merci pour votre commande ! Elle est maintenant enregistrée dans votre espace personnel.';status.textContent=result.duplicate?'Cette commande était déjà enregistrée : aucun doublon n’a été créé.':`Total payé : ${new Intl.NumberFormat('fr-FR',{style:'currency',currency:(result.order.currency||'eur').toUpperCase()}).format(result.order.total_cents/100)}`}catch(error){title.textContent='Paiement reçu';text.textContent='Le paiement peut être valide, mais la commande n’a pas encore été ajoutée à votre historique.';status.textContent=error.message;status.classList.add('error')}})();
+  </script>
 </body>
 </html>

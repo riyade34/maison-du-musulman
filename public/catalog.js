@@ -1,6 +1,6 @@
 // Catalogue central des produits — La Maison du Musulman
 // Pour ajouter un produit : copier un bloc et changer les valeurs (id unique obligatoire)
-window.PRODUCTS = [
+const PRODUCTS = [
   // ---------- BIEN-ÊTRE ----------
   {
     id: 'huile-nigelle',
@@ -361,3 +361,6 @@ window.PRODUCTS = [
     info: { 'Matière': 'Cadre bois massif', 'Fixation': 'Kit inclus', 'Livraison': '3-5 jours ouvrés' }
   }
 ];
+
+if (typeof window !== 'undefined') window.PRODUCTS = PRODUCTS;
+if (typeof module !== 'undefined' && module.exports) module.exports = PRODUCTS;
