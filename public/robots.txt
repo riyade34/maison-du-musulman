@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /compte.html
+Disallow: /panier.html
+Disallow: /succes.html
+
+Sitemap: https://maison-du-musulman.vercel.app/sitemap.xml
