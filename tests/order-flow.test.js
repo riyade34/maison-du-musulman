@@ -27,6 +27,29 @@ test('le retour Stripe contient un session_id et la protection anti-doublon', ()
   assert.match(sql, /stripe_session_id text not null unique/);
 });
 
+test('le webhook Stripe garde bodyParser désactivé (nécessaire à la vérification de signature)', () => {
+  // Régression : `module.exports.config = {...}` suivi plus loin d'une
+  // réaffectation `module.exports = async (req,res) => {...}` écrase le
+  // config attaché plus haut. Résultat en production : Vercel reparse le
+  // JSON, le corps n'est plus "brut", et stripe.webhooks.constructEvent()
+  // échoue silencieusement sur CHAQUE paiement. On vérifie le comportement
+  // réel du module exporté, pas juste une regex sur le texte du fichier.
+  delete require.cache[require.resolve('../api/webhook')];
+  const handler = require('../api/webhook');
+  assert.equal(typeof handler, 'function');
+  assert.equal(handler.config?.api?.bodyParser, false);
+});
+
+test('la création de session Stripe restreint les origines de redirection (anti open-redirect)', () => {
+  const source = fs.readFileSync(path.join(__dirname, '../api/create-checkout-session.js'), 'utf8');
+  assert.match(source, /ALLOWED_ORIGINS/, 'doit valider req.headers.origin contre une liste blanche');
+  assert.doesNotMatch(
+    source,
+    /const origin = req\.headers\.origin \|\|/,
+    'ne doit plus faire confiance directement à req.headers.origin sans liste blanche'
+  );
+});
+
 test('les pages essentielles et leurs liens existent', () => {
   const publicDir = path.join(__dirname, '../public');
   const required = ['index.html','boutique.html','categorie.html','produit.html','panier.html','succes.html','compte.html','recherche.html'];
