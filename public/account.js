@@ -34,6 +34,27 @@
     loading.hidden = true;
     list.innerHTML = data.map((order) => `<article class="order-card"><div class="order-card-head"><strong>Commande du ${new Date(order.created_at).toLocaleDateString('fr-FR')}</strong><span>${money(order.total_cents, order.currency)}</span></div><div class="order-status">Payée</div><ul>${(order.items || []).map((item) => `<li>${escapeHtml(item.name)} × ${Number(item.quantity) || 1}</li>`).join('')}</ul><small>Référence ${escapeHtml(order.stripe_session_id).slice(-12)}</small></article>`).join('');
   };
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  const resetForm = document.getElementById('resetForm');
+  const newPasswordForm = document.getElementById('newPasswordForm');
+  const accountTabs = document.getElementById('authForms').querySelector('.account-tabs');
+  const accountNote = document.getElementById('accountNote');
+
+  const showResetForm = () => {
+    accountTabs.hidden = true;
+    loginForm.hidden = true; signupForm.hidden = true; newPasswordForm.hidden = true;
+    resetForm.hidden = false; accountNote.hidden = true;
+    message.className = 'account-message';
+  };
+  const showLoginForm = () => {
+    accountTabs.hidden = false;
+    resetForm.hidden = true; newPasswordForm.hidden = true; signupForm.hidden = true;
+    loginForm.hidden = false; accountNote.hidden = false;
+    document.querySelectorAll('.account-tab').forEach((tab) => tab.classList.toggle('is-active', tab.dataset.tab === 'login'));
+    message.className = 'account-message';
+  };
+
   const showAccount = (user) => {
     const name = user.user_metadata?.full_name || 'Mon compte';
     authForms.hidden = true;
@@ -43,7 +64,7 @@
     document.getElementById('accountAvatar').textContent = name.charAt(0).toUpperCase();
     loadOrders();
   };
-  const showForms = () => { authForms.hidden = false; accountPanel.hidden = true; };
+  const showForms = () => { authForms.hidden = false; accountPanel.hidden = true; showLoginForm(); };
 
   try {
     const cart = JSON.parse(localStorage.getItem('maison_du_musulman_cart') || '[]');
@@ -66,7 +87,15 @@
     const { data } = await client.auth.getSession();
     if (data.session?.user) showAccount(data.session.user);
     if (new URLSearchParams(location.search).get('commande') === 'connexion') showMessage('Connectez-vous pour poursuivre votre commande.');
-    client.auth.onAuthStateChange((_event, session) => session?.user ? showAccount(session.user) : showForms());
+    client.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        authForms.hidden = false; accountPanel.hidden = true;
+        accountTabs.hidden = true; loginForm.hidden = true; signupForm.hidden = true; resetForm.hidden = true; accountNote.hidden = true;
+        newPasswordForm.hidden = false;
+        return;
+      }
+      session?.user ? showAccount(session.user) : showForms();
+    });
   } catch (error) {
     authForms.hidden = true;
     authSetup.hidden = false;
@@ -100,4 +129,36 @@
   });
 
   document.getElementById('logoutButton').addEventListener('click', async () => { await client.auth.signOut(); showForms(); });
+
+  document.getElementById('forgotPasswordLink').addEventListener('click', () => {
+    const currentEmail = document.getElementById('loginEmail').value;
+    if (currentEmail) document.getElementById('resetEmail').value = currentEmail;
+    showResetForm();
+  });
+  document.getElementById('cancelResetLink').addEventListener('click', showLoginForm);
+
+  resetForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setBusy(form, true);
+    const data = new FormData(form);
+    const { error } = await client.auth.resetPasswordForEmail(data.get('email'), { redirectTo: `${location.origin}/compte.html` });
+    setBusy(form, false);
+    if (error) { showMessage(error.message, true); return; }
+    showMessage('Si un compte existe avec cette adresse, un e-mail de réinitialisation vient d’être envoyé.');
+  });
+
+  newPasswordForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setBusy(form, true);
+    const data = new FormData(form);
+    const { error } = await client.auth.updateUser({ password: data.get('password') });
+    setBusy(form, false);
+    if (error) { showMessage(error.message, true); return; }
+    form.reset();
+    showMessage('Mot de passe mis à jour. Vous pouvez continuer.');
+    const { data: sessionData } = await client.auth.getSession();
+    if (sessionData.session?.user) showAccount(sessionData.session.user);
+  });
 })();
