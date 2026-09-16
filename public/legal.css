@@ -1,0 +1,30 @@
+.legal-content{max-width:760px;margin:0 auto;color:#3a2f22;font:400 1rem/1.7 'DM Sans',sans-serif}
+.legal-content h2{margin:38px 0 14px;font:500 1.4rem 'Fraunces',serif;color:#281d15}
+.legal-content h2:first-child{margin-top:0}
+.legal-content h3{margin:22px 0 10px;font:600 1.05rem 'DM Sans',sans-serif;color:#3a2f22}
+.legal-content p{margin:0 0 14px}
+.legal-content ul,.legal-content ol{margin:0 0 14px;padding-left:22px}
+.legal-content li{margin-bottom:6px}
+.legal-content a{color:#8e6232;text-decoration:underline}
+.legal-updated{color:#887462;font-size:.85rem;margin-bottom:30px}
+.legal-todo{margin:16px 0;padding:14px 16px;border:1px dashed #b98b53;border-radius:10px;background:#fff7eb;color:#75522d;font-size:.88rem;line-height:1.55}
+.legal-todo strong{display:block;margin-bottom:4px}
+.legal-toc{display:flex;flex-wrap:wrap;gap:10px 18px;margin:0 0 30px;padding:16px 18px;border:1px solid #e5d0b4;border-radius:12px;background:#fffaf3;font-size:.86rem}
+.legal-toc a{color:#6d5a49;text-decoration:none}
+.legal-toc a:hover{color:#8e6232;text-decoration:underline}
+.withdraw-form{display:grid;gap:16px;max-width:520px;margin:0 auto}
+.withdraw-form .field label{display:block;margin-bottom:7px;color:#5e4d40;font-size:.84rem;font-weight:600}
+.withdraw-form .field input,.withdraw-form .field select,.withdraw-form .field textarea{width:100%;padding:12px 15px;border:1px solid #dac4a7;border-radius:10px;background:#fffdf9;color:#281d15;font:400 1rem 'DM Sans',sans-serif;outline:none}
+.withdraw-form .field textarea{min-height:90px;resize:vertical}
+.withdraw-form .field input:focus,.withdraw-form .field textarea:focus,.withdraw-form .field select:focus{border-color:#9a6b32;box-shadow:0 0 0 3px rgba(154,107,50,.12)}
+.withdraw-summary{padding:16px 18px;border:1px solid #e5d0b4;border-radius:12px;background:#fffaf3;font-size:.9rem;margin-bottom:6px}
+.withdraw-summary dt{color:#887462;font-size:.76rem;text-transform:uppercase;letter-spacing:.04em;margin-top:10px}
+.withdraw-summary dt:first-child{margin-top:0}
+.withdraw-summary dd{margin:2px 0 0;font-weight:600;color:#3a2f22}
+.withdraw-actions{display:flex;gap:12px}
+.withdraw-actions button{flex:1;height:50px;border-radius:999px;font:600 .92rem 'DM Sans',sans-serif;cursor:pointer;border:0}
+.withdraw-actions .btn-primary{background:#2c2017;color:#fff}
+.withdraw-actions .btn-primary:hover{background:#8e6232}
+.withdraw-actions .btn-secondary{background:#f1e2ce;color:#5e4d40}
+.withdraw-success{text-align:center;padding:30px 10px}
+.withdraw-success .icon{width:64px;height:64px;border-radius:50%;background:#e4eae3;color:#3E5C4E;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:1.8rem}
