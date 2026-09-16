@@ -14,13 +14,32 @@ main,.page,.container{max-width:1400px;margin-left:auto!important;margin-right:a
 @media(max-width:900px){.univers-list{grid-template-columns:1fr!important}.univers-photo{height:300px!important}.cat-grid{grid-template-columns:1fr 1fr!important}.cat-illus{height:210px!important}.hero{min-height:590px!important}.hero-content{margin-left:0!important;padding:60px 24px!important}.hero-bg::after{background:linear-gradient(90deg,rgba(24,18,13,.78),rgba(31,23,16,.38))!important}}
 @media(max-width:560px){.cat-grid{grid-template-columns:1fr!important}.cat-illus{height:260px!important}.hero h1{font-size:2.65rem!important}.intro h1{font-size:2.55rem!important}.subnav{gap:18px!important}.univers-photo{height:250px!important}}
 
-/* === MDM 2026 — desktop oriental premium === */
-@media (min-width: 900px){
- body{background:#f8f0e3!important;color:#211b16!important}
- header{height:72px!important;padding:0 38px!important;background:#fffaf2!important;border-bottom:1px solid #eadbc7!important;position:relative!important;top:auto!important}
- .logo{font-family:'Fraunces',serif!important;font-size:20px!important;color:#211b16!important}
- .logo-mark{color:#9a6d2f!important}
- .subnav{height:44px!important;padding:0 38px!important;align-items:center!important;gap:30px!important;background:#fffaf2!important;border-bottom:1px solid #eadbc7!important;position:relative!important;top:auto!important;color:#33291f!important}
- .subnav a{padding:13px 0 11px!important}.subnav a.active{color:#9a6d2f!important;border-bottom:2px solid #9a6d2f!important}
- .cart-badge{background:#211b16!important}
+
+/* === V3 — reproduction maquette 16/09 === */
+@media (min-width: 901px){
+  .intro{min-height:295px!important;padding:42px 24px 38px!important;background:
+    radial-gradient(circle at 18% 45%,rgba(183,129,66,.16),transparent 24%),
+    radial-gradient(circle at 82% 35%,rgba(183,129,66,.12),transparent 25%),
+    linear-gradient(90deg,#ead6bd 0%,#fbf1e3 28%,#fff8ee 51%,#f5e4cf 76%,#e8d1b4 100%)!important}
+  .intro:before{content:'☾';position:absolute;left:12%;top:48px;font-size:7rem;color:rgba(132,87,39,.10);transform:rotate(-18deg)}
+  .intro:after{height:100%!important;opacity:.11!important;background-image:repeating-linear-gradient(45deg,transparent 0 35px,#9a6b32 36px 37px,transparent 38px 72px)!important}
+  .intro h1{font-size:3.4rem!important;max-width:650px!important}.intro p{max-width:560px!important;font-size:1.05rem!important}
+  .univers-list{padding-top:0!important;margin-top:0!important;gap:14px!important;background:#fbf3e8!important}
+  .univers-card{height:245px!important;position:relative!important;overflow:hidden!important;border-radius:15px!important}
+  .univers-photo{position:absolute!important;inset:0!important;height:100%!important}
+  .univers-photo::after{background:linear-gradient(90deg,rgba(18,13,9,.92) 0%,rgba(18,13,9,.73) 29%,rgba(18,13,9,.08) 65%)!important}
+  .univers-badge{top:20px!important;left:28px!important;width:46px!important;height:46px!important}
+  .univers-count{display:none!important}
+  .univers-body{position:absolute!important;z-index:4!important;left:28px!important;bottom:22px!important;padding:0!important;color:#fff!important;display:block!important;max-width:300px!important}
+  .univers-name{font-family:Inter,sans-serif!important;font-size:1rem!important;letter-spacing:.18em!important;text-transform:uppercase!important;font-weight:600!important;margin-bottom:6px!important}
+  .univers-desc{color:#e6ddd2!important;font-size:.96rem!important;line-height:1.45!important;margin-bottom:15px!important}
+  .univers-go{width:auto!important;height:auto!important;border:1px solid #d8b886!important;border-radius:999px!important;padding:10px 18px!important;color:#f2d4a5!important;display:inline-flex!important}
+  .univers-go:before{content:'Découvrir';margin-right:10px;font-size:.9rem;color:#f5e7d3}
+  .story{display:none!important}
+  footer{padding-top:34px!important}
+  body:has(.univers-list) footer:before{content:'✦';display:block;color:#b88949;font-size:1.3rem;margin-bottom:16px}
+  /* accueil: catégories plus immersives */
+  .cat-grid{grid-template-columns:repeat(2,1fr)!important;gap:16px!important}
+  .cat-card{height:270px!important;position:relative!important;overflow:hidden!important}
+  .cat-illus{height:100%!important}.cat-label{position:absolute!important;left:0;right:0;bottom:0;z-index:3;background:linear-gradient(transparent,rgba(18,13,9,.88))!important;color:white!important;padding:55px 22px 20px!important}.cat-name{color:white!important;font-size:1.35rem!important}.cat-arrow{color:#f2d4a5!important}
 }
