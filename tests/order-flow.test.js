@@ -34,10 +34,43 @@ test('le webhook Stripe garde bodyParser désactivé (nécessaire à la vérific
   // JSON, le corps n'est plus "brut", et stripe.webhooks.constructEvent()
   // échoue silencieusement sur CHAQUE paiement. On vérifie le comportement
   // réel du module exporté, pas juste une regex sur le texte du fichier.
+  process.env.STRIPE_SECRET_KEY ||= 'sk_test_123';
   delete require.cache[require.resolve('../api/webhook')];
   const handler = require('../api/webhook');
   assert.equal(typeof handler, 'function');
   assert.equal(handler.config?.api?.bodyParser, false);
+});
+
+test('la livraison de lancement est limitée à la France et cohérente avec la page publique', () => {
+  const checkout = fs.readFileSync(path.join(__dirname, '../api/create-checkout-session.js'), 'utf8');
+  const shipping = fs.readFileSync(path.join(__dirname, '../public/livraison.html'), 'utf8');
+  assert.match(checkout, /allowed_countries:\s*\['FR'\]/);
+  assert.doesNotMatch(checkout, /allowed_countries:[^\n]*'CH'/);
+  assert.match(shipping, /Livraison en France métropolitaine/);
+  assert.doesNotMatch(shipping, /accepte actuellement des adresses en France, Belgique, Suisse/);
+});
+
+test('les réponses webhook ne divulguent pas le détail des erreurs de signature', () => {
+  const webhook = fs.readFileSync(path.join(__dirname, '../api/webhook.js'), 'utf8');
+  assert.match(webhook, /send\('Signature webhook invalide'\)/);
+  assert.doesNotMatch(webhook, /send\(`Webhook Error: \$\{err\.message\}`\)/);
+});
+
+test('Vercel publie une politique de sécurité du contenu', () => {
+  const vercel = JSON.parse(fs.readFileSync(path.join(__dirname, '../vercel.json'), 'utf8'));
+  const headers = vercel.headers[0].headers;
+  const csp = headers.find((header) => header.key === 'Content-Security-Policy');
+  assert.ok(csp);
+  assert.match(csp.value, /frame-ancestors 'none'/);
+  assert.match(csp.value, /connect-src 'self' https:\/\/\*\.supabase\.co https:\/\/formspree\.io/);
+});
+
+test('les quantités côté interface restent alignées avec la limite serveur', () => {
+  const product = fs.readFileSync(path.join(__dirname, '../public/produit.html'), 'utf8');
+  const cart = fs.readFileSync(path.join(__dirname, '../public/panier.html'), 'utf8');
+  assert.match(product, /if \(qty < 10\) qty\+\+/);
+  assert.match(product, /Math\.min\(10,/);
+  assert.match(cart, /Math\.min\(10,/);
 });
 
 test('la création de session Stripe restreint les origines de redirection (anti open-redirect)', () => {
