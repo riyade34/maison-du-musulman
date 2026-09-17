@@ -135,7 +135,7 @@
       });
     });
 
-    document.getElementById('qtyPlus').addEventListener('click', () => { qty++; updateDisplay(); });
+    document.getElementById('qtyPlus').addEventListener('click', () => { if (qty < 10) qty++; updateDisplay(); });
     document.getElementById('qtyMinus').addEventListener('click', () => { if (qty > 1) qty--; updateDisplay(); });
 
     document.getElementById('addBtn').addEventListener('click', () => {
@@ -145,7 +145,7 @@
 
       const existing = cart.find(item => item.id === product.id && item.variant === selected.label);
       if (existing) {
-        existing.qty += qty;
+        existing.qty = Math.min(10, (Number(existing.qty) || 0) + qty);
       } else {
         cart.push({ id: product.id, name: product.name, variant: selected.label, price: selected.price, qty: qty, icon: product.icon });
       }
