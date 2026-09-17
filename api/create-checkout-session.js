@@ -26,6 +26,10 @@ module.exports = async (req, res) => {
     res.status(405).json({ error: 'Méthode non autorisée' });
     return;
   }
+  if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) {
+    res.status(415).json({ error: 'Le contenu doit être envoyé au format JSON' });
+    return;
+  }
 
   try {
     const authentication = await getAuthenticatedUser(req);
@@ -72,7 +76,9 @@ module.exports = async (req, res) => {
       success_url: `${origin}/succes.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/panier.html?paiement=annule`,
       shipping_address_collection: {
-        allowed_countries: ['FR', 'BE', 'CH', 'LU'],
+        // L'offre de lancement publiée couvre uniquement la France.
+        // Les autres pays seront réactivés quand frais, TVA et douanes auront été validés.
+        allowed_countries: ['FR'],
       },
     });
 

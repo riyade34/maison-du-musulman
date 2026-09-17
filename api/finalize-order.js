@@ -6,6 +6,10 @@ module.exports = async (req, res) => {
     res.status(405).json({ error: 'Méthode non autorisée' });
     return;
   }
+  if (!String(req.headers['content-type'] || '').toLowerCase().startsWith('application/json')) {
+    res.status(415).json({ error: 'Le contenu doit être envoyé au format JSON' });
+    return;
+  }
 
   try {
     const authentication = await getAuthenticatedUser(req);

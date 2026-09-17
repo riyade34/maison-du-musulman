@@ -22,7 +22,7 @@ async function recordPaidSession(session) {
     // Le catalogue actuel exige un compte pour payer (voir api/create-checkout-session.js),
     // donc toute session sans user_id est anormale : on journalise sans écrire de ligne
     // invalide (orders.user_id est NOT NULL), plutôt que de faire échouer le webhook.
-    console.error(`Session ${session.id} payée sans user_id associé : commande NON enregistrée. Vérifier la configuration du checkout.`);
+    console.error('Session payée sans user_id associé : commande NON enregistrée. Vérifier la configuration du checkout.');
     return;
   }
 
@@ -71,9 +71,9 @@ async function recordPaidSession(session) {
 
   const rows = await insert.json();
   if (rows.length === 0) {
-    console.log(`Commande déjà enregistrée pour la session ${session.id} (doublon webhook/finalize-order ignoré).`);
+    console.log('Commande déjà enregistrée (doublon webhook/finalize-order ignoré).');
   } else {
-    console.log(`Commande enregistrée via webhook pour la session ${session.id}.`);
+    console.log('Commande enregistrée via webhook.');
   }
 }
 
@@ -96,7 +96,7 @@ async function handler(req, res) {
     // empêche quiconque de POSTer un faux évènement "paiement réussi" sur
     // cette URL pour fabriquer une commande gratuite.
     console.error('Signature webhook invalide :', err.message);
-    res.status(400).send(`Webhook Error: ${err.message}`);
+    res.status(400).send('Signature webhook invalide');
     return;
   }
 
@@ -108,7 +108,7 @@ async function handler(req, res) {
         if (session.payment_status === 'paid') {
           await recordPaidSession(session);
         } else {
-          console.log(`Session ${session.id} reçue avec payment_status=${session.payment_status}, en attente.`);
+          console.log(`Session reçue avec payment_status=${session.payment_status}, en attente.`);
         }
         break;
       }
@@ -116,7 +116,7 @@ async function handler(req, res) {
       case 'checkout.session.expired':
         // Paiement annulé/expiré/échoué : aucune commande n'a été créée
         // puisqu'on n'écrit qu'au moment d'un paiement confirmé "paid".
-        console.log(`Paiement non abouti pour la session ${event.data.object.id} (${event.type}).`);
+        console.log(`Paiement non abouti (${event.type}).`);
         break;
       default:
         break;
