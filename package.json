@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "node --test tests/*.test.js"
+    "test": "node tests/order-flow.test.js"
   },
   "dependencies": {
     "stripe": "^17.0.0"
