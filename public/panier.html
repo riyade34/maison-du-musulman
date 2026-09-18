@@ -79,6 +79,7 @@
   const STORAGE_KEY = 'maison_du_musulman_cart';
   const SHIPPING_FLAT = 4.90;
   const FREE_SHIPPING_THRESHOLD = 40;
+  let storeOpen = false;
 
   function loadCart() {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -102,6 +103,22 @@
     if (!response.ok || !config.configured || !window.supabase) throw new Error('Configuration du compte indisponible');
     supabaseClient = window.supabase.createClient(config.url, config.anonKey);
     return supabaseClient;
+  }
+
+  async function loadStoreStatus() {
+    const btn = document.getElementById('checkoutBtn');
+    try {
+      const response = await fetch('/api/store-status', { cache: 'no-store' });
+      const status = await response.json();
+      storeOpen = response.ok && status.open === true;
+    } catch (error) {
+      storeOpen = false;
+    }
+    btn.disabled = !storeOpen;
+    btn.textContent = storeOpen ? 'Commander et payer' : 'Ouverture prochaine';
+    if (!storeOpen && cart.length > 0) {
+      showCheckoutMessage('La boutique est en préparation : vous pouvez parcourir le catalogue et préparer votre panier, mais aucun paiement n’est accepté pour le moment.');
+    }
   }
 
   function render() {
@@ -151,6 +168,10 @@
 
   document.getElementById('checkoutBtn').addEventListener('click', async () => {
     const btn = document.getElementById('checkoutBtn');
+    if (!storeOpen) {
+      showCheckoutMessage('La boutique est encore en préparation. Aucun paiement n’est accepté pour le moment.');
+      return;
+    }
     btn.disabled = true; btn.textContent = 'Redirection...';
     try {
       const client = await getSupabaseClient();
@@ -182,6 +203,7 @@
     showCheckoutMessage('Paiement annulé : votre panier a été conservé. Vous pouvez réessayer quand vous le souhaitez.');
   }
   render();
+  loadStoreStatus();
 </script>
 </body>
 </html>
