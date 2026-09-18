@@ -83,6 +83,17 @@ test('la création de session Stripe restreint les origines de redirection (anti
   );
 });
 
+test('la vente réelle reste fermée par défaut jusqu’à validation du lancement', () => {
+  const checkout = fs.readFileSync(path.join(__dirname, '../api/create-checkout-session.js'), 'utf8');
+  const status = fs.readFileSync(path.join(__dirname, '../api/store-status.js'), 'utf8');
+  const cart = fs.readFileSync(path.join(__dirname, '../public/panier.html'), 'utf8');
+  assert.match(checkout, /process\.env\.STORE_OPEN !== 'true'/);
+  assert.match(checkout, /code: 'STORE_CLOSED'/);
+  assert.match(status, /open: process\.env\.STORE_OPEN === 'true'/);
+  assert.match(cart, /Ouverture prochaine/);
+  assert.match(cart, /\/api\/store-status/);
+});
+
 test('les pages essentielles et leurs liens existent', () => {
   const publicDir = path.join(__dirname, '../public');
   const required = ['index.html','boutique.html','categorie.html','produit.html','panier.html','succes.html','compte.html','recherche.html'];
