@@ -88,7 +88,7 @@
     return [];
   }
   function saveCart(cart) { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
-function escapeHtml(value) {
+  function escapeHtml(value) {
     return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
   }
   function normalizeStoredCart(stored) {
@@ -155,10 +155,10 @@ function escapeHtml(value) {
     summary.style.display = 'block'; checkoutBar.style.display = 'block'; precontract.style.display = 'block';
     list.innerHTML = cart.map((item, i) => `
       <div class="cart-item">
-                <div class="item-img">${escapeHtml(item.icon)}</div>
+        <div class="item-img">${escapeHtml(item.icon)}</div>
         <div class="item-info">
-                    <div class="item-name">${escapeHtml(item.name)}</div>
-                    <div class="item-variant">${escapeHtml(item.variant)}</div>
+          <div class="item-name">${escapeHtml(item.name)}</div>
+          <div class="item-variant">${escapeHtml(item.variant)}</div>
           <div class="item-row">
             <div class="qty-selector">
               <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
