@@ -91,6 +91,20 @@ test('les pages essentielles et leurs liens existent', () => {
   assert.match(account, /id="ordersList"/);
 });
 
+test('le SEO de base distingue les pages publiques des parcours privés', () => {
+  const publicDir = path.join(__dirname, '../public');
+  for (const file of ['index.html', 'boutique.html', 'categorie.html', 'produit.html', 'contact.html', 'livraison.html', 'qui-sommes-nous.html']) {
+    const source = fs.readFileSync(path.join(publicDir, file), 'utf8');
+    assert.match(source, /<meta name="description" content="[^"]+">/, `${file} doit avoir une description`);
+  }
+  for (const file of ['compte.html', 'panier.html', 'succes.html']) {
+    const source = fs.readFileSync(path.join(publicDir, file), 'utf8');
+    assert.match(source, /<meta name="robots" content="noindex,/i, `${file} ne doit pas être indexée`);
+  }
+  assert.match(fs.readFileSync(path.join(publicDir, 'categorie.html'), 'utf8'), /<h1[^>]*id="pageTitle"/);
+  assert.match(fs.readFileSync(path.join(publicDir, 'panier.html'), 'utf8'), /<h1[^>]*>Mon panier<\/h1>/);
+});
+
 test('les pages légales, la rétractation en ligne et les liens de footer sont présents', () => {
   const publicDir = path.join(__dirname, '../public');
   const legalPages = ['mentions-legales.html', 'cgv.html', 'confidentialite.html', 'retours-remboursements.html', 'retractation.html'];
