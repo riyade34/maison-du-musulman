@@ -13,7 +13,7 @@ Mise à jour du 17 septembre 2026.
 - [x] Les endpoints JSON refusent les autres types de contenu.
 - [x] Les en-têtes HTTP de sécurité incluent une Content-Security-Policy.
 - [x] Audit des dépendances : aucune vulnérabilité connue.
-- [x] 15 tests automatisés passent.
+- [x] 16 tests automatisés passent.
 - [x] Responsive contrôlé sur les parcours principaux ; débordements mobiles corrigés.
 
 ## Livraison et catalogue
@@ -23,8 +23,8 @@ Mise à jour du 17 septembre 2026.
 
 ## GitHub et Vercel
 
-- [ ] Pousser le commit final sur `main`.
-- [ ] Vérifier le nouveau déploiement Vercel et ses logs après le push.
+- [x] Les correctifs principaux ont été publiés sur `main`.
+- [ ] Publier le dernier commit SEO `a82debb` et vérifier son déploiement Vercel.
 - [x] Projet Vercel relié au bon dépôt et à la branche `main`.
 - [x] Domaine `maison-du-musulman.vercel.app` actif.
 - [x] Runtime Node.js 24.x et dossier de sortie `public`.
@@ -41,10 +41,10 @@ Mise à jour du 17 septembre 2026.
 
 ## Stripe
 
-- [ ] Confirmer que `STRIPE_SECRET_KEY` est une clé LIVE.
-- [ ] Confirmer que le webhook LIVE cible `https://maison-du-musulman.vercel.app/api/webhook`.
-- [ ] Vérifier que le webhook écoute au minimum `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed` et `checkout.session.expired`.
-- [ ] Confirmer que `STRIPE_WEBHOOK_SECRET` correspond à cet endpoint LIVE.
+- [x] `STRIPE_SECRET_KEY` LIVE vérifiée côté Vercel Production sans exposer sa valeur.
+- [x] Webhook LIVE configuré vers `https://maison-du-musulman.vercel.app/api/webhook`.
+- [x] Événements LIVE requis configurés : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed` et `checkout.session.expired`.
+- [x] `STRIPE_WEBHOOK_SECRET` synchronisé avec l'endpoint LIVE.
 - [ ] Effectuer un achat réel de faible montant uniquement lorsque le prix, les mentions obligatoires et l'expédition sont validés.
 
 ## Informations commerciales et légales à fournir par le propriétaire
@@ -54,3 +54,15 @@ Mise à jour du 17 septembre 2026.
 - [ ] Adresse e-mail dédiée aux demandes RGPD.
 
 Ces champs ne doivent pas être inventés ni remplacés automatiquement.
+
+## Marque, domaines et fournisseurs
+
+- [x] Recherche exacte préliminaire INPI/FR/EU/WO effectuée : aucune marque exacte en vigueur trouvée.
+- [x] Antériorité commerciale Bayt Al-Muslim identifiée et documentée.
+- [x] Variantes principales `.fr` et `.com` contrôlées le 18 septembre 2026.
+- [x] Dossier de préparation INPI et projet de libellé créés dans `PREPARATION-MARQUE-DOMAINES.md`.
+- [x] Checklist de contrôle fournisseurs créée dans `CONTROLE-FOURNISSEURS.md`.
+- [ ] Commander la recherche de similarités INPI (paiement et décision du propriétaire).
+- [ ] Faire interpréter Bayt Al-Muslim par un CPI ou un avocat.
+- [ ] Réserver les domaines prioritaires après validation du nom.
+- [ ] Déposer la marque après validation des classes et du déposant.
