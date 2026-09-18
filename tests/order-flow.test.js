@@ -114,6 +114,44 @@ test('le SEO de base distingue les pages publiques des parcours privés', () => 
   }
   assert.match(fs.readFileSync(path.join(publicDir, 'categorie.html'), 'utf8'), /<h1[^>]*id="pageTitle"/);
   assert.match(fs.readFileSync(path.join(publicDir, 'panier.html'), 'utf8'), /<h1[^>]*>Mon panier<\/h1>/);
+  // SEO : canonique + Open Graph sur les pages publiques, rien sur les parcours privés.
+  const site = 'https://maison-du-musulman.vercel.app';
+  const indexable = ['index.html', 'boutique.html', 'qui-sommes-nous.html', 'contact.html', 'livraison.html', 'mentions-legales.html', 'cgv.html', 'confidentialite.html', 'retours-remboursements.html'];
+  for (const file of indexable) {
+    const source = fs.readFileSync(path.join(publicDir, file), 'utf8');
+    const expected = file === 'index.html' ? `${site}/` : `${site}/${file}`;
+    assert.ok(source.includes(`<link rel="canonical" href="${expected}">`), `${file} doit avoir sa balise canonique`);
+    assert.match(source, /<meta name="description" content="[^"]+">/, `${file} doit avoir une description`);
+    assert.match(source, /<meta property="og:title" content="[^"]+">/, `${file} doit avoir og:title`);
+    assert.match(source, /<meta property="og:image" content="https:\/\/maison-du-musulman\.vercel\.app\/assets\/[^"]+">/, `${file} doit avoir og:image`);
+    assert.match(source, /<meta name="twitter:card" content="summary_large_image">/, `${file} doit avoir twitter:card`);
+  }
+  for (const file of ['compte.html', 'panier.html', 'succes.html', 'retractation.html', 'recherche.html']) {
+    const source = fs.readFileSync(path.join(publicDir, file), 'utf8');
+    assert.doesNotMatch(source, /rel="canonical"/, `${file} (privé ou sans valeur SEO) ne doit pas avoir de canonique`);
+    assert.match(source, /<meta name="robots" content="noindex,/i, `${file} ne doit pas être indexée`);
+  }
+  for (const file of ['produit.html', 'categorie.html']) {
+    const source = fs.readFileSync(path.join(publicDir, file), 'utf8');
+    assert.match(source, /<link rel="canonical" href="https:\/\/maison-du-musulman\.vercel\.app\/[^"]+">/, `${file} doit avoir une canonique par défaut`);
+    assert.match(source, /querySelector\('link\[rel="canonical"\]'\)\.href/, `${file} doit mettre à jour la canonique selon le contenu`);
+  }
+  assert.match(fs.readFileSync(path.join(publicDir, 'index.html'), 'utf8'), /<script type="application\/ld\+json">[^<]*"@type":"Organization"/);
+  assert.doesNotMatch(fs.readFileSync(path.join(publicDir, 'index.html'), 'utf8'), /"@type":"Product"|"@type":"Offer"/, 'pas de données produit structurées tant que le catalogue n’est pas confirmé');
+
+  // Sitemap et robots.txt : uniquement des pages publiques existantes.
+  const sitemap = fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf8');
+  const locations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  assert.ok(locations.length >= 12);
+  for (const location of locations) {
+    assert.ok(location.startsWith(site), location);
+    const page = location.slice(site.length).split('?')[0].replace(/^\//, '') || 'index.html';
+    assert.ok(fs.existsSync(path.join(publicDir, page)), `${location} doit exister`);
+    assert.doesNotMatch(page, /^(compte|panier|succes|retractation|recherche)\.html$/, `${location} ne doit pas figurer au sitemap`);
+  }
+  const robots = fs.readFileSync(path.join(publicDir, 'robots.txt'), 'utf8');
+  assert.match(robots, /Sitemap: https:\/\/maison-du-musulman\.vercel\.app\/sitemap\.xml/);
+  assert.match(robots, /Disallow: \/api\//);
 });
 
 test('les pages légales, la rétractation en ligne et les liens de footer sont présents', () => {
@@ -175,4 +213,29 @@ test('l’API de rétractation exige du JSON', async () => {
   };
   await handler({ method: 'POST', headers: {}, body: {} }, response);
   assert.equal(response.statusCode, 415);
+});
+
+test('le panier affiché reprend prix, nom et icône du catalogue et neutralise le HTML stocké', () => {
+  const vm = require('node:vm');
+  const cart = fs.readFileSync(path.join(__dirname, '../public/panier.html'), 'utf8');
+  assert.match(cart, /<script src="\/catalog\.js"><\/script>/);
+  const start = cart.indexOf('function escapeHtml');
+  const end = cart.indexOf('let cart = normalizeStoredCart');
+  assert.ok(start > -1 && end > start, 'fonctions de normalisation introuvables');
+  const products = require('../public/catalog.js');
+  const context = { window: { PRODUCTS: products } };
+  vm.createContext(context);
+  vm.runInContext(cart.slice(start, end) + ';this.normalizeStoredCart = normalizeStoredCart; this.escapeHtml = escapeHtml;', context);
+  const result = context.normalizeStoredCart([
+    { id: 'qamis-homme', variant: 'M', price: 0.01, qty: 2, name: '<img src=x onerror=alert(1)>', icon: '<b>' },
+    { id: 'qamis-homme', variant: 'M', price: 5, qty: 9 },
+    { id: 'inconnu', variant: 'M', qty: 1 },
+    { id: 'qamis-homme', variant: 'variante-inexistante', qty: 1 },
+    { id: 'qamis-homme', variant: 'XL', qty: 0 },
+  ]);
+  assert.equal(result.length, 1);
+  assert.equal(result[0].price, 29.9);
+  assert.equal(result[0].name, 'Qamis homme — Blanc');
+  assert.equal(result[0].qty, 10);
+  assert.equal(context.escapeHtml('<img src=x onerror="a">'), '&lt;img src=x onerror=&quot;a&quot;&gt;');
 });

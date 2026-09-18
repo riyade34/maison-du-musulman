@@ -75,6 +75,7 @@
     <button class="btn-checkout" id="checkoutBtn">Commander et payer</button>
   </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/catalog.js"></script>
 <script>
   const STORAGE_KEY = 'maison_du_musulman_cart';
   const SHIPPING_FLAT = 4.90;
@@ -87,7 +88,25 @@
     return [];
   }
   function saveCart(cart) { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
-  let cart = loadCart();
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  }
+  function normalizeStoredCart(stored) {
+    if (!Array.isArray(window.PRODUCTS) || !Array.isArray(stored)) return stored;
+    const merged = [];
+    stored.forEach((entry) => {
+      const product = window.PRODUCTS.find((candidate) => candidate.id === entry?.id);
+      const variant = product?.variants.find((candidate) => candidate.label === entry?.variant);
+      const qty = Math.min(10, Math.floor(Number(entry?.qty)));
+      if (!product || !variant || !(qty >= 1)) return;
+      const existing = merged.find((line) => line.id === product.id && line.variant === variant.label);
+      if (existing) existing.qty = Math.min(10, existing.qty + qty);
+      else merged.push({ id: product.id, name: product.name, variant: variant.label, price: variant.price, qty, icon: product.icon });
+    });
+    return merged;
+  }
+  let cart = normalizeStoredCart(loadCart());
+  if (Array.isArray(window.PRODUCTS)) saveCart(cart);
   let supabaseClient;
 
   function showCheckoutMessage(text, isError = false) {
@@ -136,10 +155,10 @@
     summary.style.display = 'block'; checkoutBar.style.display = 'block'; precontract.style.display = 'block';
     list.innerHTML = cart.map((item, i) => `
       <div class="cart-item">
-        <div class="item-img">${item.icon}</div>
+        <div class="item-img">${escapeHtml(item.icon)}</div>
         <div class="item-info">
-          <div class="item-name">${item.name}</div>
-          <div class="item-variant">${item.variant}</div>
+          <div class="item-name">${escapeHtml(item.name)}</div>
+          <div class="item-variant">${escapeHtml(item.variant)}</div>
           <div class="item-row">
             <div class="qty-selector">
               <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>

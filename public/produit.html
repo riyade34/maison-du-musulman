@@ -46,6 +46,18 @@
   .not-found { padding: 60px 24px; text-align: center; }
 </style>
 <link rel="stylesheet" href="/premium.css">
+<link rel="canonical" href="https://maison-du-musulman.vercel.app/produit.html">
+<meta property="og:site_name" content="Maison du Musulman">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Produit — La Maison du Musulman">
+<meta property="og:description" content="Découvrez ce produit sélectionné avec soin par la Maison du Musulman.">
+<meta property="og:url" content="https://maison-du-musulman.vercel.app/produit.html">
+<meta property="og:image" content="https://maison-du-musulman.vercel.app/assets/home-lantern.png">
+<meta property="og:image:width" content="1942">
+<meta property="og:image:height" content="809">
+<meta property="og:image:alt" content="Lanterne en laiton éclairée dans une ambiance chaleureuse">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
   <header>
@@ -68,6 +80,12 @@
 
     document.title = product.name + ' — La Maison du Musulman';
     document.querySelector('meta[name="description"]').content = product.description;
+    const canonicalUrl = 'https://maison-du-musulman.vercel.app/produit.html?id=' + encodeURIComponent(product.id);
+    document.querySelector('link[rel="canonical"]').href = canonicalUrl;
+    [['og:title', document.title], ['og:description', product.description], ['og:url', canonicalUrl]].forEach(([name, value]) => {
+      const tag = document.querySelector('meta[property="' + name + '"]');
+      if (tag) tag.setAttribute('content', value);
+    });
     document.getElementById('breadcrumb').innerHTML = product.categoryLabel + ' / <span>' + product.name + '</span>';
 
     function renderVariantPills() {

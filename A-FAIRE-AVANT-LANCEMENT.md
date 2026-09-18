@@ -13,8 +13,9 @@ Mise à jour du 17 septembre 2026.
 - [x] Les endpoints JSON refusent les autres types de contenu.
 - [x] Les en-têtes HTTP de sécurité incluent une Content-Security-Policy.
 - [x] Audit des dépendances : aucune vulnérabilité connue.
-- [x] 16 tests automatisés passent.
+- [x] 18 tests automatisés passent (contrôle du panier ajouté et test SEO étendu lors de l'audit du 18 septembre 2026).
 - [x] Responsive contrôlé sur les parcours principaux ; débordements mobiles corrigés.
+- [x] Panier : prix, nom et icône affichés reprennent le catalogue courant (plus de prix périmé issu du navigateur) et le HTML stocké est neutralisé.
 
 ## Livraison et catalogue
 
@@ -24,7 +25,9 @@ Mise à jour du 17 septembre 2026.
 ## GitHub et Vercel
 
 - [x] Les correctifs principaux ont été publiés sur `main`.
-- [ ] Publier le dernier commit SEO `a82debb` et vérifier son déploiement Vercel.
+- [x] SEO de base publié dans la mise à jour du 18 septembre 2026 : balises canoniques, Open Graph, descriptions des pages légales, `sitemap.xml` complété, `robots.txt`, page de recherche en noindex. Cette mise à jour REMPLACE le commit local `a82debb` (non récupérable au moment de l'audit) : ne pas pousser `a82debb`.
+- [ ] Vérifier le déploiement Vercel de cette mise à jour (statut « Ready », `/sitemap.xml` accessible).
+- [ ] Quand le nom et le domaine définitifs seront choisis, remplacer `https://maison-du-musulman.vercel.app` dans `public/*.html`, `public/sitemap.xml` et `public/robots.txt`, ainsi que le nom « Maison du Musulman » dans les données structurées de `public/index.html`.
 - [x] Projet Vercel relié au bon dépôt et à la branche `main`.
 - [x] Domaine `maison-du-musulman.vercel.app` actif.
 - [x] Runtime Node.js 24.x et dossier de sortie `public`.
