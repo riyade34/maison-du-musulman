@@ -28,6 +28,9 @@ Mise à jour du 17 septembre 2026.
 - [x] Projet Vercel relié au bon dépôt et à la branche `main`.
 - [x] Domaine `maison-du-musulman.vercel.app` actif.
 - [x] Runtime Node.js 24.x et dossier de sortie `public`.
+- [x] Protection GitHub contre les secrets et les poussées contenant des secrets active.
+- [ ] Activer la double authentification du compte GitHub.
+- [ ] Activer le graphe de dépendances, les alertes Dependabot et les mises à jour de sécurité.
 - [x] `SITE_URL=https://maison-du-musulman.vercel.app` configuré en Production.
 - [ ] Configurer `RESEND_API_KEY`, `RESEND_FROM_EMAIL` et `WITHDRAWAL_NOTIFICATION_EMAIL` si les accusés de rétractation par e-mail doivent être actifs au lancement.
 
@@ -45,7 +48,10 @@ Mise à jour du 17 septembre 2026.
 - [x] Webhook LIVE configuré vers `https://maison-du-musulman.vercel.app/api/webhook`.
 - [x] Événements LIVE requis configurés : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed` et `checkout.session.expired`.
 - [x] `STRIPE_WEBHOOK_SECRET` synchronisé avec l'endpoint LIVE.
+- [x] Authentification Stripe renforcée contrôlée : application d'authentification, clé de sécurité et clé d'accès configurées.
+- [x] Vente réelle verrouillée par défaut tant que `STORE_OPEN` n'est pas explicitement défini à `true`.
 - [ ] Effectuer un achat réel de faible montant uniquement lorsque le prix, les mentions obligatoires et l'expédition sont validés.
+- [ ] Définir `STORE_OPEN=true` en Production seulement après la validation finale de tous les éléments ci-dessous.
 
 ## Informations commerciales et légales à fournir par le propriétaire
 
