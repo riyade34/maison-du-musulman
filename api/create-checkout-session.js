@@ -30,6 +30,15 @@ module.exports = async (req, res) => {
     res.status(415).json({ error: 'Le contenu doit être envoyé au format JSON' });
     return;
   }
+  // Fermé par défaut : l'ouverture commerciale exige une décision explicite
+  // après validation de l'identité du vendeur, des fournisseurs et de la logistique.
+  if (process.env.STORE_OPEN !== 'true') {
+    res.status(503).json({
+      error: 'La boutique est en préparation. Le paiement sera ouvert prochainement.',
+      code: 'STORE_CLOSED',
+    });
+    return;
+  }
 
   try {
     const authentication = await getAuthenticatedUser(req);
