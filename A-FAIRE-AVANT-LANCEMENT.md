@@ -13,10 +13,11 @@ Mise à jour du 19 septembre 2026.
 - [x] Les endpoints JSON refusent les autres types de contenu.
 - [x] Les en-têtes HTTP de sécurité incluent une Content-Security-Policy.
 - [x] Audit des dépendances : aucune vulnérabilité connue.
-- [x] 19 tests automatisés passent (contrôle du panier et test SEO étendu le 18 septembre 2026 ; test de la recherche de commande par référence ajouté le 19 septembre 2026).
+- [x] 20 tests automatisés passent (contrôle du panier et test SEO étendu le 18 septembre 2026 ; test de la recherche de commande par référence et test du poids des images ajoutés le 19 septembre 2026).
 - [x] Panier : un stockage local corrompu (objet, texte, `null`) est ignoré au lieu de faire planter la page ; la rétractation n'interprète plus `_` comme un joker dans la référence de commande.
 - [x] Responsive contrôlé sur les parcours principaux ; débordements mobiles corrigés.
-- [ ] Alléger les images (6 PNG de 0,9 à 1,9 Mo, environ 7,5 Mo au total ; l'accueil en charge environ 5,6 Mo) : convertir en WebP ou JPEG sans changer le design, y compris l'image Open Graph.
+- [x] Images affichées aux visiteurs converties en WebP qualité 90, dimensions inchangées (6 images : 7,3 Mo → 0,6 Mo, soit -92 %). Un test refuse désormais toute image affichée de plus de 300 Ko.
+- [ ] Alléger l'image Open Graph `assets/home-lantern.png` (1,6 Mo, vue seulement par les robots de partage) et supprimer les anciens PNG devenus inutiles (`boutique-arches-lanterns`, `pret-a-porter`, `priere`, `bien-etre`, `decoration`) après validation en production.
 - [ ] Une fois le catalogue et les prix confirmés : ajouter les fiches produits au `sitemap.xml`.
 - [x] Panier : prix, nom et icône affichés reprennent le catalogue courant (plus de prix périmé issu du navigateur) et le HTML stocké est neutralisé.
 
