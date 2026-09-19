@@ -1,4 +1,4 @@
-# Maison du Musulman — version orientale premium
+# L’Univers du Croyant — version orientale premium
 
 Cette version conserve la logique existante (catalogue, panier, Stripe/Vercel) et applique une nouvelle direction artistique commune à toutes les pages via `public/premium.css`.
 
