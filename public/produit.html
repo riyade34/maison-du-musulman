@@ -46,14 +46,14 @@
   .not-found { padding: 60px 24px; text-align: center; }
 </style>
 <link rel="stylesheet" href="/premium.css">
-<link rel="canonical" href="https://maison-du-musulman.vercel.app/produit.html">
+<link rel="canonical" href="https://luniversducroyant.fr/produit.html">
 <meta property="og:site_name" content="L’Univers du Croyant">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Produit — L’Univers du Croyant">
 <meta property="og:description" content="Découvrez ce produit sélectionné avec soin par L’Univers du Croyant.">
-<meta property="og:url" content="https://maison-du-musulman.vercel.app/produit.html">
-<meta property="og:image" content="https://maison-du-musulman.vercel.app/assets/home-lantern.png">
+<meta property="og:url" content="https://luniversducroyant.fr/produit.html">
+<meta property="og:image" content="https://luniversducroyant.fr/assets/home-lantern.png">
 <meta property="og:image:width" content="1942">
 <meta property="og:image:height" content="809">
 <meta property="og:image:alt" content="Lanterne en laiton éclairée dans une ambiance chaleureuse">
@@ -80,7 +80,7 @@
 
     document.title = product.name + ' — L’Univers du Croyant';
     document.querySelector('meta[name="description"]').content = product.description;
-    const canonicalUrl = 'https://maison-du-musulman.vercel.app/produit.html?id=' + encodeURIComponent(product.id);
+    const canonicalUrl = 'https://luniversducroyant.fr/produit.html?id=' + encodeURIComponent(product.id);
     document.querySelector('link[rel="canonical"]').href = canonicalUrl;
     [['og:title', document.title], ['og:description', product.description], ['og:url', canonicalUrl]].forEach(([name, value]) => {
       const tag = document.querySelector('meta[property="' + name + '"]');

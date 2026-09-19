@@ -5,4 +5,4 @@ Disallow: /panier.html
 Disallow: /succes.html
 Disallow: /api/
 
-Sitemap: https://maison-du-musulman.vercel.app/sitemap.xml
+Sitemap: https://luniversducroyant.fr/sitemap.xml
