@@ -10,6 +10,7 @@ const SHIPPING_FLAT_CENTS = 490;
 // rediriger le client (après un vrai paiement) vers un site tiers une fois
 // le paiement terminé (open redirect / hameçonnage post-paiement).
 const ALLOWED_ORIGINS = [
+  'https://luniversducroyant.fr',
   'https://maison-du-musulman.vercel.app',
   ...(process.env.SITE_URL ? [process.env.SITE_URL] : []),
   ...(process.env.VERCEL_ENV !== 'production' ? ['http://localhost:3000'] : []),

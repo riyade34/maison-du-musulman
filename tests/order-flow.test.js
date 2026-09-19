@@ -115,7 +115,7 @@ test('le SEO de base distingue les pages publiques des parcours privés', () => 
   assert.match(fs.readFileSync(path.join(publicDir, 'categorie.html'), 'utf8'), /<h1[^>]*id="pageTitle"/);
   assert.match(fs.readFileSync(path.join(publicDir, 'panier.html'), 'utf8'), /<h1[^>]*>Mon panier<\/h1>/);
   // SEO : canonique + Open Graph sur les pages publiques, rien sur les parcours privés.
-  const site = 'https://maison-du-musulman.vercel.app';
+  const site = 'https://luniversducroyant.fr';
   const indexable = ['index.html', 'boutique.html', 'qui-sommes-nous.html', 'contact.html', 'livraison.html', 'mentions-legales.html', 'cgv.html', 'confidentialite.html', 'retours-remboursements.html'];
   for (const file of indexable) {
     const source = fs.readFileSync(path.join(publicDir, file), 'utf8');
@@ -123,7 +123,7 @@ test('le SEO de base distingue les pages publiques des parcours privés', () => 
     assert.ok(source.includes(`<link rel="canonical" href="${expected}">`), `${file} doit avoir sa balise canonique`);
     assert.match(source, /<meta name="description" content="[^"]+">/, `${file} doit avoir une description`);
     assert.match(source, /<meta property="og:title" content="[^"]+">/, `${file} doit avoir og:title`);
-    assert.match(source, /<meta property="og:image" content="https:\/\/maison-du-musulman\.vercel\.app\/assets\/[^"]+">/, `${file} doit avoir og:image`);
+    assert.match(source, /<meta property="og:image" content="https:\/\/luniversducroyant\.fr\/assets\/[^"]+">/, `${file} doit avoir og:image`);
     assert.match(source, /<meta name="twitter:card" content="summary_large_image">/, `${file} doit avoir twitter:card`);
   }
   for (const file of ['compte.html', 'panier.html', 'succes.html', 'retractation.html', 'recherche.html']) {
@@ -133,7 +133,7 @@ test('le SEO de base distingue les pages publiques des parcours privés', () => 
   }
   for (const file of ['produit.html', 'categorie.html']) {
     const source = fs.readFileSync(path.join(publicDir, file), 'utf8');
-    assert.match(source, /<link rel="canonical" href="https:\/\/maison-du-musulman\.vercel\.app\/[^"]+">/, `${file} doit avoir une canonique par défaut`);
+    assert.match(source, /<link rel="canonical" href="https:\/\/luniversducroyant\.fr\/[^"]+">/, `${file} doit avoir une canonique par défaut`);
     assert.match(source, /querySelector\('link\[rel="canonical"\]'\)\.href/, `${file} doit mettre à jour la canonique selon le contenu`);
   }
   assert.match(fs.readFileSync(path.join(publicDir, 'index.html'), 'utf8'), /<script type="application\/ld\+json">[^<]*"@type":"Organization"/);
@@ -150,7 +150,7 @@ test('le SEO de base distingue les pages publiques des parcours privés', () => 
     assert.doesNotMatch(page, /^(compte|panier|succes|retractation|recherche)\.html$/, `${location} ne doit pas figurer au sitemap`);
   }
   const robots = fs.readFileSync(path.join(publicDir, 'robots.txt'), 'utf8');
-  assert.match(robots, /Sitemap: https:\/\/maison-du-musulman\.vercel\.app\/sitemap\.xml/);
+  assert.match(robots, /Sitemap: https:\/\/luniversducroyant\.fr\/sitemap\.xml/);
   assert.match(robots, /Disallow: \/api\//);
 });
 
@@ -347,4 +347,19 @@ test('la marque affichée est « L’Univers du Croyant » et l’ancien nom vis
   assert.match(home, /<title>L’Univers du Croyant<\/title>/);
   assert.match(home, /<meta property="og:site_name" content="L’Univers du Croyant">/);
   assert.match(home, /"@type":"Organization"[^}]*"name":"L’Univers du Croyant"/);
+});
+
+test('les URLs publiques utilisent le domaine officiel et l’API l’accepte comme origine', () => {
+  const publicDir = path.join(__dirname, '../public');
+  const files = fs.readdirSync(publicDir).filter(name => /\.(html|js|css|txt|xml)$/.test(name));
+  for (const name of files) {
+    const source = fs.readFileSync(path.join(publicDir, name), 'utf8');
+    assert.doesNotMatch(source, /maison-du-musulman\.vercel\.app/, `${name} pointe encore vers l’ancien domaine`);
+  }
+  for (const name of ['create-checkout-session.js', 'withdrawal-request.js']) {
+    const source = fs.readFileSync(path.join(__dirname, '../api', name), 'utf8');
+    assert.ok(source.includes("'https://luniversducroyant.fr',"), `${name} doit accepter le domaine officiel`);
+  }
+  const checkout = fs.readFileSync(path.join(__dirname, '../api/create-checkout-session.js'), 'utf8');
+  assert.match(checkout, /ALLOWED_ORIGINS = \[\s*'https:\/\/luniversducroyant\.fr'/, 'le domaine officiel est l’origine de retour Stripe par défaut');
 });
