@@ -238,4 +238,56 @@ test('le panier affiché reprend prix, nom et icône du catalogue et neutralise 
   assert.equal(result[0].name, 'Qamis homme — Blanc');
   assert.equal(result[0].qty, 10);
   assert.equal(context.escapeHtml('<img src=x onerror="a">'), '&lt;img src=x onerror=&quot;a&quot;&gt;');
+  // Un stockage local corrompu (objet, chaîne, null) ne doit jamais faire planter l'affichage du panier.
+  for (const corrupted of [{ a: 1 }, 'texte', null, 42]) {
+    const cleaned = context.normalizeStoredCart(corrupted);
+    assert.ok(Array.isArray(cleaned) && cleaned.length === 0, `stockage corrompu ${JSON.stringify(corrupted)} ignoré`);
+  }
+});
+
+test('la rétractation ne traite pas « _ » comme un joker pour retrouver une commande', async () => {
+  const savedFetch = global.fetch;
+  const savedEnv = { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY };
+  process.env.SUPABASE_URL = 'https://supabase.test';
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-test';
+  delete require.cache[require.resolve('../api/_supabase')];
+  delete require.cache[require.resolve('../api/withdrawal-request')];
+  const handler = require('../api/withdrawal-request');
+  const orderRow = { id: '11111111-1111-4111-8111-111111111111', user_id: 'u1', stripe_session_id: 'cs_live_abcdefgh1234', customer_email: 'client@example.com' };
+  const calls = [];
+  global.fetch = async (url, options = {}) => {
+    calls.push({ url: String(url), method: options.method || 'GET' });
+    const reply = (data) => ({ ok: true, status: 200, json: async () => data });
+    if (String(url).includes('/rest/v1/orders?')) return reply([orderRow]);
+    if (String(url).includes('/rest/v1/withdrawal_requests?') && (options.method || 'GET') === 'GET') return reply([]);
+    return reply([{ id: 1 }]);
+  };
+  const call = async (orderReference) => {
+    const response = {
+      statusCode: 200,
+      status(code) { this.statusCode = code; return this; },
+      json(payload) { this.payload = payload; return this; },
+      setHeader() {},
+    };
+    await handler({
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-forwarded-for': '203.0.113.7' },
+      body: { orderReference, fullName: 'Client Test', email: 'client@example.com', scope: 'full' },
+    }, response);
+    return response;
+  };
+  try {
+    const wildcard = await call('________');
+    assert.equal(wildcard.statusCode, 404, 'un motif fait de « _ » ne doit désigner aucune commande');
+    assert.ok(!calls.some((entry) => entry.method === 'POST'), 'aucune rétractation ne doit être enregistrée');
+    const literal = await call('efgh1234');
+    assert.equal(literal.statusCode, 201, 'la fin littérale de la référence Stripe reste acceptée');
+    assert.match(literal.payload.reference, /^RET-/);
+  } finally {
+    global.fetch = savedFetch;
+    if (savedEnv.url === undefined) delete process.env.SUPABASE_URL; else process.env.SUPABASE_URL = savedEnv.url;
+    if (savedEnv.key === undefined) delete process.env.SUPABASE_SERVICE_ROLE_KEY; else process.env.SUPABASE_SERVICE_ROLE_KEY = savedEnv.key;
+    delete require.cache[require.resolve('../api/_supabase')];
+    delete require.cache[require.resolve('../api/withdrawal-request')];
+  }
 });
