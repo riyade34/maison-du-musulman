@@ -161,7 +161,7 @@
     document.getElementById('addBtn').addEventListener('click', () => {
       let cart = [];
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) { try { cart = JSON.parse(raw); } catch(e) {} }
+      if (raw) { try { const parsed = JSON.parse(raw); if (Array.isArray(parsed)) cart = parsed.filter(item => item && typeof item === 'object'); } catch(e) {} }
 
       const existing = cart.find(item => item.id === product.id && item.variant === selected.label);
       if (existing) {
