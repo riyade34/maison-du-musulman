@@ -307,3 +307,30 @@ test('les images affichées aux visiteurs existent et restent légères', () => 
   }
   assert.ok(checked >= 10, 'les images de l’accueil et de la boutique doivent être contrôlées');
 });
+
+test('la clé d’administration Supabase est refusée hors production', async () => {
+  const savedFetch = global.fetch;
+  const saved = { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY, env: process.env.VERCEL_ENV };
+  process.env.SUPABASE_URL = 'https://supabase.test';
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-test';
+  delete require.cache[require.resolve('../api/_supabase')];
+  const { supabaseAdminRequest } = require('../api/_supabase');
+  const calls = [];
+  global.fetch = async (url) => { calls.push(String(url)); return { ok: true }; };
+  try {
+    for (const environment of ['preview', 'development']) {
+      process.env.VERCEL_ENV = environment;
+      await assert.rejects(() => supabaseAdminRequest('orders'), /hors production/, `clé refusée en ${environment}`);
+    }
+    assert.equal(calls.length, 0, 'aucune requête d’administration ne doit partir hors production');
+    process.env.VERCEL_ENV = 'production';
+    await supabaseAdminRequest('orders');
+    assert.equal(calls.length, 1, 'la clé reste utilisable en production');
+  } finally {
+    global.fetch = savedFetch;
+    for (const [name, value] of [['SUPABASE_URL', saved.url], ['SUPABASE_SERVICE_ROLE_KEY', saved.key], ['VERCEL_ENV', saved.env]]) {
+      if (value === undefined) delete process.env[name]; else process.env[name] = value;
+    }
+    delete require.cache[require.resolve('../api/_supabase')];
+  }
+});

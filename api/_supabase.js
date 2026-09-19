@@ -38,6 +38,11 @@ async function supabaseRequest(path, token, options = {}) {
 
 async function supabaseAdminRequest(path, options = {}) {
   if (!SUPABASE_SERVICE_ROLE_KEY) throw new Error('SUPABASE_SERVICE_ROLE_KEY absente');
+  // Un seul projet Supabase existe : la clé d'administration donne accès aux données de production.
+  // Elle ne doit donc jamais servir dans un déploiement Preview ou Development, même si la variable y est ajoutée par erreur.
+  if (process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production') {
+    throw new Error('Clé d’administration Supabase refusée hors production');
+  }
   return fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...options,
     headers: {
