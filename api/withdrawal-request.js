@@ -106,7 +106,7 @@ module.exports = async (req, res) => {
     if (!rows.length) throw new Error('La base n’a pas confirmé l’enregistrement');
     let emailSent = false;
     try {
-      const customerText = `Votre demande de rétractation a été enregistrée.\n\nRéférence : ${reference}\nCommande : ${orderReference}\nPortée : ${scope === 'full' ? 'toute la commande' : 'une partie de la commande'}\nDate : ${createdAt.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}\n\nConservez cet e-mail. Les modalités de retour sont disponibles sur le site Maison du Musulman.`;
+      const customerText = `Votre demande de rétractation a été enregistrée.\n\nRéférence : ${reference}\nCommande : ${orderReference}\nPortée : ${scope === 'full' ? 'toute la commande' : 'une partie de la commande'}\nDate : ${createdAt.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}\n\nConservez cet e-mail. Les modalités de retour sont disponibles sur le site L’Univers du Croyant.`;
       emailSent = await sendEmail({ to: email, subject: `Accusé de réception de votre rétractation ${reference}`, text: customerText });
       const notificationEmail = process.env.WITHDRAWAL_NOTIFICATION_EMAIL;
       if (emailSent && notificationEmail && EMAIL_PATTERN.test(notificationEmail)) {
