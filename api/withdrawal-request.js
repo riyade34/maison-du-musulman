@@ -9,6 +9,7 @@ const RATE_LIMIT_MAX_REQUESTS = 8;
 const rateBuckets = new Map();
 
 const ALLOWED_ORIGINS = new Set([
+  'https://luniversducroyant.fr',
   'https://maison-du-musulman.vercel.app',
   ...(process.env.SITE_URL ? [process.env.SITE_URL] : []),
   ...(process.env.VERCEL_ENV !== 'production' ? ['http://localhost:3000'] : []),
