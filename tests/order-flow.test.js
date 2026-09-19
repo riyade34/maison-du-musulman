@@ -291,3 +291,19 @@ test('la rétractation ne traite pas « _ » comme un joker pour retrouver une c
     delete require.cache[require.resolve('../api/withdrawal-request')];
   }
 });
+
+test('les images affichées aux visiteurs existent et restent légères', () => {
+  const publicDir = path.join(__dirname, '../public');
+  const maxBytes = 300 * 1024;
+  let checked = 0;
+  for (const page of fs.readdirSync(publicDir).filter((file) => file.endsWith('.html'))) {
+    const source = fs.readFileSync(path.join(publicDir, page), 'utf8');
+    for (const match of source.matchAll(/<img\b[^>]*\bsrc="(\/assets\/[^"]+)"/g)) {
+      const file = path.join(publicDir, match[1]);
+      assert.ok(fs.existsSync(file), `${page} : ${match[1]} doit exister`);
+      assert.ok(fs.statSync(file).size <= maxBytes, `${page} : ${match[1]} dépasse ${maxBytes / 1024} Ko`);
+      checked += 1;
+    }
+  }
+  assert.ok(checked >= 10, 'les images de l’accueil et de la boutique doivent être contrôlées');
+});
