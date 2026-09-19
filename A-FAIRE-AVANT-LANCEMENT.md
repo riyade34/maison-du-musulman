@@ -32,7 +32,7 @@ Mise à jour du 19 septembre 2026.
 - [x] SEO de base publié dans la mise à jour du 18 septembre 2026 : balises canoniques, Open Graph, descriptions des pages légales, `sitemap.xml` complété, `robots.txt`, page de recherche en noindex. Cette mise à jour REMPLACE le commit local `a82debb` (non récupérable au moment de l'audit) : ne pas pousser `a82debb`.
 - [x] Déploiement Vercel de la mise à jour du 18 septembre (`0d5e340`) vérifié en Production le 19 septembre 2026 : fichiers servis identiques au dépôt, `/sitemap.xml` à 13 URLs, `/api/store-status` renvoie `open:false`.
 - [ ] Vérifier le déploiement Vercel du correctif du 19 septembre 2026 (statut « Ready », panier et `/api/store-status` toujours fermés).
-- [ ] Quand le nom et le domaine définitifs seront choisis, remplacer `https://maison-du-musulman.vercel.app` dans `public/*.html`, `public/sitemap.xml` et `public/robots.txt`, ainsi que le nom « Maison du Musulman » dans les données structurées de `public/index.html`.
+- [ ] Quand le nom et le domaine définitifs seront choisis, remplacer `https://maison-du-musulman.vercel.app` dans `public/*.html`, `public/sitemap.xml`, `public/robots.txt` et `api/*.js`. Le nom affiché « L’Univers du Croyant » est déjà en place (changement de marque du 19 septembre 2026) ; la clé technique `maison_du_musulman_cart` est volontairement conservée.
 - [x] Projet Vercel relié au bon dépôt et à la branche `main`.
 - [x] Domaine `maison-du-musulman.vercel.app` actif.
 - [x] Runtime Node.js 24.x et dossier de sortie `public`.

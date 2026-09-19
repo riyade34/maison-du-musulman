@@ -1,3 +1,5 @@
+> **Note du 19 septembre 2026 — changement de nom.** Le nom commercial retenu est désormais « L’Univers du Croyant ». Ce document concerne l’ancien nom « Maison du Musulman » et sert d’historique. La recherche d’antériorités INPI et la vérification des noms de domaine doivent être refaites pour « L’Univers du Croyant » avant tout dépôt ou achat.
+
 # Préparation marque et domaines — Maison du Musulman
 
 Mise à jour : 18 septembre 2026.
