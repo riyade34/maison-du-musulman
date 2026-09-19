@@ -92,7 +92,8 @@
     return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
   }
   function normalizeStoredCart(stored) {
-    if (!Array.isArray(window.PRODUCTS) || !Array.isArray(stored)) return stored;
+    if (!Array.isArray(stored)) return [];
+    if (!Array.isArray(window.PRODUCTS)) return stored;
     const merged = [];
     stored.forEach((entry) => {
       const product = window.PRODUCTS.find((candidate) => candidate.id === entry?.id);
