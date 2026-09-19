@@ -1,6 +1,6 @@
 # À faire avant lancement
 
-Mise à jour du 17 septembre 2026.
+Mise à jour du 19 septembre 2026.
 
 ## Code et sécurité
 
@@ -13,8 +13,11 @@ Mise à jour du 17 septembre 2026.
 - [x] Les endpoints JSON refusent les autres types de contenu.
 - [x] Les en-têtes HTTP de sécurité incluent une Content-Security-Policy.
 - [x] Audit des dépendances : aucune vulnérabilité connue.
-- [x] 18 tests automatisés passent (contrôle du panier ajouté et test SEO étendu lors de l'audit du 18 septembre 2026).
+- [x] 19 tests automatisés passent (contrôle du panier et test SEO étendu le 18 septembre 2026 ; test de la recherche de commande par référence ajouté le 19 septembre 2026).
+- [x] Panier : un stockage local corrompu (objet, texte, `null`) est ignoré au lieu de faire planter la page ; la rétractation n'interprète plus `_` comme un joker dans la référence de commande.
 - [x] Responsive contrôlé sur les parcours principaux ; débordements mobiles corrigés.
+- [ ] Alléger les images (6 PNG de 0,9 à 1,9 Mo, environ 7,5 Mo au total ; l'accueil en charge environ 5,6 Mo) : convertir en WebP ou JPEG sans changer le design, y compris l'image Open Graph.
+- [ ] Une fois le catalogue et les prix confirmés : ajouter les fiches produits au `sitemap.xml`.
 - [x] Panier : prix, nom et icône affichés reprennent le catalogue courant (plus de prix périmé issu du navigateur) et le HTML stocké est neutralisé.
 
 ## Livraison et catalogue
@@ -26,7 +29,8 @@ Mise à jour du 17 septembre 2026.
 
 - [x] Les correctifs principaux ont été publiés sur `main`.
 - [x] SEO de base publié dans la mise à jour du 18 septembre 2026 : balises canoniques, Open Graph, descriptions des pages légales, `sitemap.xml` complété, `robots.txt`, page de recherche en noindex. Cette mise à jour REMPLACE le commit local `a82debb` (non récupérable au moment de l'audit) : ne pas pousser `a82debb`.
-- [ ] Vérifier le déploiement Vercel de cette mise à jour (statut « Ready », `/sitemap.xml` accessible).
+- [x] Déploiement Vercel de la mise à jour du 18 septembre (`0d5e340`) vérifié en Production le 19 septembre 2026 : fichiers servis identiques au dépôt, `/sitemap.xml` à 13 URLs, `/api/store-status` renvoie `open:false`.
+- [ ] Vérifier le déploiement Vercel du correctif du 19 septembre 2026 (statut « Ready », panier et `/api/store-status` toujours fermés).
 - [ ] Quand le nom et le domaine définitifs seront choisis, remplacer `https://maison-du-musulman.vercel.app` dans `public/*.html`, `public/sitemap.xml` et `public/robots.txt`, ainsi que le nom « Maison du Musulman » dans les données structurées de `public/index.html`.
 - [x] Projet Vercel relié au bon dépôt et à la branche `main`.
 - [x] Domaine `maison-du-musulman.vercel.app` actif.
