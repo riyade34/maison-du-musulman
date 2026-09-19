@@ -334,3 +334,17 @@ test('la clé d’administration Supabase est refusée hors production', async (
     delete require.cache[require.resolve('../api/_supabase')];
   }
 });
+
+test('la marque affichée est « L’Univers du Croyant » et l’ancien nom visible a disparu', () => {
+  const publicDir = path.join(__dirname, '../public');
+  const files = fs.readdirSync(publicDir).filter(name => /\.(html|js|css)$/.test(name)).map(name => path.join(publicDir, name));
+  files.push(path.join(__dirname, '../api/withdrawal-request.js'));
+  for (const file of files) {
+    const source = fs.readFileSync(file, 'utf8');
+    assert.doesNotMatch(source, /maison du musulman/i, `${path.basename(file)} affiche encore l’ancien nom`);
+  }
+  const home = fs.readFileSync(path.join(publicDir, 'index.html'), 'utf8');
+  assert.match(home, /<title>L’Univers du Croyant<\/title>/);
+  assert.match(home, /<meta property="og:site_name" content="L’Univers du Croyant">/);
+  assert.match(home, /"@type":"Organization"[^}]*"name":"L’Univers du Croyant"/);
+});
