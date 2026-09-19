@@ -32,7 +32,7 @@ Mise à jour du 19 septembre 2026.
 - [x] SEO de base publié dans la mise à jour du 18 septembre 2026 : balises canoniques, Open Graph, descriptions des pages légales, `sitemap.xml` complété, `robots.txt`, page de recherche en noindex. Cette mise à jour REMPLACE le commit local `a82debb` (non récupérable au moment de l'audit) : ne pas pousser `a82debb`.
 - [x] Déploiement Vercel de la mise à jour du 18 septembre (`0d5e340`) vérifié en Production le 19 septembre 2026 : fichiers servis identiques au dépôt, `/sitemap.xml` à 13 URLs, `/api/store-status` renvoie `open:false`.
 - [ ] Vérifier le déploiement Vercel du correctif du 19 septembre 2026 (statut « Ready », panier et `/api/store-status` toujours fermés).
-- [ ] Quand le nom et le domaine définitifs seront choisis, remplacer `https://maison-du-musulman.vercel.app` dans `public/*.html`, `public/sitemap.xml`, `public/robots.txt` et `api/*.js`. Le nom affiché « L’Univers du Croyant » est déjà en place (changement de marque du 19 septembre 2026) ; la clé technique `maison_du_musulman_cart` est volontairement conservée.
+- [x] Domaine définitif `luniversducroyant.fr` (principal) et `www.luniversducroyant.fr` (redirection 308) ajoutés à Vercel le 19 septembre 2026 ; URLs publiques (canoniques, Open Graph, JSON-LD, sitemap, robots) passées à `https://luniversducroyant.fr`. L’ancien domaine `maison-du-musulman.vercel.app` reste accepté par l’API. La clé technique `maison_du_musulman_cart` est volontairement conservée.
 - [x] Projet Vercel relié au bon dépôt et à la branche `main`.
 - [x] Domaine `maison-du-musulman.vercel.app` actif.
 - [x] Runtime Node.js 24.x et dossier de sortie `public`.
@@ -40,6 +40,7 @@ Mise à jour du 19 septembre 2026.
 - [ ] Activer la double authentification du compte GitHub.
 - [ ] Activer le graphe de dépendances, les alertes Dependabot et les mises à jour de sécurité.
 - [x] `SITE_URL=https://maison-du-musulman.vercel.app` configuré en Production.
+- [ ] Passer `SITE_URL` à `https://luniversducroyant.fr` en Production (à faire par le propriétaire, puis redéployer). Sans effet bloquant : l’API accepte déjà les deux domaines.
 - [ ] Configurer `RESEND_API_KEY`, `RESEND_FROM_EMAIL` et `WITHDRAWAL_NOTIFICATION_EMAIL` si les accusés de rétractation par e-mail doivent être actifs au lancement.
 
 ## Supabase
@@ -47,6 +48,7 @@ Mise à jour du 19 septembre 2026.
 - [x] Projet sain ; tables `orders` et `withdrawal_requests` présentes avec RLS.
 - [x] Site URL : `https://maison-du-musulman.vercel.app`.
 - [x] Redirect URL : `https://maison-du-musulman.vercel.app/compte.html`.
+- [ ] Supabase : ajouter `https://luniversducroyant.fr` (Site URL) et `https://luniversducroyant.fr/compte.html` (Redirect URLs) avant l’ouverture, pour que la connexion et les e-mails de compte fonctionnent sur le nouveau domaine (à faire par le propriétaire).
 - [ ] Activer « Prevent use of leaked passwords » dans Authentication > Sign In / Providers > Email.
 - [ ] Supprimer les données de test de préproduction si elles ne doivent pas rester dans la base de production.
 
@@ -54,6 +56,7 @@ Mise à jour du 19 septembre 2026.
 
 - [x] `STRIPE_SECRET_KEY` LIVE vérifiée côté Vercel Production sans exposer sa valeur.
 - [x] Webhook LIVE configuré vers `https://maison-du-musulman.vercel.app/api/webhook`.
+- [ ] (Optionnel) Déplacer le webhook Stripe vers `https://luniversducroyant.fr/api/webhook` : l’ancienne adresse continue de fonctionner, ne rien changer avant l’ouverture sans test.
 - [x] Événements LIVE requis configurés : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed` et `checkout.session.expired`.
 - [x] `STRIPE_WEBHOOK_SECRET` synchronisé avec l'endpoint LIVE.
 - [x] Authentification Stripe renforcée contrôlée : application d'authentification, clé de sécurité et clé d'accès configurées.
