@@ -1,4 +1,4 @@
-// Catalogue central des produits — La Maison du Musulman
+// Catalogue central des produits — L’Univers du Croyant
 // Pour ajouter un produit : copier un bloc et changer les valeurs (id unique obligatoire)
 const PRODUCTS = [
   // ---------- BIEN-ÊTRE ----------
