@@ -79,7 +79,9 @@ module.exports = async (req, res) => {
     const lookup = await supabaseAdminRequest(`orders?${filter}&select=id,user_id,stripe_session_id,customer_email,created_at,status,items&limit=2`);
     if (!lookup.ok) throw new Error(`Lecture commande impossible (${lookup.status})`);
     const orders = await lookup.json();
-    const order = orders.length === 1 && String(orders[0].customer_email || '').toLowerCase() === email ? orders[0] : null;
+    // Le filtre `like` traite « _ » comme un joker : on ne retient que les commandes dont la référence correspond littéralement.
+    const matches = UUID_PATTERN.test(orderReference) ? orders : orders.filter((row) => String(row.stripe_session_id || '').endsWith(orderReference));
+    const order = matches.length === 1 && String(matches[0].customer_email || '').toLowerCase() === email ? matches[0] : null;
     if (!order) { res.status(404).json({ error: 'Aucune commande ne correspond à cette référence et cette adresse e-mail.' }); return; }
     const existing = await supabaseAdminRequest(`withdrawal_requests?stripe_session_id=eq.${encodeURIComponent(order.stripe_session_id)}&select=order_reference&limit=1`);
     if (!existing.ok) throw new Error(`Vérification de doublon impossible (${existing.status})`);
