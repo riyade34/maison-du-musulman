@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Withdraw from contract — L’Univers du Croyant</title><meta name="robots" content="noindex,follow"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet"><link rel="stylesheet" href="/legal.css"><link rel="stylesheet" href="/lang-switch.css"><script src="/i18n-en.js"></script><script src="/i18n.js"></script>
+</head>
+<body class="legal-page"><header class="legal-header"><a class="legal-brand" href="/en/">L’Univers du Croyant</a><nav class="legal-nav" aria-label="Navigation"><a href="/en/boutique.html">Shop</a><a href="/en/livraison.html">Delivery</a><a href="/en/contact.html">Contact</a><a href="/en/retours-remboursements.html">Returns</a></nav><!--lang-switch--><nav class="mdm-lang" data-lang-switch aria-label="Site language"><a href="/retractation.html" lang="fr" hreflang="fr" aria-label="Français">FR</a><a href="/en/retractation.html" lang="en" hreflang="en" aria-label="English" aria-current="true">EN</a></nav><!--/lang-switch--></header><section class="legal-hero"><h1>Withdraw from contract here</h1><p>Notify your decision to withdraw free of charge in three steps.</p></section>
+<main class="legal-main"><section class="legal-content"><div class="legal-info" lang="en">This English translation is provided for information only. The French version prevails in case of any discrepancy.</div><div class="legal-info">This process records your request. You must then return the product as set out in the <a href="/en/retours-remboursements.html">returns policy</a>. Giving a reason is optional.</div><div class="withdraw-progress" aria-label="Progress"><span class="is-active"></span><span></span><span></span></div>
+<form id="withdrawForm" class="withdraw-form" novalidate>
+<div class="withdraw-step is-active" data-step="1"><h2>1. Identify the order</h2><div class="field"><label for="fullName">Full name</label><input id="fullName" name="fullName" required maxlength="160" autocomplete="name"></div><div class="field"><label for="orderReference">Order reference</label><input id="orderReference" name="orderReference" required maxlength="80" autocomplete="off" placeholder="Reference shown in your account"></div><div class="field"><label for="email">Email used for the order</label><input id="email" name="email" type="email" required maxlength="254" autocomplete="email"></div><div class="field"><label for="scope">Your request concerns</label><select id="scope" name="scope"><option value="full">The whole order</option><option value="partial">Part of the order</option></select></div><div class="field"><label for="items">Products concerned <span aria-hidden="true">(optional if the whole order)</span></label><textarea id="items" name="items" maxlength="1000" placeholder="Name, variant and quantity"></textarea></div><div class="field"><label for="reason">Reason (optional)</label><textarea id="reason" name="reason" maxlength="1000" placeholder="You do not have to justify your decision"></textarea></div><div class="withdraw-actions"><button class="btn-primary" type="button" id="reviewButton">Review my request</button></div></div>
+<div class="withdraw-step" data-step="2"><h2>2. Confirm the request</h2><dl class="withdraw-summary"><dt>Name</dt><dd id="summaryName"></dd><dt>Order</dt><dd id="summaryOrder"></dd><dt>Email</dt><dd id="summaryEmail"></dd><dt>Scope</dt><dd id="summaryScope"></dd><dt>Products</dt><dd id="summaryItems"></dd></dl><p>By confirming, you unambiguously declare that you wish to exercise your right of withdrawal for the order indicated.</p><div class="withdraw-message" id="withdrawMessage" role="alert"></div><div class="withdraw-actions"><button class="btn-secondary" type="button" id="backButton">Edit</button><button class="btn-primary" type="submit" id="submitButton">Confirm my withdrawal</button></div></div>
+<div class="withdraw-step" data-step="3"><div class="withdraw-success"><div class="icon">✓</div><h2>Request recorded</h2><p id="successText">Your withdrawal request has been recorded.</p><p>Reference: <strong id="requestReference"></strong></p><p><a href="/en/retours-remboursements.html">View the return instructions</a></p></div></div></form>
+<noscript><div class="legal-noscript">JavaScript is required to use this feature. You can also send an unambiguous statement via the Contact page.</div></noscript></section></main><footer class="legal-footer"><strong>L’Univers du Croyant</strong><nav><a href="/en/mentions-legales.html">Legal notice</a><a href="/en/cgv.html">Terms of sale</a><a href="/en/confidentialite.html">Privacy</a><a href="/en/retours-remboursements.html">Returns</a><a href="/en/retractation.html">Withdraw from contract here</a></nav><small>© 2026 — All rights reserved</small></footer>
+<script>
+(() => {
+  const I18N = window.MDM_I18N;
+  const form = document.getElementById('withdrawForm');
+  const steps = [...document.querySelectorAll('.withdraw-step')];
+  const dots = [...document.querySelectorAll('.withdraw-progress span')];
+  const message = document.getElementById('withdrawMessage');
+  const showStep = (number) => { steps.forEach((el, i) => el.classList.toggle('is-active', i === number - 1)); dots.forEach((el, i) => el.classList.toggle('is-active', i <= number - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const params = new URLSearchParams(location.search);
+  if (params.get('commande')) document.getElementById('orderReference').value = params.get('commande').slice(0, 80);
+  document.getElementById('reviewButton').addEventListener('click', () => {
+    const order = form.orderReference.value.trim(); const email = form.email.value.trim(); const fullName = form.fullName.value.trim();
+    if (!fullName || !order || !form.email.validity.valid) { form.reportValidity(); return; }
+    document.getElementById('summaryName').textContent = fullName;
+    document.getElementById('summaryOrder').textContent = order;
+    document.getElementById('summaryEmail').textContent = email;
+    document.getElementById('summaryScope').textContent = form.scope.value === 'full' ? I18N.t('withdraw.scopeFull', 'Toute la commande') : I18N.t('withdraw.scopePartial', 'Une partie de la commande');
+    document.getElementById('summaryItems').textContent = form.items.value.trim() || I18N.t('withdraw.allProducts', 'Tous les produits');
+    message.className = 'withdraw-message'; showStep(2);
+  });
+  document.getElementById('backButton').addEventListener('click', () => showStep(1));
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault(); const button = document.getElementById('submitButton'); button.disabled = true; button.textContent = I18N.t('withdraw.saving', 'Enregistrement…'); message.className = 'withdraw-message';
+    try {
+      const response = await fetch('/api/withdrawal-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullName: form.fullName.value.trim(), orderReference: form.orderReference.value.trim(), email: form.email.value.trim(), scope: form.scope.value, items: form.items.value.trim(), reason: form.reason.value.trim() }) });
+      const result = await response.json(); if (!response.ok) throw new Error(I18N.apiError(result.error) || I18N.t('withdraw.notSaved', 'La demande n’a pas pu être enregistrée.'));
+      document.getElementById('requestReference').textContent = result.reference;
+      document.getElementById('successText').textContent = result.emailSent ? I18N.t('withdraw.savedWithEmail', 'Votre demande a été enregistrée et un accusé de réception vous a été envoyé par e-mail.') : I18N.t('withdraw.savedNoEmail', 'Votre demande a été enregistrée. L’accusé de réception électronique n’a pas pu être envoyé automatiquement : conservez cette référence et contactez le vendeur.');
+      showStep(3);
+    } catch (error) { message.textContent = error.message; message.className = 'withdraw-message show'; button.disabled = false; button.textContent = I18N.t('withdraw.confirm', 'Confirmer ma rétractation'); }
+  });
+})();
+</script></body></html>

@@ -18,7 +18,10 @@ Mise à jour du 19 septembre 2026.
 - [x] Responsive contrôlé sur les parcours principaux ; débordements mobiles corrigés.
 - [x] Images affichées aux visiteurs converties en WebP qualité 90, dimensions inchangées (6 images : 7,3 Mo → 0,6 Mo, soit -92 %). Un test refuse désormais toute image affichée de plus de 300 Ko.
 - [ ] Alléger l'image Open Graph `assets/home-lantern.png` (1,6 Mo, vue seulement par les robots de partage) et supprimer les anciens PNG devenus inutiles (`boutique-arches-lanterns`, `pret-a-porter`, `priere`, `bien-etre`, `decoration`) après validation en production.
-- [ ] Une fois le catalogue et les prix confirmés : ajouter les fiches produits au `sitemap.xml`.
+- [ ] Une fois le catalogue et les prix confirmés : ajouter les fiches produits au `sitemap.xml` (généré par `npm run i18n`, voir `SITEMAP_PATHS` dans `scripts/build-i18n.js`).
+- [x] Site bilingue français / anglais intégré au projet (sans Weglot ni abonnement) : pages `/en/` générées, sélecteur FR | EN, hreflang, sitemap, fiches produits en anglais. Mode d'emploi : `I18N.md`.
+- [ ] Faire relire la traduction anglaise (`i18n/en-segments.json`, `public/catalog.js`), surtout les pages juridiques, quand leurs champs à compléter seront renseignés. La version française prévaut (note affichée sur les pages juridiques anglaises).
+- [ ] Avant l'ouverture : décider si Stripe Checkout, les e-mails de rétractation (Resend) et les libellés envoyés à Stripe doivent aussi exister en anglais (aujourd'hui en français ; le retour de paiement bascule déjà vers l'anglais si le visiteur l'a choisi).
 - [x] Panier : prix, nom et icône affichés reprennent le catalogue courant (plus de prix périmé issu du navigateur) et le HTML stocké est neutralisé.
 
 ## Livraison et catalogue
