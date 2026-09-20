@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "node tests/order-flow.test.js"
+    "test": "node tests/order-flow.test.js && node tests/i18n.test.js",
+    "i18n": "node scripts/build-i18n.js",
+    "i18n:check": "node scripts/build-i18n.js --check"
   },
   "dependencies": {
     "stripe": "^17.0.0"

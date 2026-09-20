@@ -3,6 +3,9 @@ Allow: /
 Disallow: /compte.html
 Disallow: /panier.html
 Disallow: /succes.html
+Disallow: /en/compte.html
+Disallow: /en/panier.html
+Disallow: /en/succes.html
 Disallow: /api/
 
 Sitemap: https://luniversducroyant.fr/sitemap.xml

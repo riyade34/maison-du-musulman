@@ -1,5 +1,10 @@
 // Catalogue central des produits — L’Univers du Croyant
-// Pour ajouter un produit : copier un bloc et changer les valeurs (id unique obligatoire)
+// Pour ajouter un produit : copier un bloc et changer les valeurs (id unique obligatoire).
+// Les champs français (name, tagline, description, badge, categoryLabel, variantLabel, info) sont la référence.
+// Le bloc `i18n.en` donne la version anglaise des mêmes champs ; ce sont ces clés qui sont lues sur /en/ :
+//   variants : { "<variant>": [libellé court du bouton, libellé complet] }  (clé = champ `variant` français)
+//   info     : [[libellé, valeur], …]
+// Ne jamais modifier `variant`, `label` ni `price` pour traduire : le panier, le serveur et Stripe s’en servent.
 const PRODUCTS = [
   // ---------- BIEN-ÊTRE ----------
   {
@@ -19,7 +24,19 @@ const PRODUCTS = [
       { variant: '1L',    label: 'bouteille 1L',  price: 25.90 }
     ],
     defaultVariant: '60ml',
-    info: { 'Origine': 'Éthiopie (Habachia)', 'Usage': 'Cosmétique', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Origine': 'Éthiopie (Habachia)', 'Usage': 'Cosmétique', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Wellbeing",
+        badge: "Cold-pressed",
+        name: "Pure nigella oil",
+        tagline: "100% natural, no additives — Ethiopia (Habashia)",
+        description: "Extracted from Ethiopian Nigella sativa seeds and cold-pressed to preserve their benefits. A daily essential, for cosmetic and culinary use alike.",
+        variantLabel: "Size",
+        variants: { "30ml": ["30 ml", "30 ml bottle"], "60ml": ["60 ml", "60 ml bottle"], "500ml": ["500 ml", "500 ml bottle"], "1L": ["1 L", "1 L bottle"] },
+        info: [["Origin", "Ethiopia (Habashia)"], ["Use", "Cosmetic"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'miel-nigelle',
@@ -36,7 +53,19 @@ const PRODUCTS = [
       { variant: '500g', label: 'pot 500g', price: 16.90 }
     ],
     defaultVariant: '250g',
-    info: { 'Origine': 'Éthiopie', 'Usage': 'Alimentaire', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Origine': 'Éthiopie', 'Usage': 'Alimentaire', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Wellbeing",
+        badge: "Natural blend",
+        name: "Nigella honey",
+        tagline: "Pure honey blended with nigella seeds",
+        description: "A natural honey mixed with whole nigella seeds, for a unique taste and combined benefits every day.",
+        variantLabel: "Size",
+        variants: { "250g": ["250 g", "250 g jar"], "500g": ["500 g", "500 g jar"] },
+        info: [["Origin", "Ethiopia"], ["Use", "Food"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'savon-nigelle',
@@ -53,7 +82,19 @@ const PRODUCTS = [
       { variant: 'lot3',   label: 'Lot de 3', price: 11.90 }
     ],
     defaultVariant: 'unique',
-    info: { 'Matière': 'Saponification à froid', 'Usage': 'Cosmétique', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': 'Saponification à froid', 'Usage': 'Cosmétique', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Wellbeing",
+        badge: "Handcrafted",
+        name: "Nigella soap",
+        tagline: "Natural cold-process soap",
+        description: "Handcrafted soap enriched with nigella oil, gentle on the skin and free from chemical additives.",
+        variantLabel: "Format",
+        variants: { "unique": ["Single bar", "Single bar"], "lot3": ["Pack of 3", "Pack of 3"] },
+        info: [["Process", "Cold-process saponification"], ["Use", "Cosmetic"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'musc-parfum',
@@ -71,7 +112,19 @@ const PRODUCTS = [
       { variant: '12ml', label: 'flacon 12ml', price: 16.90 }
     ],
     defaultVariant: '6ml',
-    info: { 'Type': 'Huile parfumée', 'Alcool': 'Sans alcool', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Type': 'Huile parfumée', 'Alcool': 'Sans alcool', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Wellbeing",
+        badge: "Alcohol-free",
+        name: "Alcohol-free musk perfume",
+        tagline: "Soft, long-lasting fragrance",
+        description: "Concentrated alcohol-free perfume, suitable for everyday use, including during prayer. Long-lasting wear.",
+        variantLabel: "Size",
+        variants: { "3ml": ["3 ml", "3 ml bottle"], "6ml": ["6 ml", "6 ml bottle"], "12ml": ["12 ml", "12 ml bottle"] },
+        info: [["Type", "Perfume oil"], ["Alcohol", "Alcohol-free"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'encens-oud',
@@ -88,7 +141,19 @@ const PRODUCTS = [
       { variant: 'x40', label: 'Boîte de 40', price: 11.90 }
     ],
     defaultVariant: 'x20',
-    info: { 'Parfum': 'Oud', 'Usage': 'Intérieur', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Parfum': 'Oud', 'Usage': 'Intérieur', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Wellbeing",
+        badge: "Soft smoke",
+        name: "Oud incense sticks",
+        tagline: "Traditional woody fragrance",
+        description: "Oud incense sticks to scent your home with a warm, woody aroma.",
+        variantLabel: "Quantity",
+        variants: { "x20": ["Box of 20", "Box of 20"], "x40": ["Box of 40", "Box of 40"] },
+        info: [["Fragrance", "Oud"], ["Use", "Indoor"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
 
   // ---------- PRIÈRE ----------
@@ -109,7 +174,19 @@ const PRODUCTS = [
       { variant: 'bordeaux', label: 'Bordeaux', price: 15.00 }
     ],
     defaultVariant: 'sable',
-    info: { 'Matière': 'Velours épais', 'Entretien': 'Lavable en machine', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': 'Velours épais', 'Entretien': 'Lavable en machine', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Prayer",
+        badge: "Thick fabric",
+        name: "Plain prayer rug",
+        tagline: "Comfortable and easy to care for",
+        description: "A tightly woven prayer rug with a non-slip backing. Understated colours designed to suit any interior.",
+        variantLabel: "Colour",
+        variants: { "sable": ["Sand", "Sand"], "vert": ["Green", "Green"], "gris": ["Grey", "Grey"], "bordeaux": ["Burgundy", "Burgundy"] },
+        info: [["Material", "Thick velvet"], ["Care", "Machine washable"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'tapis-priere-voyage',
@@ -126,7 +203,19 @@ const PRODUCTS = [
       { variant: 'gris',  label: 'Gris',  price: 12.90 }
     ],
     defaultVariant: 'sable',
-    info: { 'Matière': 'Tissu fin pliable', 'Poids': 'Léger', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': 'Tissu fin pliable', 'Poids': 'Léger', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Prayer",
+        badge: "Foldable",
+        name: "Travel prayer rug",
+        tagline: "Compact and light, pouch included",
+        description: "A thin, foldable prayer rug supplied with its carry pouch. Ideal for travel and backpacks.",
+        variantLabel: "Colour",
+        variants: { "sable": ["Sand", "Sand"], "gris": ["Grey", "Grey"] },
+        info: [["Material", "Thin foldable fabric"], ["Weight", "Light"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'tapis-priere-enfant',
@@ -143,7 +232,19 @@ const PRODUCTS = [
       { variant: 'geometrique', label: 'Géométrique', price: 10.90 }
     ],
     defaultVariant: 'etoiles',
-    info: { 'Format': 'Réduit (enfant)', 'Entretien': 'Lavable en machine', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Format': 'Réduit (enfant)', 'Entretien': 'Lavable en machine', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Prayer",
+        badge: "Children’s designs",
+        name: "Children’s prayer rug",
+        tagline: "Smaller size, colourful designs",
+        description: "A prayer rug for children, in a smaller size with playful designs to accompany them as they learn to pray.",
+        variantLabel: "Design",
+        variants: { "etoiles": ["Stars", "Stars"], "geometrique": ["Geometric", "Geometric"] },
+        info: [["Format", "Small (child)"], ["Care", "Machine washable"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'chapelet',
@@ -160,7 +261,19 @@ const PRODUCTS = [
       { variant: 'perles', label: 'Perles nacrées', price: 12.90 }
     ],
     defaultVariant: 'bois',
-    info: { 'Grains': '99', 'Fabrication': 'Fait main', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Grains': '99', 'Fabrication': 'Fait main', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Prayer",
+        badge: "Handmade",
+        name: "Handmade tasbih (99 beads)",
+        tagline: "Natural wood beads",
+        description: "Traditional 99-bead tasbih (prayer beads) with hand-finished wooden beads. Sturdy and pleasant to hold every day.",
+        variantLabel: "Material",
+        variants: { "bois": ["Natural wood", "Natural wood"], "perles": ["Pearlescent beads", "Pearlescent beads"] },
+        info: [["Beads", "99"], ["Making", "Handmade"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'chapelet-33',
@@ -176,7 +289,19 @@ const PRODUCTS = [
       { variant: 'unique', label: 'Modèle unique', price: 6.90 }
     ],
     defaultVariant: 'unique',
-    info: { 'Grains': '33', 'Format': 'Compact', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Grains': '33', 'Format': 'Compact', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Prayer",
+        badge: "Compact size",
+        name: "Compact tasbih (33 beads)",
+        tagline: "Light, ideal for your pocket",
+        description: "Compact 33-bead version, handy to take anywhere. Smooth beads that feel pleasant to the touch.",
+        variantLabel: null,
+        variants: { "unique": ["Single model", "Single model"] },
+        info: [["Beads", "33"], ["Format", "Compact"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'coussin-priere',
@@ -193,7 +318,19 @@ const PRODUCTS = [
       { variant: 'gris',  label: 'Gris',  price: 18.90 }
     ],
     defaultVariant: 'sable',
-    info: { 'Matière': 'Mousse + tissu', 'Entretien': 'Housse lavable', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': 'Mousse + tissu', 'Entretien': 'Housse lavable', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Prayer",
+        badge: "Comfort",
+        name: "Prayer cushion",
+        tagline: "Support for the seated position",
+        description: "An ergonomic cushion designed to support the back and knees during prayer, particularly useful in case of physical discomfort.",
+        variantLabel: "Colour",
+        variants: { "sable": ["Sand", "Sand"], "gris": ["Grey", "Grey"] },
+        info: [["Material", "Foam + fabric"], ["Care", "Washable cover"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
 
   // ---------- PRÊT-À-PORTER ----------
@@ -216,7 +353,20 @@ const PRODUCTS = [
       { variant: 'XL', label: 'XL', price: 32.90 }
     ],
     defaultVariant: 'M',
-    info: { 'Matière': '100% coton', 'Coloris': 'Blanc', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': '100% coton', 'Coloris': 'Blanc', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Clothing",
+        subCategoryLabel: "Men’s qamis",
+        badge: "Classic cut",
+        name: "Men’s qamis — White",
+        tagline: "Soft cotton, straight cut",
+        description: "Breathable cotton qamis with a classic straight cut and careful finishing. Suitable for everyday wear as well as for prayer.",
+        variantLabel: "Size",
+        variants: { "S": ["S", "S"], "M": ["M", "M"], "L": ["L", "L"], "XL": ["XL", "XL"] },
+        info: [["Material", "100% cotton"], ["Colour", "White"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'qamis-homme-gris',
@@ -237,7 +387,20 @@ const PRODUCTS = [
       { variant: 'XL', label: 'XL', price: 32.90 }
     ],
     defaultVariant: 'M',
-    info: { 'Matière': '100% coton', 'Coloris': 'Gris', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': '100% coton', 'Coloris': 'Gris', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Clothing",
+        subCategoryLabel: "Men’s qamis",
+        badge: "Classic cut",
+        name: "Men’s qamis — Grey",
+        tagline: "Soft cotton, straight cut",
+        description: "The same classic cut as our best-selling qamis, in an easy-to-match anthracite grey.",
+        variantLabel: "Size",
+        variants: { "S": ["S", "S"], "M": ["M", "M"], "L": ["L", "L"], "XL": ["XL", "XL"] },
+        info: [["Material", "100% cotton"], ["Colour", "Grey"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'qamis-homme-noir',
@@ -258,7 +421,20 @@ const PRODUCTS = [
       { variant: 'XL', label: 'XL', price: 32.90 }
     ],
     defaultVariant: 'M',
-    info: { 'Matière': '100% coton', 'Coloris': 'Noir', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': '100% coton', 'Coloris': 'Noir', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Clothing",
+        subCategoryLabel: "Men’s qamis",
+        badge: "Classic cut",
+        name: "Men’s qamis — Black",
+        tagline: "Soft cotton, straight cut",
+        description: "The same much-loved model, available in black for a sober, elegant look.",
+        variantLabel: "Size",
+        variants: { "S": ["S", "S"], "M": ["M", "M"], "L": ["L", "L"], "XL": ["XL", "XL"] },
+        info: [["Material", "100% cotton"], ["Colour", "Black"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'qamis-capuche-homme',
@@ -279,7 +455,20 @@ const PRODUCTS = [
       { variant: 'XL', label: 'XL', price: 37.90 }
     ],
     defaultVariant: 'M',
-    info: { 'Matière': 'Coton molletonné', 'Style': 'Capuche + poche', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': 'Coton molletonné', 'Style': 'Capuche + poche', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Clothing",
+        subCategoryLabel: "Men’s qamis",
+        badge: "New model",
+        name: "Hooded qamis",
+        tagline: "Modern style, everyday comfort",
+        description: "A modern take on the qamis, with a hood and kangaroo pocket. Ideal for a relaxed look without compromising on modest dress.",
+        variantLabel: "Size",
+        variants: { "S": ["S", "S"], "M": ["M", "M"], "L": ["L", "L"], "XL": ["XL", "XL"] },
+        info: [["Material", "Cotton fleece"], ["Style", "Hood + pocket"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'jilbab-femme',
@@ -299,7 +488,20 @@ const PRODUCTS = [
       { variant: 'L', label: 'L',  price: 34.90 }
     ],
     defaultVariant: 'M',
-    info: { 'Matière': 'Polyester fluide', 'Coloris': 'Sable', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': 'Polyester fluide', 'Coloris': 'Sable', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Clothing",
+        subCategoryLabel: "Women’s jilbab & abaya",
+        badge: "Flowing fabric",
+        name: "Women’s jilbab — Sand",
+        tagline: "Flowing, non-transparent fabric",
+        description: "A loose jilbab in flowing, opaque fabric, designed for comfort and all-day wear.",
+        variantLabel: "Size",
+        variants: { "S": ["S", "S"], "M": ["M", "M"], "L": ["L", "L"] },
+        info: [["Material", "Flowing polyester"], ["Colour", "Sand"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'jilbab-femme-noir',
@@ -319,7 +521,20 @@ const PRODUCTS = [
       { variant: 'L', label: 'L',  price: 34.90 }
     ],
     defaultVariant: 'M',
-    info: { 'Matière': 'Polyester fluide', 'Coloris': 'Noir', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': 'Polyester fluide', 'Coloris': 'Noir', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Clothing",
+        subCategoryLabel: "Women’s jilbab & abaya",
+        badge: "Flowing fabric",
+        name: "Women’s jilbab — Black",
+        tagline: "Flowing, non-transparent fabric",
+        description: "The same flowing, comfortable jilbab, in timeless black.",
+        variantLabel: "Size",
+        variants: { "S": ["S", "S"], "M": ["M", "M"], "L": ["L", "L"] },
+        info: [["Material", "Flowing polyester"], ["Colour", "Black"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
   {
     id: 'abaya-femme',
@@ -339,7 +554,20 @@ const PRODUCTS = [
       { variant: 'L', label: 'L',  price: 39.90 }
     ],
     defaultVariant: 'M',
-    info: { 'Matière': 'Crêpe fluide', 'Finitions': 'Broderies', 'Livraison': '2-4 jours ouvrés' }
+    info: { 'Matière': 'Crêpe fluide', 'Finitions': 'Broderies', 'Livraison': '2-4 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Clothing",
+        subCategoryLabel: "Women’s jilbab & abaya",
+        badge: "New model",
+        name: "Classic abaya",
+        tagline: "Flowing cut, embroidered finishing",
+        description: "An elegant abaya with a flowing cut and discreet embroidered detailing on the sleeves. A timeless model for every occasion.",
+        variantLabel: "Size",
+        variants: { "S": ["S", "S"], "M": ["M", "M"], "L": ["L", "L"] },
+        info: [["Material", "Flowing crepe"], ["Finishing", "Embroidery"], ["Delivery", "2–4 working days"]]
+      }
+    }
   },
 
   // ---------- DÉCORATION ----------
@@ -358,7 +586,19 @@ const PRODUCTS = [
       { variant: '40x60', label: '40 x 60 cm', price: 34.00 }
     ],
     defaultVariant: '30x40',
-    info: { 'Matière': 'Cadre bois massif', 'Fixation': 'Kit inclus', 'Livraison': '3-5 jours ouvrés' }
+    info: { 'Matière': 'Cadre bois massif', 'Fixation': 'Kit inclus', 'Livraison': '3-5 jours ouvrés' },
+    i18n: {
+      en: {
+        categoryLabel: "Home decor",
+        badge: "One of a kind",
+        name: "Wall calligraphy",
+        tagline: "Wooden frame, high-quality print",
+        description: "A framed calligraphy to bring serenity and elegance to your home. Solid wood frame.",
+        variantLabel: "Format",
+        variants: { "30x40": ["30 x 40 cm", "30 x 40 cm"], "40x60": ["40 x 60 cm", "40 x 60 cm"] },
+        info: [["Material", "Solid wood frame"], ["Fixing", "Kit included"], ["Delivery", "3–5 working days"]]
+      }
+    }
   }
 ];
 

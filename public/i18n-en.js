@@ -1,0 +1,106 @@
+/*
+ * Catalogue anglais des textes produits par JavaScript (chargé uniquement sous /en/).
+ * Clés : voir les appels I18N.t('clé', 'texte français') dans les pages et scripts.
+ * Les textes fixes des pages, eux, sont générés depuis i18n/en-segments.json (voir I18N.md).
+ */
+window.MDM_MESSAGES = window.MDM_MESSAGES || {};
+window.MDM_MESSAGES.en = {
+  messages: {
+    'home.featuredBadge': 'Featured',
+
+    'cat.empty': 'No products here yet.',
+    'cat.count.one': '{n} product',
+    'cat.count.other': '{n} products',
+    'cat.subcount.one': '{n} sub-category',
+    'cat.subcount.other': '{n} sub-categories',
+    'cat.products': 'Products',
+    'cat.category': 'Category',
+
+    'product.quantity': 'Quantity',
+    'product.description': 'Description',
+    'product.trustShipping': 'Fast delivery',
+    'product.trustPayment': 'Secure payment',
+    'product.trustReturns': '14-day returns',
+    'product.addToCart': 'Add to basket',
+
+    'cart.accountUnavailable': 'Account service unavailable',
+    'cart.checkout': 'Order and pay',
+    'cart.openingSoon': 'Opening soon',
+    'cart.storePreparing': 'The shop is being prepared: you can browse the catalogue and prepare your basket, but no payment is being accepted for the moment.',
+    'cart.storeStillPreparing': 'The shop is still being prepared. No payment is being accepted for the moment.',
+    'cart.remove': 'Remove',
+    'cart.free': 'Free',
+    'cart.redirecting': 'Redirecting...',
+    'cart.unknownError': 'Unknown error',
+    'cart.paymentFailed': 'Payment could not be started. Please try again in a moment.',
+    'cart.cancelled': 'Payment cancelled: your basket has been kept. You can try again whenever you like.',
+
+    'withdraw.scopeFull': 'The whole order',
+    'withdraw.scopePartial': 'Part of the order',
+    'withdraw.allProducts': 'All products',
+    'withdraw.saving': 'Saving…',
+    'withdraw.notSaved': 'Your request could not be recorded.',
+    'withdraw.savedWithEmail': 'Your request has been recorded and an acknowledgement of receipt has been sent to you by email.',
+    'withdraw.savedNoEmail': 'Your request has been recorded. The electronic acknowledgement of receipt could not be sent automatically: keep this reference and contact the seller.',
+    'withdraw.confirm': 'Confirm my withdrawal',
+
+    'success.noReference': 'Payment reference missing.',
+    'success.serviceUnavailable': 'Customer service unavailable.',
+    'success.reconnect': 'Sign in again to link this order to your account.',
+    'success.saveFailed': 'Unable to record the order.',
+    'success.title': 'Order confirmed',
+    'success.thanks': 'Thank you for your order! It is now recorded in your personal area.',
+    'success.duplicate': 'This order was already recorded: no duplicate has been created.',
+    'success.total': 'Total paid: {amount}',
+    'success.received': 'Payment received',
+    'success.notRecorded': 'The payment may be valid, but the order has not yet been added to your history.',
+
+    'account.busy': 'One moment…',
+    'account.ordersLoading': 'Loading orders…',
+    'account.ordersUnavailable': 'Order history temporarily unavailable.',
+    'account.ordersEmpty': 'No orders yet.',
+    'account.orderOn': 'Order of {date}',
+    'account.paid': 'Paid',
+    'account.reference': 'Reference',
+    'account.withdraw': 'Withdraw from the contract for this order',
+    'account.myAccount': 'My account',
+    'account.loginToOrder': 'Sign in to continue with your order.',
+    'account.signupDone': 'Account created. Check your email to confirm your registration.',
+    'account.loginError': 'Incorrect email or password.',
+    'account.resetSent': 'If an account exists for this address, a reset email has just been sent.',
+    'account.passwordUpdated': 'Password updated. You can continue.',
+
+    'search.results.one': '{n} result',
+    'search.results.other': '{n} results',
+    'search.allProducts': '{n} products',
+    'search.none': 'No products found.',
+    'search.hint': 'Try another word, for example “prayer” or “nigella”.',
+    'search.from': 'From {price}',
+  },
+
+  // Messages d’erreur renvoyés en français par les API, traduits à l’affichage.
+  errors: {
+    'Méthode non autorisée': 'Method not allowed',
+    'Origine non autorisée.': 'Origin not allowed.',
+    'Le contenu doit être envoyé au format JSON.': 'The content must be sent as JSON.',
+    'Le contenu doit être envoyé au format JSON': 'The content must be sent as JSON.',
+    'Trop de tentatives. Réessayez dans quelques minutes.': 'Too many attempts. Please try again in a few minutes.',
+    'Référence ou adresse e-mail invalide.': 'Invalid reference or email address.',
+    'Aucune commande ne correspond à cette référence et cette adresse e-mail.': 'No order matches this reference and email address.',
+    'La demande n’a pas pu être enregistrée. Réessayez ou contactez le vendeur.': 'Your request could not be recorded. Please try again or contact the seller.',
+    'La boutique est en préparation. Le paiement sera ouvert prochainement.': 'The shop is being prepared. Payment will open soon.',
+    'Connectez-vous avant de passer commande': 'Please sign in before placing an order',
+    'Panier vide ou invalide': 'Basket empty or invalid',
+    'Un article du panier est invalide': 'An item in the basket is invalid',
+    'Erreur lors de la création du paiement': 'Error while creating the payment',
+    'Session client expirée': 'Customer session expired',
+    'Session Stripe invalide': 'Invalid Stripe session',
+    'Le paiement n’est pas confirmé': 'The payment has not been confirmed',
+    'Cette commande n’appartient pas à ce compte': 'This order does not belong to this account',
+    'La commande payée n’a pas pu être enregistrée': 'The paid order could not be recorded',
+    'Impossible de finaliser la commande': 'Unable to finalise the order',
+  },
+  errorPatterns: [
+    [/^Une demande de rétractation existe déjà pour cette commande \((.+)\)\.$/, 'A withdrawal request already exists for this order ($1).'],
+  ],
+};
