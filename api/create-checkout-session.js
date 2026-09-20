@@ -1,6 +1,7 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { getAuthenticatedUser } = require('./_supabase');
 const { normalizeCart } = require('./_cart');
+const { normalizeLang } = require('./_lang');
 
 const FREE_SHIPPING_THRESHOLD_CENTS = 4000;
 const SHIPPING_FLAT_CENTS = 490;
@@ -49,11 +50,18 @@ module.exports = async (req, res) => {
     }
 
     const cart = normalizeCart(req.body?.cart);
+    // Langue du visiteur : « fr » ou « en » uniquement (repli « fr »). Elle ne pilote que la langue de la page
+    // Stripe Checkout, une description anglaise affichée sous le nom du produit et les pages de retour.
+    // Les noms enregistrés (product_data.name) et la ligne « Livraison » restent en français : le webhook
+    // et finalize-order.js s’en servent pour enregistrer la commande.
+    const lang = normalizeLang(req.body?.lang);
+    const english = lang === 'en';
     const line_items = cart.map((item) => ({
       price_data: {
         currency: 'eur',
         product_data: {
           name: `${item.name} — ${item.variant}`,
+          ...(english ? { description: `${item.en.name} — ${item.en.variant}` } : {}),
           metadata: { product_id: item.id, variant: item.variant },
         },
         unit_amount: item.unitAmount,
@@ -67,7 +75,7 @@ module.exports = async (req, res) => {
       line_items.push({
         price_data: {
           currency: 'eur',
-          product_data: { name: 'Livraison' },
+          product_data: { name: 'Livraison', ...(english ? { description: 'Delivery' } : {}) },
           unit_amount: SHIPPING_FLAT_CENTS,
         },
         quantity: 1,
@@ -75,6 +83,7 @@ module.exports = async (req, res) => {
     }
 
     const origin = resolveOrigin(req);
+    const pathPrefix = english ? '/en' : '';
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -83,8 +92,10 @@ module.exports = async (req, res) => {
       client_reference_id: authentication.user.id,
       customer_email: authentication.user.email,
       metadata: { user_id: authentication.user.id },
-      success_url: `${origin}/succes.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/panier.html?paiement=annule`,
+      // Langue de la page Stripe Checkout : français ou anglais britannique (valeurs officielles de l’API Stripe).
+      locale: english ? 'en-GB' : 'fr',
+      success_url: `${origin}${pathPrefix}/succes.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}${pathPrefix}/panier.html?paiement=annule`,
       shipping_address_collection: {
         // L'offre de lancement publiée couvre uniquement la France.
         // Les autres pays seront réactivés quand frais, TVA et douanes auront été validés.

@@ -14,12 +14,20 @@ function normalizeCart(cart) {
       throw new Error('Un article du panier est invalide');
     }
 
+    // Version anglaise, utilisée uniquement pour l’affichage du Checkout en anglais (repli : français).
+    const english = product.i18n && product.i18n.en;
+    const englishVariant = english && english.variants && english.variants[variant.variant];
+
     return {
       id: product.id,
       name: product.name,
       variant: variant.label,
       unitAmount: Math.round(variant.price * 100),
       quantity,
+      en: {
+        name: (english && english.name) || product.name,
+        variant: (englishVariant && englishVariant[1]) || variant.label,
+      },
     };
   });
 }

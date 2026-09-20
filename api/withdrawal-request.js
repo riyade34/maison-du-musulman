@@ -1,5 +1,6 @@
 const crypto = require('node:crypto');
 const { supabaseAdminRequest } = require('./_supabase');
+const { normalizeLang } = require('./_lang');
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -54,6 +55,23 @@ async function sendEmail({ to, subject, text }) {
   return true;
 }
 
+// Accusé de réception envoyé au CLIENT dans la langue de l’interface utilisée (« fr » ou « en », repli « fr »).
+// Les deux versions donnent les mêmes informations. La notification interne reste en français.
+function customerAcknowledgement(lang, { reference, orderReference, scope, createdAt }) {
+  if (lang === 'en') {
+    const date = createdAt.toLocaleString('en-GB', { timeZone: 'Europe/Paris' });
+    return {
+      subject: `Acknowledgement of receipt of your withdrawal ${reference}`,
+      text: `Your withdrawal request has been recorded.\n\nReference: ${reference}\nOrder: ${orderReference}\nScope: ${scope === 'full' ? 'the whole order' : 'part of the order'}\nDate: ${date}\n\nPlease keep this email. The return instructions are available on the L’Univers du Croyant website.`,
+    };
+  }
+  const date = createdAt.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
+  return {
+    subject: `Accusé de réception de votre rétractation ${reference}`,
+    text: `Votre demande de rétractation a été enregistrée.\n\nRéférence : ${reference}\nCommande : ${orderReference}\nPortée : ${scope === 'full' ? 'toute la commande' : 'une partie de la commande'}\nDate : ${date}\n\nConservez cet e-mail. Les modalités de retour sont disponibles sur le site L’Univers du Croyant.`,
+  };
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') { res.status(405).json({ error: 'Méthode non autorisée' }); return; }
   if (!requestIsSameSite(req)) { res.status(403).json({ error: 'Origine non autorisée.' }); return; }
@@ -71,6 +89,7 @@ module.exports = async (req, res) => {
     const scope = req.body?.scope === 'partial' ? 'partial' : 'full';
     const items = clean(req.body?.items, 1000);
     const reason = clean(req.body?.reason, 1000);
+    const lang = normalizeLang(req.body?.lang);
     if (fullName.length < 2 || (!UUID_PATTERN.test(orderReference) && !REFERENCE_PATTERN.test(orderReference)) || !EMAIL_PATTERN.test(email)) {
       res.status(400).json({ error: 'Référence ou adresse e-mail invalide.' }); return;
     }
@@ -107,8 +126,8 @@ module.exports = async (req, res) => {
     if (!rows.length) throw new Error('La base n’a pas confirmé l’enregistrement');
     let emailSent = false;
     try {
-      const customerText = `Votre demande de rétractation a été enregistrée.\n\nRéférence : ${reference}\nCommande : ${orderReference}\nPortée : ${scope === 'full' ? 'toute la commande' : 'une partie de la commande'}\nDate : ${createdAt.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}\n\nConservez cet e-mail. Les modalités de retour sont disponibles sur le site L’Univers du Croyant.`;
-      emailSent = await sendEmail({ to: email, subject: `Accusé de réception de votre rétractation ${reference}`, text: customerText });
+      const customerMail = customerAcknowledgement(lang, { reference, orderReference, scope, createdAt });
+      emailSent = await sendEmail({ to: email, subject: customerMail.subject, text: customerMail.text });
       const notificationEmail = process.env.WITHDRAWAL_NOTIFICATION_EMAIL;
       if (emailSent && notificationEmail && EMAIL_PATTERN.test(notificationEmail)) {
         await sendEmail({ to: notificationEmail, subject: `Nouvelle rétractation ${reference}`, text: `Une demande a été enregistrée.\nRéférence : ${reference}\nCommande : ${order.id}\nClient : ${fullName} — ${email}\nPortée : ${scope}\nProduits : ${items || 'toute la commande'}\nMotif facultatif : ${reason || 'non renseigné'}` });

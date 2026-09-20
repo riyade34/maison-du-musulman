@@ -309,7 +309,7 @@ test('la boutique reste fermée et rien de bancaire ou de compte n’a changé p
   const checkout = fs.readFileSync(path.join(__dirname, '../api/create-checkout-session.js'), 'utf8');
   assert.match(checkout, /process\.env\.STORE_OPEN !== 'true'/);
   assert.match(checkout, /code: 'STORE_CLOSED'/);
-  assert.match(checkout, /success_url: `\$\{origin\}\/succes\.html\?session_id=\{CHECKOUT_SESSION_ID\}`/);
+  assert.match(checkout, /success_url: `\$\{origin\}\$\{pathPrefix\}\/succes\.html\?session_id=\{CHECKOUT_SESSION_ID\}`/);
   // Les liens d’e-mail Supabase continuent d’utiliser /compte.html (adresse déjà autorisée).
   const account = read('account.js');
   assert.equal((account.match(/\$\{location\.origin\}\/compte\.html/g) || []).length, 2);

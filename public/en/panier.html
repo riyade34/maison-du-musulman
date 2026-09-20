@@ -69,8 +69,8 @@
   </div>
   <div id="precontractSection" class="precontract" style="display:none;">
     <p><strong>Delivery:</strong> dispatch announced within 24 to 48 working hours, then estimated delivery within 2 to 4 days depending on the area.</p>
-    <p><strong>Withdrawal:</strong> you generally have 14 days after receipt. See the <a href="/en/retours-remboursements.html">returns conditions</a> and the <a href="/en/cgv.html">terms of sale</a>.</p>
-    <p>By continuing, you go to Stripe to confirm an order with an obligation to pay.</p>
+    <p><strong>Withdrawal:</strong> you normally have 14 days after receipt. See the <a href="/en/retours-remboursements.html">returns conditions</a> and the <a href="/en/cgv.html">terms of sale</a>.</p>
+    <p>By continuing, you will be taken to Stripe to confirm an order with an obligation to pay.</p>
   </div>
   <div id="checkoutBar" class="checkout-bar" style="display:none;">
     <button class="btn-checkout" id="checkoutBtn">Order and pay</button>
@@ -210,7 +210,7 @@
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ cart }),
+        body: JSON.stringify({ cart, lang: I18N.lang }),
       });
       const data = await response.json();
       if (data.url) { window.location.href = data.url; return; }

@@ -31,7 +31,7 @@
   form.addEventListener('submit', async (event) => {
     event.preventDefault(); const button = document.getElementById('submitButton'); button.disabled = true; button.textContent = I18N.t('withdraw.saving', 'Enregistrement…'); message.className = 'withdraw-message';
     try {
-      const response = await fetch('/api/withdrawal-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullName: form.fullName.value.trim(), orderReference: form.orderReference.value.trim(), email: form.email.value.trim(), scope: form.scope.value, items: form.items.value.trim(), reason: form.reason.value.trim() }) });
+      const response = await fetch('/api/withdrawal-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullName: form.fullName.value.trim(), orderReference: form.orderReference.value.trim(), email: form.email.value.trim(), scope: form.scope.value, items: form.items.value.trim(), reason: form.reason.value.trim(), lang: I18N.lang }) });
       const result = await response.json(); if (!response.ok) throw new Error(I18N.apiError(result.error) || I18N.t('withdraw.notSaved', 'La demande n’a pas pu être enregistrée.'));
       document.getElementById('requestReference').textContent = result.reference;
       document.getElementById('successText').textContent = result.emailSent ? I18N.t('withdraw.savedWithEmail', 'Votre demande a été enregistrée et un accusé de réception vous a été envoyé par e-mail.') : I18N.t('withdraw.savedNoEmail', 'Votre demande a été enregistrée. L’accusé de réception électronique n’a pas pu être envoyé automatiquement : conservez cette référence et contactez le vendeur.');
