@@ -21,7 +21,8 @@ Mise à jour du 19 septembre 2026.
 - [ ] Une fois le catalogue et les prix confirmés : ajouter les fiches produits au `sitemap.xml` (généré par `npm run i18n`, voir `SITEMAP_PATHS` dans `scripts/build-i18n.js`).
 - [x] Site bilingue français / anglais intégré au projet (sans Weglot ni abonnement) : pages `/en/` générées, sélecteur FR | EN, hreflang, sitemap, fiches produits en anglais. Mode d'emploi : `I18N.md`.
 - [ ] Faire relire la traduction anglaise (`i18n/en-segments.json`, `public/catalog.js`), surtout les pages juridiques, quand leurs champs à compléter seront renseignés. La version française prévaut (note affichée sur les pages juridiques anglaises).
-- [ ] Avant l'ouverture : décider si Stripe Checkout, les e-mails de rétractation (Resend) et les libellés envoyés à Stripe doivent aussi exister en anglais (aujourd'hui en français ; le retour de paiement bascule déjà vers l'anglais si le visiteur l'a choisi).
+- [x] Stripe Checkout en français ou en anglais selon la langue du visiteur (`locale` `fr` / `en-GB`, pages de retour dans la même langue) et accusé de réception de rétractation envoyé au client en français ou en anglais (notification interne en français). Testé sans paiement ni e-mail réels (`tests/i18n-backend.test.js`).
+- [ ] Au premier vrai parcours de lancement : vérifier visuellement le Checkout Stripe en anglais et en français, et recevoir un accusé de rétractation dans chaque langue (validera aussi `RESEND_API_KEY`).
 - [x] Panier : prix, nom et icône affichés reprennent le catalogue courant (plus de prix périmé issu du navigateur) et le HTML stocké est neutralisé.
 
 ## Livraison et catalogue

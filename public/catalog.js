@@ -328,7 +328,7 @@ const PRODUCTS = [
         description: "An ergonomic cushion designed to support the back and knees during prayer, particularly useful in case of physical discomfort.",
         variantLabel: "Colour",
         variants: { "sable": ["Sand", "Sand"], "gris": ["Grey", "Grey"] },
-        info: [["Material", "Foam + fabric"], ["Care", "Washable cover"], ["Delivery", "2–4 working days"]]
+        info: [["Material", "Foam and fabric"], ["Care", "Washable cover"], ["Delivery", "2–4 working days"]]
       }
     }
   },
@@ -466,7 +466,7 @@ const PRODUCTS = [
         description: "A modern take on the qamis, with a hood and kangaroo pocket. Ideal for a relaxed look without compromising on modest dress.",
         variantLabel: "Size",
         variants: { "S": ["S", "S"], "M": ["M", "M"], "L": ["L", "L"], "XL": ["XL", "XL"] },
-        info: [["Material", "Cotton fleece"], ["Style", "Hood + pocket"], ["Delivery", "2–4 working days"]]
+        info: [["Material", "Cotton fleece"], ["Style", "Hood and pocket"], ["Delivery", "2–4 working days"]]
       }
     }
   },
